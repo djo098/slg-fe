@@ -1,0 +1,447 @@
+<nb-accordion multi   [nbSpinner]="loadingForm"
+nbSpinnerSize="small"
+nbSpinnerStatus="primary">
+  <nb-accordion-item #generateNomination>
+    <nb-accordion-item-header>
+      <span>Generate Nomination</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <form [formGroup]="nominationForm">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Country</label>
+
+              <nb-select
+                formControlName="country_code"
+                id="country"
+                (selectedChange)="onChangeCountry($event)"
+                placeholder="-"
+                fullWidth
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of countriesOptions"
+                  [value]="option.code"
+                  >{{ option.code }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Balancing Zone</label>
+              <nb-select
+                placeholder="-"
+                formControlName="balancing_zone"
+                fullWidth
+                [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                (selectedChange)="onChangeBalanceZone($event)"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of zoneOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorBalanceZone == true">
+                  <span class="error" *ngIf="errorBalanceZone == true"
+                    >There are no balancing zone results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Connection Point type</label>
+              <nb-select
+                placeholder="-"
+                fullWidth
+                formControlName="connection_type"
+                (selectedChange)="onChangeLogisticElementType($event)"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of logisticElementsTypeOptions"
+                  [value]="option"
+                  >{{ option }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Connection Point</label>
+              <nb-select
+                placeholder="-"
+                fullWidth
+                formControlName="connection_point"
+                [status]="errorLogisticElement == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of logisticElementOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+                <div class="error-div">
+                  <span
+                    class="error-block"
+                    *ngIf="errorLogisticElement == true"
+                  >
+                    <span class="error" *ngIf="errorLogisticElement == true"
+                      >There are no infraestructures results for this country
+                      and balancing zone</span
+                    >
+                  </span>
+                </div>
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Service</label>
+
+              <nb-select
+                multiple
+                fullWidth
+                placeholder=" "
+                formControlName="service"
+                [(selected)]="selectedServices"
+                size="small"
+                placeholder="-"
+                (selectedChange)="onChangeService($event)"
+              >
+                <nb-option
+                  *ngFor="let option of serviceOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Legal Entity</label>
+              <nb-select
+                placeholder="-"
+                formControlName="legal_entity"
+                fullWidth
+                [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of entitiesOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorLegalEntity == true">
+                  <span class="error" *ngIf="errorLegalEntity == true"
+                    >There are no legal entities results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Nomination Type</label>
+              <nb-select
+                fullWidth
+                formControlName="nominationType"
+                placeholder="-"
+                size="small"
+                (selectedChange)="onChangeNominationType($event)"
+              >
+                <nb-option
+                  *ngFor="let option of nominationTypeOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Start Date - End Date</label>
+              <input
+                nbInput
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                [nbDatepicker]="rangepicker"
+                formControlName="date"
+                [status]="
+                  errorDate == true
+                    ? 'danger'
+                    : errorDateForward == true
+                    ? 'danger'
+                    : 'basic'
+                "
+                fullWidth
+                fieldSize="small"
+              />
+              <nb-rangepicker #rangepicker format="dd.MM.yyyy"></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate == true">
+                  <span class="error" *ngIf="errorDate == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+              </div>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDateForward == true">
+                  <span class="error" *ngIf="errorDateForward == true"
+                    >The start date => today
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Granularity</label>
+              <nb-select
+                fullWidth
+                formControlName="granularity"
+                placeholder="-"
+                size="small"
+                (selectedChange)="onChangeGranularity($event)"
+              >
+                <nb-option
+                  *ngFor="let option of granularityOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorGranularity == true">
+                  <span class="error" *ngIf="errorGranularity == true"
+                    >There are no granularity results for this services</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                nbButton
+                status="primary"
+                (click)="calculate(false, null, true)"
+                [disabled]="!nominationForm.valid"
+                size="small"
+              >
+                <nb-icon icon="arrow-right"></nb-icon>
+                Calculate
+              </button>
+              <button
+                nbButton
+                status="basic"
+                (click)="reset()"
+                size="small"
+                [disabled]="!nominationForm.valid"
+              >
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+
+<nb-card
+  [nbSpinner]="loadingViewNomination"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>
+    <span>Nomination View</span>
+    <nb-actions size="small">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!dataView"
+      >
+        Export
+      </button>
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="TSOMenu"
+        class="action-button"
+        [disabled]="!dataView"
+        *nbIsGranted="['create', 'nomination']"
+      >
+        TSO Action
+      </button>
+      <button
+      mat-menu-item
+      class="action-button"
+      [disabled]="!dataView"
+      *nbIsGranted="['create', 'nomination']"
+      (click)="submitToETRM()"
+    >
+      Submit current service to ETRM
+    </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV Current Sheet
+      </button>
+    </mat-menu>
+    <mat-menu #TSOMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="submit('current')">
+        Submit Current Service
+      </button>
+      <button mat-menu-item class="action-button" (click)="submit('all')">
+        Submit All Services
+      </button>
+      <button mat-menu-item class="action-button" (click)="compare()">
+        Compare Current Service
+      </button>
+      <button mat-menu-item class="action-button" (click)="compare('all')">
+        Compare All Services
+      </button>
+      <button
+        mat-menu-item
+        class="action-button"
+        [matMenuTriggerFor]="TSOExportMenu"
+      >
+        Export Data
+      </button>
+    </mat-menu>
+    <mat-menu #TSOExportMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        class="action-button"
+        (click)="exportAsXLSX('current')"
+      >
+        XLS Current Sheet
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsXML()">
+        XML Current Sheet
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX('all')">
+        XLS All Services
+      </button>
+    </mat-menu>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="services_differences" class="error-div">
+      <nb-alert outline="warning">
+        <a style="color: #b19100 !important; font-size: 0.8rem"
+          ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp;
+          &nbsp; The services {{ services_differences }} are not nominable
+          because they do not have contracts for the specified legal entity and
+          date range.
+        </a>
+      </nb-alert>
+    </div>
+    <nb-tabset
+      *ngIf="dataView"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of dataView"
+        tabTitle="{{ element.name }}"
+        tabId="{{ element.id }}"
+        [active]="element.isActive"
+      >
+        <div class="row" style="margin-bottom: 1rem">
+          <div
+            class="col-sm-12"
+            style="font-size: 0.7rem !important; margin-top: 1rem"
+            *ngIf="nominationForm.get('nominationType').value == 'intradaily'"
+          >
+            <span style="background-color: #263cc8"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            Current Gas Hour And Nomination Delay
+          </div>
+      
+          <div class="col-sm-12" style="text-align: right;">
+            <button
+
+            type="submit"
+            nbButton
+            status="basic"
+            (click)="refresh()"
+            size="tiny"
+          >
+            <nb-icon icon="sync-outline"></nb-icon>
+            Refresh
+          </button>
+          </div>
+        </div>
+        <div *ngIf="validateRevogridView == false" class="error-div">
+          <nb-alert outline="danger" style="font-size: 0.8rem">
+            <a style="color: #a3162e !important; font-size: 0.8rem"
+              ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The
+              values must be numbers (points as thousands and commas as
+              decimals) greater than 0.
+            </a>
+          </nb-alert>
+        </div>
+
+        <div *ngIf="validateCapacity == false" class="error-div">
+          <nb-alert outline="danger" style="font-size: 0.8rem">
+            <a style="color: #a3162e !important; font-size: 0.8rem"
+              ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The
+              contracts with 0 capacity cannot be nominated.
+            </a>
+          </nb-alert>
+        </div>
+
+        <div *ngIf="element.errorsContracts" class="error-div">
+          <nb-alert outline="warning">
+            <a style="color: #b19100 !important; font-size: 0.8rem"
+              ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp;
+              &nbsp; The following contracts exceed capacity:
+              {{ element.errorsContracts }}.
+            </a>
+          </nb-alert>
+        </div>
+
+        <nb-card  class="card-table" id="card-table">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            (viewportscroll)="OnViewPortScroll($event)"
+            exporting="true"
+            row-size="30"
+            range="true"
+            stretch="false"
+            [readonly]="readonly"
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

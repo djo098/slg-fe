@@ -1,0 +1,164 @@
+<nb-card class="dialog-parameter">
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="exchangeScheduleForm">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Country</label>
+
+            <nb-select
+              formControlName="country_code"
+              id="country"
+              (selectedChange)="onChangeCountry($event)"
+              placeholder="-"
+              size="small"
+              fullWidth
+            >
+              <nb-option
+                *ngFor="let option of countriesOptions"
+                [value]="option.code"
+                >{{ option.code }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Balancing Zone</label>
+            <nb-select
+              placeholder="-"
+              formControlName="balancing_zone"
+              fullWidth
+              [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+  
+              size="small"
+            >
+              <nb-option
+                *ngFor="let option of zoneOptions"
+                [value]="option.id"
+                >{{ option.label }}</nb-option
+              >
+            </nb-select>
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="errorBalanceZone == true"
+              >
+                <span class="error" *ngIf="errorBalanceZone == true"
+                  >There are no balancing zone results for this
+                  country</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+  <!--       <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Legal Entity</label>
+            <nb-select
+            placeholder="-"
+              fullWidth
+              formControlName="legal_entity"
+              (selectedChange)="onChangeOwner($event)"
+              size="small"
+            >
+              <nb-option
+                *ngFor="let option of entitiesOptions"
+                [value]="option.id"
+                >{{ option.name }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Counterparty</label>
+            <angular2-multiselect
+            (onSelect)="onChangeCounterparty($event)"
+            [data]="entitiesOptions2"
+            [settings]="settings"
+            [ngClass]="action == 'View' ? 'disabled' : ''"
+            formControlName="counterparty"
+          >
+          </angular2-multiselect>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Contract Code</label>
+            <angular2-multiselect
+            [data]="contractsOptions"
+            [settings]="settingsContract"
+            formControlName="contract_id"
+            (onSelect)="onChange()" 
+          >
+          </angular2-multiselect>
+
+            <div class="error-div">
+                <span
+                  class="error-block"
+                  *ngIf="
+                    exchangeScheduleForm.get('contract_id').errors &&
+                    (exchangeScheduleForm.get('contract_id').touched ||
+                      exchangeScheduleForm.get('contract_id').dirty)
+                  "
+                >
+                  <span
+                    class="error"
+                    *ngIf="
+                      exchangeScheduleForm.get('contract_id').errors.required
+                    "
+                    >Contract Code is required</span
+                  >
+                </span>
+              </div>
+
+  
+          </div>
+        </div> -->
+   
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Start Date - End Date</label>
+            <input
+              nbInput
+              placeholder="dd.mm.yyyy - dd.mm.yyyy"
+              [nbDatepicker]="rangepicker"
+              fullWidth
+              formControlName="date"
+              [status]="errorDateRange == true ? 'danger' : 'basic'"
+              fieldSize="small"
+            />
+            <nb-rangepicker #rangepicker format="dd.MM.yyyy"></nb-rangepicker>
+            <div class="error-div">
+              <span class="error-block" *ngIf="errorDateRange == true">
+                <span class="error" *ngIf="errorDateRange == true"
+                  >The format must be dd.MM.yyyy and start date <= end
+                  date</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="!exchangeScheduleForm.valid"
+      (click)="actionButton()"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

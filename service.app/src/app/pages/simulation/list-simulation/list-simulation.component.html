@@ -1,0 +1,180 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="simulation-card"
+>
+  <nb-card-header>
+    <span>Simulation View: {{label}}</span>
+
+    <div class="col-sm-5"></div>
+    <div  *ngIf="last_synch" style="font-weight: 500  !important;" >
+      <span *nbIsGranted="['create', 'simulations']">Last Synchronization (UTC): {{last_synch}}</span>
+    </div>
+ 
+    <nb-actions size="small" style="text-align: right">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!data"
+      >
+        Export
+      </button>
+      <button
+      mat-menu-item
+      (click)="refresh()"
+      class="action-button"
+      [disabled]="!data"
+    >
+      Refresh
+    </button>
+      <button
+        mat-menu-item
+        (click)="synchronize()"
+        class="action-button"
+        [disabled]="!data"
+        *nbIsGranted="['create', 'simulations']"
+      >
+        Synchronize
+      </button>
+      <button
+        mat-menu-item
+        class="action-button"
+        [disabled]="!data"
+        (click)="compare()"
+      >
+        {{ label_compare }}
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX All Sheets
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV Current Sheet
+      </button>
+    </mat-menu>
+  </nb-card-header>
+
+  <nb-card-body>
+    <nb-tabset
+      *ngIf="data"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of data"
+        tabTitle="{{ element.name }}"
+        [active]="element.isActive"
+      >
+        <div class="row">
+          <div
+            class="col-sm-12"
+            style="font-size: 0.7rem !important; margin-top: 1rem"
+          >
+            Header Legends: &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+            &nbsp;
+            <span style="background-color: #088e47"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            Gas Input &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;  &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;
+            <span style="background-color: #6d32ff"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            Gas Output &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; | &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;<!-- | &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;
+            <span style="background-color: #c4a700"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            Input or output depending on the sign of the amount &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; -->
+       
+            Cell Legends: &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;
+      
+            <span style="background-color: rgb(33 46 62 / 60%)"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            Edited Cell&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; 
+            &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+
+            <!--    <nb-list>
+                <nb-list-item>
+                  <span
+                    style="
+                      background-color: #90979f26;
+                      border: 1px solid;
+                      border-color: #898989;
+                    "
+                    >&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</span
+                  >
+                  &nbsp; Disabled Cells
+                </nb-list-item>
+                <nb-list-item> (O) Gas output </nb-list-item>
+                <nb-list-item> (I) Gas Input </nb-list-item>
+                <nb-list-item>
+                  (O/I) Input or output depending on the sign of the amount
+                </nb-list-item>
+              </nb-list> -->
+          </div>
+
+          <div class="col-sm-5"></div>
+        </div>
+        <div class="export-container col-sm-12"></div>
+        <div *ngIf="validateRevogrid == false" class="error-div">
+          <nb-alert outline="danger">
+            <a style="color: #a3162e !important; font-size: 0.8rem"
+              ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp;The values must be numbers (points as thousands and commas as
+              decimals) greater than 0.
+            </a></nb-alert
+          >
+        </div>
+
+        <nb-card size="medium" id="cardTable">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            (viewportscroll)="OnViewPortScroll($event)"
+            exporting="true"
+            row-size="30"
+            range="true"
+            stretch="false"
+            [readonly]="readonly"
+        
+        
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>

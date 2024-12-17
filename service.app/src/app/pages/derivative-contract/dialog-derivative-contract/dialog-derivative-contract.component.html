@@ -1,0 +1,1657 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="dialog-parameter"
+>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Contract Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="derivativeForm">
+              <div class="row">
+                <input
+                  formControlName="id"
+                  type="number"
+                  id="id"
+                  nbInput
+                  style="display: none"
+                />
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Trade Id <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="trade_id"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('trade_id').errors &&
+                            (derivativeForm.get('trade_id').touched ||
+                              derivativeForm.get('trade_id').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('trade_id').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('trade_id').errors &&
+                          (derivativeForm.get('trade_id').touched ||
+                            derivativeForm.get('trade_id').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('trade_id').errors.required"
+                          >Trade id Code is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('trade_id').errors.pattern"
+                          >only integer numbers</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('trade_id').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('trade_id').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('trade_id').errors.required"
+                          >Trade id Code is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('trade_id').errors.pattern"
+                          >only integer numbers</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('trade_id').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Registration Date
+                      <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.MM.yyyy HH:mm:ss"
+                      [nbDatepicker]="dateTimePicker"
+                      formControlName="registration_date"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('registration_date').errors &&
+                            (derivativeForm.get('registration_date').touched ||
+                              derivativeForm.get('registration_date').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('registration_date').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-date-timepicker
+                      #dateTimePicker
+                      withSeconds
+                      format="dd.MM.yyyy HH:mm:ss"
+                    ></nb-date-timepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('registration_date').errors &&
+                          (derivativeForm.get('registration_date').touched ||
+                            derivativeForm.get('registration_date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('registration_date').errors
+                              .required
+                          "
+                          >Registration date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('registration_date').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('registration_date').errors
+                              .required
+                          "
+                          >Registration date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Trade Date <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.MM.yyyy HH:mm:ss"
+                      [nbDatepicker]="dateTimePickerTrade"
+                      formControlName="trade_date"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('trade_date').errors &&
+                            (derivativeForm.get('trade_date').touched ||
+                              derivativeForm.get('trade_date').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('trade_date').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-date-timepicker
+                      #dateTimePickerTrade
+                      withSeconds
+                      format="dd.MM.yyyy HH:mm:ss"
+                    ></nb-date-timepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('trade_date').errors &&
+                          (derivativeForm.get('trade_date').touched ||
+                            derivativeForm.get('trade_date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('trade_date').errors.required
+                          "
+                          >Trade date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('trade_date').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('trade_date').errors.required
+                          "
+                          >Trade date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Status <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="status"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('status').errors &&
+                            (derivativeForm.get('status').touched ||
+                              derivativeForm.get('status').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('status').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('status').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('status').errors.required"
+                          >Status is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Legal Entity <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="legal_entity"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('legal_entity').errors &&
+                            (derivativeForm.get('legal_entity').touched ||
+                              derivativeForm.get('legal_entity').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('legal_entity').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorLegalEntity == true"
+                      >
+                        <span class="error" *ngIf="errorLegalEntity == true"
+                          >There are no legal entities results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('legal_entity').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('legal_entity').errors.required
+                          "
+                          >Legal entity is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Contract Type <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="contract_type"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('contract_type').errors &&
+                            (derivativeForm.get('contract_type').touched ||
+                              derivativeForm.get('contract_type').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('contract_type').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('contract_type').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('contract_type').errors.required
+                          "
+                          >Contract Type is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4"  *ngIf="derivativeForm.get('contract_type').value=='Exchange'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Market <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="market"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('market').errors &&
+                            (derivativeForm.get('market').touched ||
+                              derivativeForm.get('market').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('market').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('market').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('market').errors.required"
+                          >Market is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4" *ngIf="derivativeForm.get('contract_type').value=='OTC'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Counterparty <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="counterparty"
+                    [status]="
+                      action == 'Add'
+                        ? derivativeForm.get('counterparty').errors &&
+                          (derivativeForm.get('counterparty').touched ||
+                            derivativeForm.get('counterparty').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? derivativeForm.get('counterparty').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('counterparty').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('counterparty').errors.required
+                          "
+                          >Counterparty is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Clearing House<span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="market_ccp"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('market_ccp').errors &&
+                            (derivativeForm.get('market_ccp').touched ||
+                              derivativeForm.get('market_ccp').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('market_ccp').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('market_ccp').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('market_ccp').errors.required
+                          "
+                          >Clearing House is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Broker <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="broker"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('broker').errors &&
+                            (derivativeForm.get('broker').touched ||
+                              derivativeForm.get('broker').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('broker').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('broker').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('broker').errors.required"
+                          >Counterparty is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Purchase/Sale <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="p_s"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('p_s').errors &&
+                            (derivativeForm.get('p_s').touched ||
+                              derivativeForm.get('p_s').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('p_s').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('p_s').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('p_s').errors.required"
+                          >Purchase/Sell is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Derivative Type <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="derivative_type"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('derivative_type').errors &&
+                            (derivativeForm.get('derivative_type').touched ||
+                              derivativeForm.get('derivative_type').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('derivative_type').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('derivative_type').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('derivative_type').errors
+                              .required
+                          "
+                          >Derivative Type is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Hub <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="hub"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('hub').errors &&
+                            (derivativeForm.get('hub').touched ||
+                              derivativeForm.get('hub').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('hub').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('hub').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('hub').errors.required"
+                          >Hub is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Product <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="product"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('product').errors &&
+                            (derivativeForm.get('product').touched ||
+                              derivativeForm.get('product').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('product').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('product').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('product').errors.required"
+                          >Product is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4"  *ngIf="derivativeForm.get('contract_type').value=='Exchange'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Lots <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="lots"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('lots').errors &&
+                            (derivativeForm.get('lots').touched ||
+                              derivativeForm.get('lots').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('lots').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('lots').errors &&
+                          (derivativeForm.get('lots').touched ||
+                            derivativeForm.get('lots').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lots').errors.required"
+                          >Lot is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lots').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('lots').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lots').errors.required"
+                          >Lot is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lots').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lots').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4"  *ngIf="derivativeForm.get('contract_type').value=='Exchange'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Lot Size <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="lot_size"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('lot_size').errors &&
+                            (derivativeForm.get('lot_size').touched ||
+                              derivativeForm.get('lot_size').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('lot_size').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('lot_size').errors &&
+                          (derivativeForm.get('lot_size').touched ||
+                            derivativeForm.get('lot_size').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lot_size').errors.required"
+                          >Lot size is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lot_size').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('lot_size').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lot_size').errors.required"
+                          >Lot size is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lot_size').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('lot_size').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label"
+                        >UOM <span class="obligatory">*</span></label
+                      >
+                      <input
+                        type="text"
+                        nbInput
+                        fullWidth
+                        
+                        formControlName="uom"
+                        [status]="
+                          action == 'Add'
+                            ? derivativeForm.get('uom').errors &&
+                              (derivativeForm.get('uom').touched ||
+                                derivativeForm.get('uom').dirty)
+                              ? 'danger'
+                              : 'basic'
+                            : action == 'Update' && loading == false
+                            ? derivativeForm.get('uom').invalid
+                              ? 'danger'
+                              : 'basic'
+                            : 'basic'
+                        "
+                        fieldSize="small"
+                      />
+                      <div
+                        class="error-div"
+                        *ngIf="action == 'Update' && loading == false"
+                      >
+                        <span
+                          class="error-block"
+                          *ngIf="derivativeForm.get('uom').invalid"
+                        >
+                          <span
+                            class="error"
+                            *ngIf="derivativeForm.get('uom').errors.required"
+                            >UOM is required</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4" *ngIf="derivativeForm.get('contract_type').value=='OTC'">
+                    <div class="form-group">
+                      <label class="label"
+                        >Quantity <span class="obligatory">*</span></label
+                      >
+                      <input
+                        type="text"
+                        nbInput
+                        fullWidth
+                        
+                        formControlName="quantity"
+                        [status]="
+                          action == 'Add'
+                            ? derivativeForm.get('quantity').errors &&
+                              (derivativeForm.get('quantity').touched ||
+                                derivativeForm.get('quantity').dirty)
+                              ? 'danger'
+                              : 'basic'
+                            : action == 'Update' && loading == false
+                            ? derivativeForm.get('quantity').invalid
+                              ? 'danger'
+                              : 'basic'
+                            : 'basic'
+                        "
+                        fieldSize="small"
+                      />
+                      <div
+                        class="error-div"
+                        *ngIf="action == 'Update' && loading == false"
+                      >
+                        <span
+                          class="error-block"
+                          *ngIf="derivativeForm.get('quantity').invalid"
+                        >
+                          <span
+                            class="error"
+                            *ngIf="derivativeForm.get('quantity').errors.required"
+                            >Quantity is required</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col-sm-4"  >
+                  <div class="form-group">
+                    <label class="label"
+                      >Delivery period <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                      [nbDatepicker]="rangepickerUpload"
+                      formControlName="deliveryPeriod"
+                      [status]="
+                        errorDateRangePeriod == true ? 'danger' : 'basic'
+                      "
+                      fullWidth
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('deliveryPeriod').errors &&
+                            (derivativeForm.get('deliveryPeriod').touched ||
+                              derivativeForm.get('deliveryPeriod').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('deliveryPeriod').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-rangepicker
+                      #rangepickerUpload
+                      format="dd.MM.yyyy"
+                    ></nb-rangepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('deliveryPeriod').errors &&
+                          (derivativeForm.get('deliveryPeriod').touched ||
+                            derivativeForm.get('deliveryPeriod').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('deliveryPeriod').errors.required
+                          "
+                          >Delivery period is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('deliveryPeriod').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            derivativeForm.get('deliveryPeriod').errors.required
+                          "
+                          >Delivery period is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              
+                <div class="col-sm-4"  *ngIf="derivativeForm.get('contract_type').value=='Exchange'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Strike Price <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="strike_price"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('strike_price').errors &&
+                            (derivativeForm.get('strike_price').touched ||
+                              derivativeForm.get('strike_price').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('strike_price').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          derivativeForm.get('strike_price').errors &&
+                          (derivativeForm.get('strike_price').touched ||
+                            derivativeForm.get('strike_price').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('strike_price').errors.required"
+                          >Price is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('strike_price').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('strike_price').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('strike_price').errors.required"
+                          >Price is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('strike_price').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('strike_price').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Currency <span class="obligatory">*</span></label
+                    >
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="currency"
+                      [status]="
+                        action == 'Add'
+                          ? derivativeForm.get('currency').errors &&
+                            (derivativeForm.get('currency').touched ||
+                              derivativeForm.get('currency').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? derivativeForm.get('currency').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="derivativeForm.get('currency').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="derivativeForm.get('currency').errors.required"
+                          >Unit is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+
+      <div class="col-sm-6">
+        <div *ngIf="action != 'View'">
+          <nb-card class="container-form">
+            <nb-card-header class="container-form-header"
+              >Add Derivative Scheduling</nb-card-header
+            >
+            <nb-card-body>
+              <form [formGroup]="derivativeScheduleForm">
+                <div class="row" *ngIf="action != 'View'">
+                  <!--   <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Country</label>
+      
+                          <nb-select
+                            formControlName="country_code"
+                            id="country"
+                            (selectedChange)="onChangeCountry($event)"
+                            placeholder="-"
+                            size="small"
+                            fullWidth
+                          >
+                            <nb-option
+                              *ngFor="let option of countriesOptions"
+                              [value]="option.code"
+                              >{{ option.code }}</nb-option
+                            >
+                          </nb-select>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Balancing Zone</label>
+                          <nb-select
+                            placeholder="-"
+                            formControlName="balancing_zone"
+                            fullWidth
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            (selectedChange)="onChangeZone($event)"
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of zoneOptions"
+                              [value]="option.id"
+                              >{{ option.label }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorBalanceZone == true"
+                            >
+                              <span class="error" *ngIf="errorBalanceZone == true"
+                                >There are no balancing zone results for this
+                                country</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div> -->
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Country</label>
+
+                      <nb-select
+                        formControlName="country_code"
+                        id="country"
+                        (selectedChange)="onChangeCountry($event)"
+                        placeholder="-"
+                        size="small"
+                        fullWidth
+                      >
+                        <nb-option
+                          *ngFor="let option of countriesOptions"
+                          [value]="option.code"
+                          >{{ option.code }}</nb-option
+                        >
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Balancing Zone</label>
+                      <nb-select
+                        placeholder="-"
+                        formControlName="balancing_zone"
+                        fullWidth
+                        [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                        (selectedChange)="onChangeZone($event)"
+                        [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                        size="small"
+                      >
+                        <nb-option
+                          *ngFor="let option of zoneOptions"
+                          [value]="option.id"
+                          >{{ option.label }}</nb-option
+                        >
+                      </nb-select>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="errorBalanceZone == true"
+                        >
+                          <span class="error" *ngIf="errorBalanceZone == true"
+                            >There are no balancing zone results for this
+                            country</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label"> Start Date - End Date</label>
+                      <input
+                        nbInput
+                        [nbDatepicker]="datePickerDate"
+                        formControlName="date"
+                        [status]="
+                          derivativeScheduleForm.get('date').errors &&
+                          (derivativeScheduleForm.get('date').touched ||
+                            derivativeScheduleForm.get('date').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        fieldSize="small"
+                      />
+                      <nb-rangepicker
+                        #datePickerDate
+                        format="dd.MM.yyyy"
+                      ></nb-rangepicker>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            derivativeScheduleForm.get('date').errors &&
+                            (derivativeScheduleForm.get('date').touched ||
+                              derivativeScheduleForm.get('date').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              derivativeScheduleForm.get('date').errors.required
+                            "
+                            >Date is required and the format must be
+                            dd.MM.yyyy</span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="errorDateRangeSchedule == true"
+                            >start date <= end date</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Delivery Point Type</label>
+                      <nb-select
+                        placeholder="-"
+                        fullWidth
+                        size="medium"
+                        formControlName="delivery_point_type"
+                        [status]="
+                          derivativeScheduleForm.get('delivery_point_type')
+                            .errors &&
+                          (derivativeScheduleForm.get('delivery_point_type')
+                            .touched ||
+                            derivativeScheduleForm.get('delivery_point_type')
+                              .dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        (selectedChange)="onChangeDeliveryPointType($event)"
+                        size="small"
+                      >
+                        <nb-option
+                          *ngFor="let option of deliveryPointTypeOptions"
+                          [value]="option"
+                          >{{ option }}</nb-option
+                        >
+                      </nb-select>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            derivativeScheduleForm.get('delivery_point_type')
+                              .errors &&
+                            (derivativeScheduleForm.get('delivery_point_type')
+                              .touched ||
+                              derivativeScheduleForm.get('delivery_point_type')
+                                .dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              derivativeScheduleForm.get('delivery_point_type')
+                                .errors.required
+                            "
+                            >Delivery point type is required</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Element Type</label>
+                      <nb-select
+                        placeholder="-"
+                        fullWidth
+                        formControlName="element_type"
+                        (selectedChange)="onChangeElementType($event)"
+                        [status]="
+                          derivativeScheduleForm.get('element_type').errors &&
+                          (derivativeScheduleForm.get('element_type').touched ||
+                            derivativeScheduleForm.get('element_type').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        size="small"
+                      >
+                        <nb-option
+                          *ngFor="let option of logisticElementsTypeOptions"
+                          [value]="option"
+                          >{{ option }}</nb-option
+                        >
+                      </nb-select>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            derivativeScheduleForm.get('element_type').errors &&
+                            (derivativeScheduleForm.get('element_type')
+                              .touched ||
+                              derivativeScheduleForm.get('element_type').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              derivativeScheduleForm.get('element_type').errors
+                                .required
+                            "
+                            >Element type is required</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Delivery Point</label>
+                      <nb-select
+                        placeholder="-"
+                        fullWidth
+                        size="medium"
+                        formControlName="delivery_point"
+                        [status]="
+                          derivativeScheduleForm.get('delivery_point').errors &&
+                          (derivativeScheduleForm.get('delivery_point')
+                            .touched ||
+                            derivativeScheduleForm.get('delivery_point').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        (selectedChange)="onChangeDeliveryPoint($event)"
+                        size="small"
+                      >
+                        <nb-option
+                          *ngFor="let option of deliveryPointOptions"
+                          [value]="option.id"
+                          >{{ option.name }}{{ option.label }}</nb-option
+                        >
+                      </nb-select>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="errorDeliveryPoint == true"
+                        >
+                          <span class="error" *ngIf="errorDeliveryPoint == true"
+                            >There are no delivery points results for this
+                            balance zone</span
+                          >
+                        </span>
+                      </div>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            derivativeScheduleForm.get('delivery_point')
+                              .errors &&
+                            (derivativeScheduleForm.get('delivery_point')
+                              .touched ||
+                              derivativeScheduleForm.get('delivery_point')
+                                .dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              derivativeScheduleForm.get('delivery_point')
+                                .errors.required
+                            "
+                            >Delivery point is required</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-3"
+                    *ngIf="
+                      this.derivativeForm.get('contract_type').value ==
+                      'regasification_plant'
+                    "
+                  >
+                    <div class="form-group">
+                      <label class="label">Vessel</label>
+
+                      <nb-select
+                        formControlName="vessel"
+                        (selectedChange)="onChangeCountry($event)"
+                        placeholder="-"
+                        size="small"
+                        fullWidth
+                      >
+                        <nb-option
+                          *ngFor="let option of vesselOptions"
+                          [value]="option.id"
+                          >{{ option.label }}</nb-option
+                        >
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-3"
+                    *ngIf="
+                      this.derivativeForm.get('contract_type').value ==
+                      'regasification_plant'
+                    "
+                  >
+                    <div class="form-group">
+                      <label class="label">Source Location</label>
+
+                      <nb-select
+                        formControlName="source_location"
+                        (selectedChange)="onChangeCountry($event)"
+                        placeholder="-"
+                        size="small"
+                        fullWidth
+                      >
+                        <nb-option
+                          *ngFor="let option of sourceLocationOptions"
+                          [value]="option.id"
+                          >{{ option.label }}</nb-option
+                        >
+                      </nb-select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-1">
+                    <div class="form-group addRow-container">
+                      <button
+                        nbButton
+                        status="success"
+                        size="tiny"
+                        [disabled]="!derivativeScheduleForm.valid"
+                        (click)="addRow()"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+        <nb-card class="card-table">
+          <nb-card-header
+            class="container-form-header"
+            style="margin-bottom: 1.5rem"
+            >Derivative Scheduling</nb-card-header
+          >
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+            <div class="col-sm-12">
+              <div *ngIf="validateRevogrid == false" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; The values must be numbers!
+                  </a></nb-alert
+                >
+              </div>
+           <!--    <div *ngIf="totalQuantityMbtuValid == false" class="error-div">
+                <nb-alert outline="warning">
+                  <a style="color: #b19100 !important; font-size: 0.8rem"
+                    ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp;
+                    &nbsp; &nbsp; The total quantity (MMbtu) of all derivative
+                    schedules must be 0!</a
+                  ></nb-alert
+                >
+              </div>
+              <div *ngIf="totalQuantityKwhValid == false" class="error-div">
+                <nb-alert outline="warning">
+                  <a style="color: #b19100 !important; font-size: 0.8rem"
+                    ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp;
+                    &nbsp; &nbsp; The total quantity (Kwh) of all derivative
+                    schedules must be 0!</a
+                  ></nb-alert
+                >
+              </div> -->
+            </div>
+          </div>
+
+          <revo-grid
+            [columns]="columns"
+            theme="compact"
+            [source]="rows"
+            rowSize="30"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            range="true"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-7"></div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer *ngIf="action != 'View'" style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="close"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="!validateRevogrid"
+      (click)="update()"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+  <nb-card-footer *ngIf="action == 'View'" style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>

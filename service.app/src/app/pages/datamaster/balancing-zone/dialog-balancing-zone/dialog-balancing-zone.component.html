@@ -1,0 +1,349 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header">Balancing Zone Information</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="BalancingZoneForm">
+              <input
+                formControlName="id"
+                type="number"
+                id="id"
+                nbInput
+                style="display: none"
+              />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Label <span class="obligatory">*</span></label>
+        
+                    <input
+                      formControlName="label"
+                      type="text"
+                      nbInput
+                      fullWidth
+                      fieldSize="small"
+                      
+                      [status]="
+                        BalancingZoneForm.get('label').errors &&
+                        (BalancingZoneForm.get('label').touched ||
+                          BalancingZoneForm.get('label').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+        
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          BalancingZoneForm.get('label').errors &&
+                          (BalancingZoneForm.get('label').touched ||
+                            BalancingZoneForm.get('label').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="BalancingZoneForm.get('label').errors.required"
+                          >Label is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="BalancingZoneForm.get('label').errors.maxlength"
+                          >Maximum 10 characters</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Country <span class="obligatory">*</span></label>
+        
+                    <nb-select
+                    placeholder="-"
+                      formControlName="country_code"
+                      size="small"
+                      id="country"
+                      (selectedChange)="onChangeCountry($event)"
+                      fullWidth
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <!--     <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label"
+                      >Calculate Losses Mode* &nbsp; &nbsp; &nbsp;
+                      <nb-icon
+                        icon="info-outline"
+                        nbTooltip="There are two ways of calculating losses: &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+                        1) CCGT = (demand + total cycles)*losses  
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+                        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+                        2) TANK = (Regasification and liquefaction + flange exchange)*losses"
+                        nbTooltipPlacement="right"
+                        nbTooltipStatus="primary"
+                        status="info"
+                      ></nb-icon>
+                    </label>
+        
+                    <nb-select
+                      formControlName="loss_type"
+                      
+                      id="loss_type"
+                      fullWidth
+                    >
+                      <nb-option value="ccgt_operations">CCGT</nb-option>
+                      <nb-option value="tank_operations">TANK </nb-option>
+                    </nb-select>
+                  </div>
+                </div> -->
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">TSO  <span class="obligatory">*</span></label>
+                    <nb-select
+                      size="small"
+                      formControlName="tso_id"
+                      fullWidth
+                      [status]="errorTSO == true ? 'danger' : 'basic'"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of tsoOptions"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorTSO == true">
+                        <span class="error" *ngIf="errorTSO == true"
+                          >There are no TSO results for this country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Start Time (Gas Day)  <span class="obligatory">*</span></label>
+                    <input
+                    fieldSize="small"
+                      type="text"
+                      [nbTimepicker]="timepicker"
+                      fullWidth
+                      nbInput
+                      formControlName="start_time"
+                    />
+                    <nb-timepicker #timepicker></nb-timepicker>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label">Time Zone <span class="obligatory">*</span></label>
+                    <angular2-multiselect [data]="offsets_utc" 
+                    [settings]="settings" 
+                    formControlName="timezone"
+                 
+                >
+                    </angular2-multiselect>
+               <!--      <nb-select
+                    placeholder="-"
+                      formControlName="time_zone"
+                      size="small"
+            
+                      fullWidth
+                    >
+                      <nb-option
+                        *ngFor="let option of offsets_utc"
+                        [value]="option.value"
+                        >{{ option.text }}</nb-option
+                      >
+                    </nb-select> -->
+                  </div>
+                </div>
+                <div class="col-sm-7">
+                  <div class="form-group">
+                    <label class="label">Intradaily Nomination Delay <span class="obligatory">*</span></label>
+        
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      formControlName="renomination_delta"
+                      [status]="
+                         BalancingZoneForm.get('renomination_delta').errors &&
+                            (BalancingZoneForm.get('renomination_delta').touched ||
+                              BalancingZoneForm.get('renomination_delta').dirty)
+                            ? 'danger'
+                            : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          BalancingZoneForm.get('renomination_delta').errors &&
+                          (BalancingZoneForm.get('renomination_delta').touched ||
+                            BalancingZoneForm.get('renomination_delta').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="BalancingZoneForm.get('renomination_delta').errors.required"
+                          >renomination_delta Code is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="BalancingZoneForm.get('renomination_delta').errors.pattern"
+                          >only integer numbers</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="BalancingZoneForm.get('renomination_delta').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+            </form> </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header">Rules</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="ruleForm">
+            
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label">Rules Balance Points</label>
+                    <nb-select
+                      multiple
+                      size="small"
+                      formControlName="labelVBP"
+                      fullWidth
+                      [(selected)]="selectedVBPItems"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of ruleVBPOptions"
+                        [value]="option.label"
+                        nbTooltip="{{ option.description }}"
+                        nbTooltipPlacement="bottom"
+                        nbTooltipStatus="primary"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label">Rules LNG Tanks</label>
+                    <nb-select
+                      multiple
+                      size="small"
+                      formControlName="labelVBT"
+                      fullWidth
+                      [(selected)]="selectedVBTItems"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of ruleVBTOptions"
+                        [value]="option.label"
+                        nbTooltip="{{ option.description }}"
+                        nbTooltipPlacement="bottom"
+                        nbTooltipStatus="primary"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label">Rules Underground Storages</label>
+                    <nb-select
+                      multiple
+                      size="small"
+                      formControlName="labelVBS"
+                      fullWidth
+                      [(selected)]="selectedVBSItems"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of ruleVBSOptions"
+                        [value]="option.label"
+                        nbTooltip="{{ option.description }}"
+                        nbTooltipPlacement="bottom"
+                        nbTooltipStatus="primary"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label">Rules Regasification Plants</label>
+                    <nb-select
+                    placeholder="-"
+                      multiple
+                      size="small"
+                      formControlName="labelPlants"
+                      fullWidth
+                      [(selected)]="selectedPlantsItems"
+                    >
+                      <nb-option
+                        *ngFor="let option of rulePlantsOptions"
+                        [value]="option.label"
+                        nbTooltip="{{ option.description }}"
+                        nbTooltipPlacement="bottom"
+                        nbTooltipStatus="primary"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+              </div>
+            </form>
+             </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+   
+  
+    
+
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!BalancingZoneForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

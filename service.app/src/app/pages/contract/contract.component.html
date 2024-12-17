@@ -1,0 +1,513 @@
+
+<nb-accordion multi *nbIsGranted="['create', 'logistic-contracts']">
+  <nb-accordion-item #generateBalance>
+    <nb-accordion-item-header>
+      <span>Manage Contract Data</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <nb-tabset>
+        <nb-tab tabTitle="File" [nbSpinner]="loadingUpload">
+          <form [formGroup]="manualUploadForm">
+            <div class="row">
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="label">Country</label>
+
+                      <nb-select
+                        formControlName="country_code"
+                        placeholder="-"
+                        id="country"
+                        (selectedChange)="onChangeCountry1($event)"
+                        fullWidth
+                        size="small"
+                      >
+                        <nb-option
+                          *ngFor="let option of countriesOptions"
+                          [value]="option.code"
+                          >{{ option.code }}</nb-option
+                        >
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="label">Balancing Zone</label>
+                      <nb-select
+                        placeholder="-"
+                        formControlName="balancing_zone_id"
+                        fullWidth
+                        [status]="
+                          errorBalanceZone1 == true ? 'danger' : 'basic'
+                        "
+                        size="small"
+                      >
+                        <nb-option
+                          *ngFor="let option of zoneOptions1"
+                          [value]="option.id"
+                          >{{ option.label }}</nb-option
+                        >
+                      </nb-select>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="errorBalanceZone1 == true"
+                        >
+                          <span class="error" *ngIf="errorBalanceZone1 == true"
+                            >There are no balancing zone results for this
+                            country</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group file-container">
+                  <input
+                    type="file"
+                    nbInput
+                    name="file"
+                    formControlName="file"
+                    id="file"
+                    fullWidth
+                    accept=".xlsx"
+                    (change)="onFileChange($event)"
+                    (click)="onFileClick($event)"
+                    style="display: none"
+                    fieldSize="small"
+                  />
+
+                  <div class="dropzone">
+                    <label for="file" class="labelLink">
+                      <span class="textLink"
+                        ><nb-icon
+                          class="icon"
+                          nbPrefix
+                          icon="upload-outline"
+                          pack="eva"
+                        ></nb-icon
+                        >Select your file</span
+                      ></label
+                    >
+                    &nbsp; &nbsp;
+                    <span *ngIf="fileName == ''">No file chosen</span>
+                    <span *ngIf="fileName != ''">{{ fileName }}</span>
+                  </div>
+                </div>
+              </div>
+     
+             
+                
+                 
+                      <div class="col-sm-3">
+                        <div class="form-group" style="margin: 1.7rem">
+                          <nb-toggle
+                            formControlName="logView"
+                            labelPosition="start"
+                            (checkedChange)="onToggle($event)"
+                            fullWidth
+                          >
+                            <label class="label">Hide/Show Log</label>
+                          </nb-toggle>
+                        </div>
+                      </div>
+               
+                
+              
+            
+            </div>
+            <div class="row" style="text-align: right">
+              <div class="col-sm-12">
+                <div class="form-group">
+                
+                <button
+                nbButton
+                status="primary"
+                (click)="manualUpload()"
+                [disabled]="!fileValid || !manualUploadForm.valid"
+                [nbSpinner]="loadingUpload"
+                nbSpinnerStatus="basic"
+                nbSpinnerSize="large"
+                nbSpinnerMessage=""
+                size="small"
+               
+              >
+                <nb-icon
+                  class="icon"
+                  nbPrefix
+                  icon="arrow-circle-up-outline"
+                  pack="eva"
+                ></nb-icon>
+
+                Upload
+              </button>
+              <button
+              nbButton
+              status="primary"
+              (click)="download()"
+              [disabled]="!manualUploadForm.valid"
+              nbSpinnerStatus="basic"
+              nbSpinnerSize="large"
+              nbSpinnerMessage=""
+  
+              size="small"
+            >
+              <nb-icon
+                class="icon"
+                nbPrefix
+                icon="cloud-download-outline"
+                pack="eva"
+              ></nb-icon>
+              Template
+            </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="card-table log-container"
+              style="
+           
+                padding: 1rem 1rem 1rem 1rem;
+                font-size: 0.7875rem;
+                height: 150px;
+              "
+              *ngIf="logContainerDiv"
+            >
+              <div *ngIf="logContainer">
+                <i>
+                  ({{ timestamp }})&nbsp;&nbsp;&nbsp;&nbsp; |
+                  &nbsp;&nbsp;&nbsp;&nbsp; *{{ successes }} records were
+                  uploaded CORRECTLY* &nbsp;&nbsp;&nbsp;&nbsp; |
+                  &nbsp;&nbsp;&nbsp;&nbsp;*{{ creation_errors_count }} ERRORS
+                  found*<br />
+
+                  <span *ngFor="let error of creation_errors; let i = index">
+                    ERROR - {{ error }}<br />
+                  </span>
+                </i>
+              </div>
+            </div>
+          </form>
+        </nb-tab>
+        <nb-tab tabTitle="Web Service" [nbSpinner]="loadingDownload">
+          <form [formGroup]="autoUploadForm">
+            <div class="row">
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Country</label>
+
+                  <nb-select
+                    placeholder="-"
+                    formControlName="country_code"
+                    id="country"
+                    (selectedChange)="onChangeCountry2($event)"
+                    fullWidth
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Balancing Zone</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="balancing_zone_id"
+                    fullWidth
+                    [status]="errorBalanceZone2 == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of zoneOptions2"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorBalanceZone2 == true">
+                      <span class="error" *ngIf="errorBalanceZone2 == true"
+                        >There are no balancing zone results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Legal Entity</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="legal_entity"
+                    fullWidth
+                    [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of entitiesOptions"
+                      [value]="option.id"
+                      >{{ option.name }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorLegalEntity == true">
+                      <span class="error" *ngIf="errorLegalEntity == true"
+                        >There are no legal entities results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label class="label">Start Date - End Date</label>
+                  <input
+                    nbInput
+                    placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                    [nbDatepicker]="rangepickerUpload"
+                    formControlName="date"
+                    [status]="errorDateUpload == true ? 'danger' : 'basic'"
+                    fullWidth
+                    fieldSize="small"
+                  />
+                  <nb-rangepicker
+                    #rangepickerUpload
+                    format="dd.MM.yyyy"
+                  ></nb-rangepicker>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorDateUpload == true">
+                      <span class="error" *ngIf="errorDateUpload == true"
+                        >The format must be dd.MM.yyyy and start date <= end
+                        date</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group" style="margin: 1.7rem">
+                  <nb-toggle
+                    formControlName="logView"
+                    labelPosition="start"
+                    (checkedChange)="onToggle1($event)"
+                    fullWidth
+                  >
+                    <label class="label">Hide/Show Log</label>
+                  </nb-toggle>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="text-align: right">
+              <div class="col-sm-12">
+                <div class="form-group"></div>
+                <button
+                  type="submit"
+                  nbButton
+                  status="primary"
+                  (click)="autoUpload()"
+                  [disabled]="!autoUploadForm.valid"
+                  size="small"
+                >
+                  <nb-icon
+                    class="icon"
+                    nbPrefix
+                    icon="arrow-circle-down-outline"
+                    pack="eva"
+                  ></nb-icon>
+                  Download
+                </button>
+              </div>
+            </div>
+            <div
+              class="card-table log-container"
+              style="
+             
+                padding: 1rem 1rem 1rem 1rem;
+                font-size: 0.7875rem;
+                height: 150px;
+                margin-top: 1rem;
+              "
+              *ngIf="logContainerDiv1"
+            >
+              <div *ngIf="logContainer1">
+                <i>
+                  ({{ timestamp1 }})&nbsp;&nbsp;&nbsp;&nbsp; |
+                  &nbsp;&nbsp;&nbsp;&nbsp; *{{ successes1 }} records were
+                  uploaded CORRECTLY* &nbsp;&nbsp;&nbsp;&nbsp; |
+                  &nbsp;&nbsp;&nbsp;&nbsp;*{{ creation_errors_count1 }} ERRORS
+                  found*<br />
+
+                  <span *ngFor="let error of creation_errors1; let i = index">
+                    ERROR - {{ error }}<br />
+                  </span>
+                </i>
+              </div>
+            </div>
+          </form>
+        </nb-tab>
+      </nb-tabset>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+<nb-card
+  [nbSpinner]="loadingGetContracts"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>
+    <span>Contracts</span>
+    <nb-actions size="small" style="text-align: right">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV
+      </button>
+    </mat-menu>
+  </nb-card-header>
+
+  <nb-card-body>
+
+      <div class="col-sm-6">
+        <nb-accordion multi class="filter-container">
+          <nb-accordion-item>
+            <nb-accordion-item-header class="filter-container-header">
+              <span>Advanced Filter</span>
+            </nb-accordion-item-header>
+            <nb-accordion-item-body class="filter-container-body">
+              <form [formGroup]="filterForm">
+                <div class="row filter-group">
+                  <div class="col-sm-8">
+                    <div class="form-group">
+                      <label class="label">Start Date - End Date</label>
+                      <input
+                        nbInput
+                        placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                        [nbDatepicker]="rangepicker"
+                        fullWidth
+                        formControlName="date"
+                        [status]="errorDateFilter == true ? 'danger' : 'basic'"
+                        fieldSize="small"
+                      />
+                      <nb-rangepicker
+                        #rangepicker
+                        format="dd.MM.yyyy"
+                      ></nb-rangepicker>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="errorDateFilter == true"
+                        >
+                          <span class="error" *ngIf="errorDateFilter == true"
+                            >The format must be dd.MM.yyyy and start date <= end
+                            date</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-2">
+                    <div class="form-group button-filter">
+                      <button
+                        type="submit"
+                        nbButton
+                        status="primary"
+                        (click)="filter()"
+                        size="tiny"
+                        fullWidth
+                        [disabled]="!filterForm.valid"
+                      >
+                        <nb-icon icon="funnel-outline"></nb-icon>
+
+                        Filter
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group button-filter">
+                      <button
+                        type="submit"
+                        nbButton
+                        status="basic"
+                        (click)="reset()"
+                        size="tiny"
+                        [disabled]="!filterForm.valid"
+                        fullWidth
+                      >
+                        <nb-icon icon="close-outline"></nb-icon>
+
+                        Clear
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </div>
+      <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5rem">
+        <button
+          type="submit"
+          nbButton
+          status="basic"
+          (click)="refresh()"
+          size="tiny"
+        >
+          <nb-icon icon="sync-outline"></nb-icon>
+          Refresh
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <nb-select
+          [(selected)]="selected"
+          [(ngModel)]="defaultRowPerPage"
+          size="tiny"
+        >
+          <nb-option
+            *ngFor="let option of optionsPager"
+            [value]="option.value"
+            (click)="setPager()"
+            >{{ option.value }}</nb-option
+          >
+        </nb-select>
+      </div>
+
+
+    <div class="table-container col-md-12">
+      <ng2-smart-table
+        class="table-data"
+        [settings]="settings"
+        [source]="source"
+        (custom)="onCustom($event)"
+        (create)="onAdd($event)"
+      >
+      </ng2-smart-table>
+    </div>
+  </nb-card-body>
+</nb-card>

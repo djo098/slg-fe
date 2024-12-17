@@ -1,0 +1,19 @@
+<nb-card class="dialog" [nbSpinner]="loading" nbSpinnerSize="small" nbSpinnerStatus="primary">
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <nb-card class="card-table container-form">
+        <revo-grid filter="{true}" [columns]="columns" [theme]="revogridTheme" [source]="rows" rowSize="30"
+          range="true"></revo-grid>
+      </nb-card>
+    </div>
+    <div class="row">
+    </div>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+  </nb-card-footer>
+
+</nb-card>

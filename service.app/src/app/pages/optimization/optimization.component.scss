@@ -1,0 +1,79 @@
+@import '../../@theme/styles/themes/';
+
+@include nb-install-component() {
+  .flex-parent-element {
+    display: flex;
+    width: 100%;
+  }
+  
+  .flex-child-element {
+    flex: 1;
+    margin: 10px;
+    align-items: center;
+  }
+  
+  .flex-child-element:first-child {
+    margin-right: 20px;
+  }
+  .download{
+    text-align: right;
+  }
+/*  .button-download {
+       float: right; 
+       text-align: right;
+       width: 50%; 
+      
+      }
+  .title{
+    width: 50%;
+  }
+
+  .select-pager{
+    float: left;
+    text-align: right;
+    .select-options {
+      text-align: right;
+    }
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+ 
+  } */
+  nb-card {
+    transform: translate3d(0, 0, 0);
+  }
+  .table-container {
+    overflow-x: auto;
+
+  }    
+  nb-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+ 
+   
+  }
+  ::ng-deep {
+    ng2-st-tbody-edit-delete {
+      display: none !important;
+      height: 0 !important;
+    }
+
+    ng2-st-tbody-custom {
+      display: flex !important;
+      text-align: center !important;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .filter-container {
+      box-shadow: none;
+      border: none;
+    }
+
+
+   
+  }
+
+  
+
+} 

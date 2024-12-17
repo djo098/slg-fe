@@ -1,0 +1,121 @@
+@import "../../@theme/styles/themes/";
+
+@include nb-install-component() {
+  nb-card {
+    transform: translate3d(0, 0, 0);
+    margin-top: 1rem;
+  }
+  .table-container {
+    overflow-x: auto;
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+  }
+  nb-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nb-accordion-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .export-container {
+    text-align: right;
+  }
+  .card-table {
+    overflow-y: auto;
+  }
+  .button-filter {
+    margin-top: 1.6rem;
+  }
+  .filter-group {
+    margin-left: 0rem;
+    margin-bottom: 1rem;
+  }
+  a.ng2-smart-action.ng2-smart-action-delete-delete.ng-star-inserted {
+    background-color: blue !important;
+    color: blue !important;
+  }
+  .nb-list {
+    background-color: blue;
+    color: blue;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+
+  .button-upload {
+    margin-top: 1.5rem;
+    min-width: 4.9rem;
+  }
+
+  .upload-container {
+    margin-top: 1.7rem;
+  }
+  .file-container {
+    margin-top: 1.5rem;
+  }
+
+  .nb-theme-custom-theme [nbInput].status-basic:disabled {
+    color: rgb(143 155 179 / 84%);
+  }
+  .log-container {
+    border: 1px solid;
+  }
+  ::ng-deep {
+    a.ng2-smart-action.ng2-smart-action-delete-delete.ng-star-inserted:hover {
+      color: #263cc8;
+    }
+  }
+  ::ng-deep {
+/*     ng2-st-tbody-edit-delete {
+      display: none !important;
+      height: 0 !important;
+    } */
+
+ /*    ng2-st-tbody-custom {
+      display: flex !important;
+      text-align: center !important;
+      justify-content: space-between;
+      height: 100%;
+    } */
+    .filter-container {
+      box-shadow: none;
+      border: none;
+    }
+
+
+  }
+
+}
+
+.dropzone {
+  width: 97%;
+  background-color: #f7f9fc;
+  border: solid 1px;
+  border-color: #e4e9f2;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  text-align: left;
+  padding-top: 0.3rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.textLink {
+  background-color: #263cc8;
+  color: #fff;
+  padding: 6px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.textLink:hover {
+  background-color: #576bde;
+}
+.labelLink:hover {
+  background-color: #576bde;
+}

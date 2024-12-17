@@ -1,0 +1,52 @@
+<!-- 
+<nb-actions size="small">
+    <nb-action
+      icon="plus-circle-outline"
+      [matMenuTriggerFor]="columnMenu"
+    >   <ng-content></ng-content></nb-action>
+  </nb-actions>
+<mat-menu #columnMenu="matMenu"  yPosition="below" xPosition="before" class="mat-menu-container-columns">
+    <div class="va-mat-table-dragable-container" cdkDropList dkDropListLockAxis="y" cdkDropListOrientation="vertical">
+        <div class="dragable-row"
+            *ngFor="let column of columnInfo; let i = index"
+            cdkDrag
+            [cdkDragData]="{columnIndex: i, columnTitle: column.id}"
+            (cdkDragDropped)="columnMenuDropped($event)">
+            <mat-icon cdkDragHandle>drag_indicator</mat-icon>
+ 
+            <nb-checkbox     [disabled]="column.preventBeingHidden"
+            [checked]="!column.hidden"  (click)="$event.stopPropagation();" (checkedChange)="toggleSelectedColumn(column.id)"> {{ column.name }}</nb-checkbox>
+
+            <mat-card class="va-mat-table-drag-preview" *cdkDragPreview>
+          
+            </mat-card>
+        </div>
+    </div>
+</mat-menu>  --> 
+<nb-card size="tiny" class="va-mat-table-dragable-container" cdkDropList dkDropListLockAxis="y" cdkDropListOrientation="vertical">
+<span style="margin-bottom: 1rem;"> {{title}}</span>
+        <div class="dragable-row"
+            *ngFor="let column of columnInfo; let i = index"
+            cdkDrag
+            [cdkDragData]="{columnIndex: i, columnTitle: column.id}"
+            (cdkDragDropped)="columnMenuDropped($event)">
+            <mat-icon cdkDragHandle>drag_indicator</mat-icon>
+     <!--      <mat-checkbox
+                [disabled]="column.preventBeingHidden"
+                [checked]="!column.hidden"
+                (click)="$event.stopPropagation();"
+                (change)="toggleSelectedColumn(column.id)">
+                {{ column.name }}
+            </mat-checkbox>  -->
+            <nb-checkbox     [disabled]="column.preventBeingHidden"
+            [checked]="!column.hidden"  (click)="$event.stopPropagation();" (checkedChange)="toggleSelectedColumn(column.id)"> {{ column.name }}</nb-checkbox>
+    
+            <mat-card class="va-mat-table-drag-preview" *cdkDragPreview>
+              <!--    <mat-icon>drag_indicator</mat-icon> 
+                 <nb-checkbox [checked]="!column.hidden">
+                    {{ column.name }}
+                </nb-checkbox>  -->
+            </mat-card>
+        </div>
+   
+</nb-card>

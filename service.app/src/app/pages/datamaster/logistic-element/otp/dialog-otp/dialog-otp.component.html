@@ -1,0 +1,185 @@
+
+<nb-card class="dialog-vpb">
+    <nb-card-header>{{ title }}</nb-card-header>
+    <nb-card-body>
+  
+        <form [formGroup]="otpForm">
+         
+            <input
+              formControlName="type"
+              type="hidden"
+              nbInput
+              id="type"
+              fullWidth
+            />
+
+            <input
+              formControlName="id"
+              type="number"
+              nbInput
+              id="id"
+              style="display: none"
+            />
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label"
+                    >Name <span class="obligatory">*</span></label
+                  >
+
+                  <input
+                    formControlName="name"
+                    type="text"
+                    nbInput
+                    fullWidth
+                    id="name"
+                    fieldSize="small"
+                    [status]="
+                      otpForm.get('name').errors &&
+                      (otpForm.get('name').touched ||
+                        otpForm.get('name').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        otpForm.get('name').errors &&
+                        (otpForm.get('name').touched ||
+                          otpForm.get('name').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="otpForm.get('name').errors.required"
+                        >Name is required</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="otpForm.get('name').errors.maxlength"
+                        >Maximum 10 characters</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label"
+                    >Country <span class="obligatory">*</span></label
+                  >
+                  <nb-select
+                    placeholder="-"
+                    formControlName="country_code"
+                    size="small"
+                    id="country"
+                    fullWidth
+                    (selectedChange)="onChange($event)"
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label"
+                    >Balancing Zone <span class="obligatory">*</span></label
+                  >
+                  <nb-select
+                    placeholder="-"
+                    formControlName="balance_zone_id"
+                    size="small"
+                    id="balance_zone_name"
+                    fullWidth
+                    [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                  >
+                    <nb-option
+                      *ngFor="let option of zoneOptions"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="errorBalanceZone == true"
+                    >
+                      <span class="error" *ngIf="errorBalanceZone == true"
+                        >There are no balance zone results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+         
+                <div class="form-group">
+                  <label class="label">EIC Code</label>
+                  <input
+                    formControlName="eic"
+                    type="text"
+                    nbInput
+                    id="eic"
+                    fullWidth
+                    fieldSize="small"
+                    [status]="
+                      otpForm.get('eic').errors &&
+                      (otpForm.get('eic').touched || otpForm.get('eic').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        otpForm.get('eic').errors &&
+                        (otpForm.get('eic').touched || otpForm.get('eic').dirty)
+                      "
+                    >
+                      <span class="error" *ngIf="otpForm.get('eic').errors.required"
+                        >EIC is required</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                 </div>
+            </div>
+          </form>
+       
+    
+   
+    </nb-card-body>
+    <nb-card-footer style="text-align: right">
+      <button
+        class="cancel"
+        nbButton
+        status="basic"
+        (click)="cancel()"
+        size="small"
+      >
+        Close
+      </button>
+      <button
+        nbButton
+        status="success"
+        (click)="add()"
+        [disabled]="
+          !otpForm.valid || isDuplicateLinepack || isDuplicateUncommitted
+        "
+        id="add"
+        size="small"
+      >
+        {{ action }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+  

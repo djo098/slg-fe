@@ -1,0 +1,124 @@
+@import "../../@theme/styles/themes/";
+
+@include nb-install-component() {
+  /*  .button-download {
+       float: right; 
+       text-align: right;
+       width: 50%; 
+      
+      }
+  .title{
+    width: 50%;
+  }
+
+  .select-pager{
+    float: left;
+    text-align: right;
+    .select-options {
+      text-align: right;
+    }
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+ 
+  } */
+
+  nb-card {
+    transform: translate3d(0, 0, 0);
+    margin-top: 1rem;
+  }
+  .table-container {
+    overflow-x: auto;
+  }
+  nb-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nb-accordion-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nb-accordion {
+    margin-bottom: 1rem !important;
+  }
+  .export-container {
+    text-align: right;
+  }
+  .card-table {
+    overflow-y: auto;
+  }
+  .button-filter {
+    margin-top: 1.5rem;
+  }
+  .filter-group {
+    margin-left: 0rem;
+    margin-bottom: 1rem;
+  }
+  a.ng2-smart-action.ng2-smart-action-delete-delete.ng-star-inserted {
+    background-color: blue !important;
+    color: blue !important;
+  }
+  .nb-list {
+    background-color: blue;
+    color: blue;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+  }
+
+  .button-upload {
+    margin-top: 1.5rem;
+    min-width: 4.9rem;
+  }
+
+  .upload-container {
+    margin-top: 1.7rem;
+  }
+  .file-container {
+    margin-top: 1.5rem;
+  }
+  .svg-inline--fa.fa-w-18 {
+    width: 1.4rem;
+  }
+  .nb-theme-custom-theme [nbInput].status-basic:disabled {
+    color: rgb(143 155 179 / 84%);
+  }
+  .log-container {
+    border: 1px solid;
+  }
+  ::ng-deep {
+    a.ng2-smart-action.ng2-smart-action-delete-delete.ng-star-inserted:hover {
+      color: #263cc8;
+    }
+    revo-grid {
+      height: 70vh;
+    }
+  
+  }
+  .disabledNoOfCasesDiv {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+}
+
+.disabledNoOfCasesDiv {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+
+.disabledNoOfCasesDiv {
+
+
+  pointer-events: none;
+}
+.disabledNoOfCasesSpan {
+
+  pointer-events: none;
+}

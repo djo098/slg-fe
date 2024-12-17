@@ -1,0 +1,213 @@
+<nb-card size="large" class="dialog-layout" >
+  <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+  <nb-card-body>
+    
+    <form [formGroup]="virtualBalanceForm">
+      <input
+      formControlName="id"
+      type="number"
+      nbInput
+      id="id"
+      style="display: none"
+    />
+      <div class="row">
+        <div class="col-sm-12">
+          <nb-card class="container-form">
+            <nb-card-header class="container-form-header"
+              ></nb-card-header
+            >
+            <nb-card-body>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Label <span class="obligatory">*</span></label
+                    >
+          
+                    <input type="text" nbInput fullWidth fieldSize="small"        formControlName="label"/>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Country  <span class="obligatory">*</span></label>
+
+                    <nb-select
+                      id="country"
+                      (selectedChange)="onChangeCountry($event)"
+                      placeholder="-"
+                      fullWidth
+                      size="small"
+                      formControlName="country_code"
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Balancing Zone  <span class="obligatory">*</span></label>
+                    <nb-select
+                      placeholder="-"
+                      (selectedChange)="onChangeZone($event)"
+                      fullWidth
+                      [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                      size="small"
+                      formControlName="balance_zone_id"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorBalanceZone == true"
+                      >
+                        <span class="error" *ngIf="errorBalanceZone == true"
+                          >There are no balancing zone results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+               
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Legal Entity  <span class="obligatory">*</span></label>
+                    <nb-select
+                     formControlName="entity_id"
+                     placeholder="-"
+                      fullWidth
+                      [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                      size="small"
+                      (selectedChange)="onChangeEntity($event)"
+                    >
+                      <nb-option
+                        *ngFor="let option of entitiesOptions"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorLegalEntity == true">
+                        <span class="error" *ngIf="errorLegalEntity == true"
+                          >There are no legal entities results for this country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="label">Start Date - End Date <span class="obligatory">*</span></label>
+                      <input
+                        nbInput
+                        placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                        [nbDatepicker]="rangepickerUpload"
+                        formControlName="date"
+                        [status]="errorDateRange == true ? 'danger' : 'basic'"
+                        [status]=" virtualBalanceForm.get('date').errors &&
+                        (virtualBalanceForm.get('date').touched ||
+                          virtualBalanceForm.get('date').dirty) ? virtualBalanceForm.get('date').errors.required ? 'danger' : 'basic' : 'basic'"
+                        fullWidth
+                    
+                     
+                        fieldSize="small"
+                      />
+                      <nb-rangepicker
+                        #rangepickerUpload
+                        format="dd.MM.yyyy"
+                      ></nb-rangepicker>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            virtualBalanceForm.get('date').errors &&
+                            (virtualBalanceForm.get('date').touched ||
+                              virtualBalanceForm.get('date').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="virtualBalanceForm.get('date').errors.required"
+                            >Date range is required or the format must be dd.MM.yyyy</span
+                          >
+                          <span
+                          class="error"
+                          *ngIf="errorDateRange == true"
+                          >start date <= end
+                          date</span
+                        >
+                        </span>
+                      </div>
+                   
+                    </div>
+                  </div>
+         </div>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-sm-12">
+        <nb-card class="container-form" [nbSpinner]="loading"
+        nbSpinnerSize="small"
+        nbSpinnerStatus="primary">
+          <nb-card-header class="container-form-header"
+            >Elements Configuration</nb-card-header
+          >
+          <nb-card-body>
+            <nb-tabset
+ 
+      id="tabset"
+      name="tabset"
+      #tabset
+  
+    >
+      <nb-tab
+        *ngFor="let element of source"
+        tabTitle="{{ element.name}}"
+        [active]="element.active"
+     
+      >
+            <div class="form-group">
+              <dual-list
+                [sort]="keepSorted"
+                [source]="element.elements"
+                [key]="key"
+                [display]="display"
+                [filter]="filter"
+                [(destination)]="element.confirmed"
+                height="265px"
+                [format]="format"
+                [disabled]="disabled"
+              ></dual-list>
+            </div> 
+            </nb-tab>
+            </nb-tabset>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button nbButton status="success" size="small" (click)="add()" [disabled]="!virtualBalanceForm.valid || !validateEmptyConfirmedColumns ">{{action}}</button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,1090 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="dialog-parameter"
+>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div [ngClass]="action == 'View' ? 'col-sm-12' : 'col-sm-6'">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Contract Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="exchangeForm">
+              <div class="row">
+                <input
+                  formControlName="id"
+                  type="number"
+                  id="id"
+                  nbInput
+                  style="display: none"
+                />
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Registration Date
+                      <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      [nbDatepicker]="dateTimePicker"
+                      formControlName="registration_date"
+                      [status]="
+                        action == 'Add'
+                          ? exchangeForm.get('registration_date').errors &&
+                            (exchangeForm.get('registration_date').touched ||
+                              exchangeForm.get('registration_date').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? exchangeForm.get('registration_date').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                      fullWidth
+                    />
+                    <nb-date-timepicker
+                      #dateTimePicker
+                      withSeconds
+                      format="dd.MM.yyyy HH:mm:ss"
+                    ></nb-date-timepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeForm.get('registration_date').errors &&
+                          (exchangeForm.get('registration_date').touched ||
+                            exchangeForm.get('registration_date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('registration_date').errors
+                              .required
+                          "
+                          >Registration date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('registration_date').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('registration_date').errors
+                              .required
+                          "
+                          >Registration date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Contract Label <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      formControlName="contract_label"
+                      [status]="
+                        action == 'Add'
+                          ? exchangeForm.get('contract_label').errors &&
+                            (exchangeForm.get('contract_label').touched ||
+                              exchangeForm.get('contract_label').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? exchangeForm.get('contract_label').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeForm.get('contract_label').errors &&
+                          (exchangeForm.get('contract_label').touched ||
+                            exchangeForm.get('contract_label').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('contract_label').errors.required
+                          "
+                          >Contract Code is required</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('contract_label').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('contract_label').errors.required
+                          "
+                          >Contract Code is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Legal Entity <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      formControlName="legal_entity"
+                      [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                      [status]="
+                        action == 'Update' && loading == false
+                          ? exchangeForm.get('legal_entity').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of entitiesOptions"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorLegalEntity == true"
+                      >
+                        <span class="error" *ngIf="errorLegalEntity == true"
+                          >There are no legal entities results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('legal_entity').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('legal_entity').errors.required
+                          "
+                          >Legal entity is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Counterparty <span class="obligatory">*</span></label
+                    >
+                    <angular2-multiselect
+                      [(ngModel)]="selectedItems"
+                      [data]="entitiesOptions2"
+                      [settings]="settings"
+                      [ngClass]="action == 'View' ? 'disabled' : ''"
+                      formControlName="counterparty"
+                    >
+                    </angular2-multiselect>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorLegalEntity2 == true"
+                      >
+                        <span class="error" *ngIf="errorLegalEntity2 == true"
+                          >There are no counterparties results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('counterparty').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('counterparty').errors.required
+                          "
+                          >Counterparty is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Fee <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      formControlName="fee"
+                      [status]="
+                        action == 'Add'
+                          ? exchangeForm.get('fee').errors &&
+                            (exchangeForm.get('fee').touched ||
+                              exchangeForm.get('fee').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? exchangeForm.get('fee').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeForm.get('fee').errors &&
+                          (exchangeForm.get('fee').touched ||
+                            exchangeForm.get('fee').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="exchangeForm.get('fee').errors.required"
+                          >Fee is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="exchangeForm.get('fee').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('fee').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="exchangeForm.get('fee').errors.required"
+                          >Fee is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="exchangeForm.get('fee').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="exchangeForm.get('fee').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Currency <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      size="tiny"
+                      formControlName="fee_unit"
+                      [status]="
+                        action == 'Update' && loading == false
+                          ? exchangeForm.get('fee_unit').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of measureUnitOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('fee_unit').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="exchangeForm.get('fee_unit').errors.required"
+                          >Unit is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [ngClass]="action == 'View' ? 'col-sm-2' : 'col-sm-4'" *ngIf="action != 'Add'">
+                  <div class="form-group">
+                    <label class="label"
+                      >Contract id <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      formControlName="contract_id"
+                      [status]="
+                        action == 'Add'
+                          ? exchangeForm.get('contract_id').errors &&
+                            (exchangeForm.get('contract_id').touched ||
+                              exchangeForm.get('contract_id').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? exchangeForm.get('contract_id').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeForm.get('contract_id').errors &&
+                          (exchangeForm.get('contract_id').touched ||
+                            exchangeForm.get('contract_id').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('contract_id').errors.required
+                          "
+                          >Contract Code is required</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="exchangeForm.get('contract_id').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeForm.get('contract_id').errors.required
+                          "
+                          >Contract Code is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+
+      <div class="col-sm-6" *ngIf="action != 'View'">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Add Swap Scheduling</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="exchangeScheduleForm">
+              <div class="row" *ngIf="action != 'View'">
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label class="label">Country</label>
+
+                    <nb-select
+                      formControlName="country_code"
+                      id="country"
+                      (selectedChange)="onChangeCountry($event)"
+                      placeholder="-"
+                      size="small"
+                      fullWidth
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label class="label">Balancing Zone</label>
+                    <nb-select
+                      placeholder="-"
+                      formControlName="balancing_zone"
+                      fullWidth
+                      [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                      (selectedChange)="onChangeZone($event)"
+                      [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorBalanceZone == true"
+                      >
+                        <span class="error" *ngIf="errorBalanceZone == true"
+                          >There are no balancing zone results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label"> Start Date - End Date</label>
+                    <input
+                      nbInput
+                      [nbDatepicker]="datePickerDate"
+                      formControlName="date"
+                      [status]="
+                        exchangeScheduleForm.get('date').errors &&
+                        (exchangeScheduleForm.get('date').touched ||
+                          exchangeScheduleForm.get('date').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-rangepicker
+                      #datePickerDate
+                      format="dd.MM.yyyy"
+                    ></nb-rangepicker>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('date').errors &&
+                          (exchangeScheduleForm.get('date').touched ||
+                            exchangeScheduleForm.get('date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('date').errors.required
+                          "
+                          >Date is required and the format must be
+                          dd.MM.yyyy</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="errorDateRangeSchedule == true"
+                          >start date <= end date</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label class="label">Delivery Point Type</label>
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      size="medium"
+                      formControlName="delivery_point_type"
+                      [status]="
+                        exchangeScheduleForm.get('delivery_point_type')
+                          .errors &&
+                        (exchangeScheduleForm.get('delivery_point_type')
+                          .touched ||
+                          exchangeScheduleForm.get('delivery_point_type').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      (selectedChange)="onChangeDeliveryPointType($event)"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of deliveryPointTypeOptions"
+                        [value]="option"
+                        >{{ option }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('delivery_point_type')
+                            .errors &&
+                          (exchangeScheduleForm.get('delivery_point_type')
+                            .touched ||
+                            exchangeScheduleForm.get('delivery_point_type')
+                              .dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('delivery_point_type')
+                              .errors.required
+                          "
+                          >Delivery point type is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Element Type</label>
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      formControlName="element_type"
+                      (selectedChange)="onChangeElementType($event)"
+                      [status]="
+                        exchangeScheduleForm.get('element_type').errors &&
+                        (exchangeScheduleForm.get('element_type').touched ||
+                          exchangeScheduleForm.get('element_type').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of logisticElementsTypeOptions"
+                        [value]="option"
+                        >{{ option }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('element_type').errors &&
+                          (exchangeScheduleForm.get('element_type').touched ||
+                            exchangeScheduleForm.get('element_type').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('element_type').errors
+                              .required
+                          "
+                          >Element type is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Delivery Point</label>
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      size="medium"
+                      formControlName="delivery_point"
+                      [status]="
+                        exchangeScheduleForm.get('delivery_point').errors &&
+                        (exchangeScheduleForm.get('delivery_point').touched ||
+                          exchangeScheduleForm.get('delivery_point').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      (selectedChange)="onChangeDeliveryPoint($event)"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of deliveryPointOptions"
+                        [value]="option.id"
+                        >{{ option.name }}{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorDeliveryPoint == true"
+                      >
+                        <span class="error" *ngIf="errorDeliveryPoint == true"
+                          >There are no delivery points results for this balance
+                          zone</span
+                        >
+                      </span>
+                    </div>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('delivery_point').errors &&
+                          (exchangeScheduleForm.get('delivery_point').touched ||
+                            exchangeScheduleForm.get('delivery_point').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('delivery_point').errors
+                              .required
+                          "
+                          >Delivery point is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!--  <div class="col-sm-3">
+                  <div class="form-group">
+                    <label class="label">Quantity (Kwh)</label>
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      
+                      formControlName="quantity"
+                      [status]="
+                        exchangeScheduleForm.get('quantity').errors &&
+                        (exchangeScheduleForm.get('quantity').touched ||
+                          exchangeScheduleForm.get('quantity').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('quantity').errors &&
+                          (exchangeScheduleForm.get('quantity').touched ||
+                            exchangeScheduleForm.get('quantity').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('quantity').errors.required
+                          "
+                          >Quantity is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('quantity').errors.pattern
+                          "
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label class="label">Price (Currency/Kwh)</label>
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      formControlName="price"
+                      [status]="
+                        exchangeScheduleForm.get('price').errors &&
+                        (exchangeScheduleForm.get('price').touched ||
+                          exchangeScheduleForm.get('price').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('price').errors &&
+                          (exchangeScheduleForm.get('price').touched ||
+                            exchangeScheduleForm.get('price').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('price').errors.required
+                          "
+                          >Price is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('price').errors.pattern
+                          "
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <div class="form-group">
+                    <label class="label">Currency</label>
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      size="tiny"
+                      formControlName="currency"
+                      [status]="
+                        exchangeScheduleForm.get('currency').errors &&
+                        (exchangeScheduleForm.get('currency').touched ||
+                          exchangeScheduleForm.get('currency').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of measureUnitOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          exchangeScheduleForm.get('currency').errors &&
+                          (exchangeScheduleForm.get('currency').touched ||
+                            exchangeScheduleForm.get('currency').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            exchangeScheduleForm.get('currency').errors.required
+                          "
+                          >Currency is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-1">
+                  <div class="form-group addRow-container">
+                    <button
+                      nbButton
+                      status="success"
+                      size="tiny"
+                      [disabled]="!exchangeScheduleForm.valid"
+                      (click)="addRow()"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <!--   <div *ngIf="validateRevogridView == false" class="error-div">
+                    <nb-alert outline="danger" 
+                      > <a style="color: #a3162e !important;font-size: 0.8rem;"><nb-icon icon="close-outline"></nb-icon>	&nbsp;	&nbsp;	&nbsp;
+                        The values must be numbers! </a></nb-alert
+                    >
+                  </div> -->
+
+        <nb-card class="card-table" [nbSpinner]="loadingOperations"
+        nbSpinnerSize="small"
+        nbSpinnerStatus="primary">
+          <nb-card-header
+            class="container-form-header"
+            style="margin-bottom: 1.5rem"
+            >Swap Scheduling</nb-card-header
+          >
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+            <div class="col-sm-12">
+              <div *ngIf="validateRevogrid == false" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; The values must be numbers (points as thousands and
+                    commas as decimals).
+                  </a></nb-alert
+                >
+              </div>
+              <!--        <div *ngIf="totalQuantityValid == false" class="error-div">
+                <nb-alert outline="warning">
+                  <a style="color: #b19100 !important; font-size: 0.8rem"
+                    ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                    The total quantity of all swap schedules must be 0!</a
+                  ></nb-alert
+                >
+              </div>  -->
+            </div>
+          </div>
+
+          <revo-grid
+            [columns]="columns"
+            [theme]="revogridTheme"
+            [source]="rows"
+            rowSize="30"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            range="true"
+                   stretch="false"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+
+    <!--         <form [formGroup]="exchangeScheduleForm">
+            <div class="form-group">
+                <hr width="100%" color="#edf1f7" />
+                <h6>Exchanges schedule</h6>
+            </div>
+       
+            <div class="row" *ngIf="action != 'View'">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Date*</label>
+                        <input nbInput 
+                            [status]=" exchangeScheduleForm.get('date').errors &&
+                          (exchangeScheduleForm.get('date').touched ||
+                            exchangeScheduleForm.get('date').dirty)
+                          ? 'danger'
+                          : 'basic'
+                    " />
+                        <nb-datepicker #datePickerDate format="dd.MM.yyyy"></nb-datepicker>
+                        <div class="error-div">
+                            <span class="error-block" *ngIf="
+                        exchangeScheduleForm.get('date').errors &&
+                        (exchangeScheduleForm.get('date').touched ||
+                          exchangeScheduleForm.get('date').dirty)
+                      ">
+                                <span class="error" *ngIf="exchangeScheduleForm.get('date').errors.required">Date is
+                                    required or the format must be
+                                    dd.MM.yyyy</span>
+                            </span>
+                        </div>
+                             <div class="error-div" *ngIf="action == 'Update' && loading == false">
+                            <span class="error-block" *ngIf="exchangeScheduleForm.get('date').invalid">
+                                <span class="error" *ngIf="exchangeScheduleForm.get('date').errors.required">Date is
+                                    required or the format must be
+                                    dd.MM.yyyy</span>
+                            </span>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Delivery Point Type*</label>
+                        <nb-select 
+                            formControlName="delivery_point_type" [status]="  exchangeScheduleForm.get('delivery_point_type').errors &&
+                            (exchangeScheduleForm.get('delivery_point_type').touched ||
+                              exchangeScheduleForm.get('delivery_point_type').dirty)
+                            ? 'danger'
+                            : 'basic'
+                    "  (selectedChange)="onChangeDeliveryPointType($event)">
+                            <nb-option *ngFor="let option of deliveryPointTypeOptions" [value]="option">{{ option
+                                }}</nb-option>
+                        </nb-select>
+                        <div class="error-div">
+                            <span class="error-block" *ngIf="
+                        exchangeScheduleForm.get('delivery_point_type').errors &&
+                        (exchangeScheduleForm.get('delivery_point_type').touched ||
+                          exchangeScheduleForm.get('delivery_point_type').dirty)
+                      ">
+                                <span class="error"
+                                    *ngIf="exchangeScheduleForm.get('delivery_point_type').errors.required">Delivery
+                                    point type is required</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Delivery Point*</label>
+                        <nb-select 
+                            [status]="  exchangeScheduleForm.get('delivery_point').errors &&
+                            (exchangeScheduleForm.get('delivery_point').touched ||
+                              exchangeScheduleForm.get('delivery_point').dirty)
+                            ? 'danger'
+                            : 'basic'
+                    " (selectedChange)="onChangeDeliveryPoint($event)">
+                            <nb-option *ngFor="let option of deliveryPointOptions" [value]="option.id">{{ option.name 
+                                }}{{ option.label
+                                }}</nb-option>
+
+                        </nb-select>
+                        <div class="error-div">
+                            <span class="error-block" *ngIf="errorDeliveryPoint == true">
+                                <span class="error" *ngIf="errorDeliveryPoint == true">There are no delivery points
+                                    results for this balance zone</span>
+                            </span>
+                        </div>
+                        <div class="error-div">
+                            <span class="error-block" *ngIf="
+                        exchangeScheduleForm.get('delivery_point').errors &&
+                        (exchangeScheduleForm.get('delivery_point').touched ||
+                          exchangeScheduleForm.get('delivery_point').dirty)
+                      ">
+                                <span class="error"
+                                    *ngIf="exchangeScheduleForm.get('delivery_point').errors.required">Delivery point is
+                                    required</span>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="action != 'View'">
+
+                
+            </div>
+        </form> -->
+    <!--       <div class="row">
+            <div class="col-sm-12">
+
+                <div class="form-group">
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="validateRevoGrid == false">
+                    <span class="error" *ngIf="validateRevoGrid == false">The values must be numbers and the date must be in
+                      the format
+                      yyyy-mm-dd</span>
+                  </span> 
+                    </div>
+                    <div class="error-div">
+                           <span class="error-block" *ngIf="isDuplicate == true">
+                    <span class="error" *ngIf="isDuplicate == true">start dates cannot be duplicated</span>
+                  </span> 
+                    </div>
+
+                    <nb-card class="card-table">
+                        <revo-grid [columns]="columns" theme="compact" [columnTypes]="plugin" [source]="rows"
+                            rowSize="30"></revo-grid>
+                    </nb-card>
+                </div>
+            </div>
+
+
+        </div> -->
+  </nb-card-body>
+  <nb-card-footer *ngIf="action != 'View'" style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="!exchangeForm.valid"
+      (click)="validateTotalQuantity()"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+  <nb-card-footer *ngIf="action == 'View'" style="text-align: right">
+    <button
+      *nbIsGranted="['create', 'purchase-sale-contract']"
+      class="cancel"
+      nbButton
+      status="success"
+      (click)="submitToETRM()"
+      size="small"
+    >
+      Submit to ETRM
+    </button>
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>

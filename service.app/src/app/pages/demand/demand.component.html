@@ -1,0 +1,566 @@
+<nb-accordion *nbIsGranted="['create', 'demand-curves']">
+  <nb-accordion-item #generateBalance >
+    <nb-accordion-item-header>
+      <span>Upload Consumption Forecast</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body [nbSpinner]="loadingUpload" nbSpinnerSize="small"
+    nbSpinnerStatus="primary">
+      <form [formGroup]="manualUploadForm">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Country</label>
+
+                  <nb-select
+                    placeholder="-"
+                    formControlName="country_code"
+                    id="country"
+                    (selectedChange)="onChangeCountry($event)"
+                    fullWidth
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Balancing Zone</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="balancing_zone_id"
+                    fullWidth
+                    [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of zoneOptions"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorBalanceZone == true">
+                      <span class="error" *ngIf="errorBalanceZone == true"
+                        >There are no balancing zone results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Legal Entity</label>
+                  <nb-select
+                    placeholder="-"
+                    fullWidth
+                    formControlName="legal_entity"
+                    [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of entitiesOptions"
+                      [value]="option.id"
+                      >{{ option.name }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorLegalEntity == true">
+                      <span class="error" *ngIf="errorLegalEntity == true"
+                        >There are no legal entities results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Point Type&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <nb-select
+                fullWidth
+                formControlName="point_type"
+                placeholder="-"
+                size="small"
+              >
+                <nb-option value="virtual_balancing_point">Balancing Point</nb-option>
+                <nb-option value="supply_point">Supply Point</nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Granularity&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <nb-select
+                fullWidth
+                formControlName="granularity"
+                placeholder="-"
+                size="small"
+                (selectedChange)="onChangeGranularity($event)"
+              >
+                <nb-option value="Daily">Daily</nb-option>
+                <nb-option value="Monthly">Monthly</nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div
+            class="col-sm-2"
+            *ngIf="manualUploadForm.get('granularity').value == 'Monthly'"
+          >
+            <div class="form-group">
+              <label class="label">Diarization algorithm</label>
+              <nb-select
+                fullWidth
+                formControlName="diarization_algorithm"
+                placeholder="-"
+                size="small"
+              >
+                <nb-option value="monthly_breakdown">Daily average</nb-option>
+              </nb-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group file-container">
+              <input
+                type="file"
+                nbInput
+                name="file"
+                formControlName="file"
+                id="file"
+                fullWidth
+                accept=".xlsx"
+                (change)="onFileChange($event)"
+                (click)="onFileClick($event)"
+                style="display: none"
+                fieldSize="small"
+              />
+
+              <div class="dropzone">
+                <label for="file" class="labelLink">
+                  <span class="textLink"
+                    ><nb-icon
+                      class="icon"
+                      nbPrefix
+                      icon="upload-outline"
+                      pack="eva"
+                    ></nb-icon
+                    >Select your file</span
+                  ></label
+                >
+                &nbsp; &nbsp;
+                <span *ngIf="fileName == ''">No file chosen</span>
+                <span *ngIf="fileName != ''">{{ fileName }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" style="margin-top: 1.7rem">
+              <nb-toggle
+                formControlName="logView"
+                labelPosition="start"
+                (checkedChange)="onToggle($event)"
+                fullWidth
+              >
+                <label class="label">Hide/Show Log</label>
+              </nb-toggle>
+            </div>
+          </div>
+       
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <nb-toggle style="margin-right: 0.2rem"
+                formControlName="create"
+                labelPosition="start"
+                fullWidth
+              >
+                <label class="label">Overwrite</label>
+              </nb-toggle>
+              <button
+                nbButton
+                status="primary"
+                (click)="manualUpload()"
+                [disabled]="!fileValid || !manualUploadForm.valid"
+                [nbSpinner]="loadingUpload"
+                nbSpinnerStatus="basic"
+                nbSpinnerSize="small"
+                size="small"
+            
+              >
+                <nb-icon
+                  class="icon"
+                  nbPrefix
+                  icon="arrow-circle-up-outline"
+                  pack="eva"
+                ></nb-icon>
+                Upload
+              </button>
+              <button
+                nbButton
+                status="primary"
+                (click)="openDownloadDialog()"
+                nbSpinnerStatus="basic"
+                nbSpinnerSize="small"
+                size="small"
+                [disabled]="
+                  !manualUploadForm.get('balancing_zone_id').value ||
+                  !manualUploadForm.get('granularity').value
+                "
+        
+              >
+                <nb-icon
+                  class="icon"
+                  nbPrefix
+                  icon="cloud-download-outline"
+                  pack="eva"
+                ></nb-icon>
+                Template
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div
+        class="card-table log-container"
+        style="
+
+          padding: 1rem 1rem 1rem 1rem;
+          font-size: 0.7875rem;
+          height: 150px;
+        "
+        *ngIf="logContainerDiv"
+      >
+        <div *ngIf="logContainer">
+          <i>
+            ({{ timestamp }})&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;
+            *{{ successes }} records were uploaded CORRECTLY*
+            &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;*{{
+              creation_errors_count
+            }}
+            ERRORS found*<br />
+
+            <span *ngFor="let error of creation_errors; let i = index">
+              ERROR - {{ error }}<br />
+            </span>
+          </i>
+        </div>
+      </div>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+<nb-accordion>
+  <nb-accordion-item #generateDemand   [nbSpinner]="loadingForm"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary">
+    <nb-accordion-item-header>
+      <span>Visualize Consumption Forecast</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <form [formGroup]="generateDemandForm">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Country</label>
+
+              <nb-select
+                formControlName="country_code"
+                id="country"
+                (selectedChange)="onChangeCountry2($event)"
+                placeholder="-"
+                fullWidth
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of countriesOptions"
+                  [value]="option.code"
+                  >{{ option.code }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Balancing Zone</label>
+              <nb-select
+                placeholder="-"
+                formControlName="balancing_zone"
+                fullWidth
+                [status]="errorBalanceZone2 == true ? 'danger' : 'basic'"
+                (selectedChange)="onChangeBalanceZone2($event)"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of zoneOptions2"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorBalanceZone2 == true">
+                  <span class="error" *ngIf="errorBalanceZone2 == true"
+                    >There are no balancing zone results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label class="label">Supply areas</label>
+              <angular2-multiselect
+                [data]="supplyAreaOptions"
+                [(ngModel)]="selectedSupplyAreas"
+                [settings]="settings"
+                formControlName="supply_area"
+                [ngClass]="errorSupplyAreas == true ? 'error-select' : ''"
+              >
+              </angular2-multiselect>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorSupplyAreas == true">
+                  <span class="error" *ngIf="errorSupplyAreas == true"
+                    >There are no supply areas for the specified balance
+                    zone.</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Start Date - End Date</label>
+              <input
+                nbInput
+                fieldSize="small"
+                [nbDatepicker]="rangepickerGenerateDemand"
+                formControlName="date"
+                [status]="errorDate2 == true ? 'danger' : 'basic'"
+                fullWidth
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+              />
+              <nb-rangepicker
+                #rangepickerGenerateDemand
+                format="dd.MM.yyyy"
+              ></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate2 == true">
+                  <span class="error" *ngIf="errorDate2 == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Legal Entity</label>
+              <nb-select
+                placeholder="-"
+                fullWidth
+                formControlName="legal_entity"
+                [status]="errorLegalEntity2 == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of entitiesOptions2"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorLegalEntity2 == true">
+                  <span class="error" *ngIf="errorLegalEntity2 == true"
+                    >There are no legal entities results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Granularity&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <nb-select
+                fullWidth
+                formControlName="granularity"
+                placeholder="-"
+                size="small"
+                (selectedChange)="onChangeGranularity($event)"
+              >
+                <nb-option value="daily">Daily</nb-option>
+                <nb-option value="monthly">Monthly</nb-option>
+              </nb-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                nbButton
+                status="primary"
+                (click)="calculate(true)"
+                size="small"
+                [disabled]="!generateDemandForm.valid || errorSupplyAreas"
+              >
+                <nb-icon icon="arrow-right"></nb-icon>
+                Calculate
+              </button>
+              <button
+                nbButton
+                status="basic"
+                (click)="reset()"
+                size="small"
+                [disabled]="!generateDemandForm.valid"
+              >
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item></nb-accordion
+>
+<nb-card
+  [nbSpinner]="loadingViewDemand"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>
+    <span>Consumption Forecast View</span>
+
+    <nb-actions size="small" style="text-align: right">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!dataView"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        CSV
+      </button>
+    </mat-menu>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-tabset
+      *ngIf="dataView"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of dataView"
+        tabTitle="{{ element.name }}"
+        tabId="{{ element.id }}"
+        [active]="true"
+      >
+        <div *ngIf="validateRevogrid == false" class="error-div">
+          <nb-alert outline="danger">
+            <a style="color: #a3162e !important; font-size: 0.8rem"
+              ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp;The
+              values must be numbers (points as thousands and commas as
+              decimals) greater than 0.
+            </a></nb-alert
+          >
+        </div>
+        <div *ngIf="errorsSupplyAreas.length > 0" class="error-div">
+          <nb-alert outline="warning">
+            <a style="color: #b19100 !important; font-size: 0.8rem"
+              ><div class="container-alert" [class.show]="show">
+                <nb-icon icon="alert-triangle-outline"></nb-icon>
+                &nbsp; &nbsp; &nbsp; The supply areas
+                {{ errorsSupplyAreas }} has not any supply point, so they are
+                not shown for the specified demand view parameters.
+              </div>
+              <div style="text-align: right" >
+                <button nbButton size="tiny" (click)="show = !show">
+                  {{ show ? "Less" : "More" }}
+                </button>
+              </div>
+            </a>
+          </nb-alert>
+        </div>
+        <div class="row">
+          <div
+            class="col-sm-12"
+            style="font-size: 0.7rem !important; margin-top: 1rem"
+          >
+            <span style="background-color: rgb(33 46 62 / 60%)"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            Edited Cell&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;
+          </div>
+          <div class="col-sm-12" style="text-align: right;">
+            <button
+
+            type="submit"
+            nbButton
+            status="basic"
+            (click)="refresh()"
+            size="tiny"
+          >
+            <nb-icon icon="sync-outline"></nb-icon>
+            Refresh
+          </button>
+          </div>
+      
+        </div>
+
+        <nb-card class="card-table" id="card-table">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            (viewportscroll)="OnViewPortScroll($event)"
+            exporting="true"
+            row-size="30"
+            range="true"
+            stretch="false"
+            [readonly]="readonly"
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,31 @@
+<nb-card class="dialog-delete">
+  <nb-card-header class="header-principle">{{title}}</nb-card-header>
+  <nb-card-body class="body-principle" style="white-space: pre-line">
+    {{idleState}}
+    {{ body }}
+    <br />
+    <br />
+    <div *ngIf="row_nominations">
+      {{ body_nominations }}
+    </div>
+    <br />
+    <nb-card class="card-table" *ngIf="row_nominations">
+      <nb-card-header>Nominations</nb-card-header>
+      <revo-grid
+        [columns]="columns"
+        theme="compact"
+        [source]="row_nominations"
+      ></revo-grid>
+    </nb-card>
+    <div *ngIf="dependencies">
+      {{ body_dependencies }}
+    </div>
+    <br />
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton [status]="status_cancel" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button nbButton [status]="status_confirm" (click)="delete()" size="small">{{button}}</button>
+  </nb-card-footer>
+</nb-card>

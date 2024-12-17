@@ -1,0 +1,187 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="regasificationPlantForm">
+      <input formControlName="type" type="hidden" nbInput fullWidth />
+
+      <input formControlName="id" type="hidden" nbInput fullWidth />
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Name <span class="obligatory">*</span></label>
+
+            <input
+              formControlName="name"
+              type="text"
+              nbInput
+              fullWidth
+              [status]="
+                regasificationPlantForm.get('name').errors &&
+                (regasificationPlantForm.get('name').touched ||
+                  regasificationPlantForm.get('name').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+              fieldSize="small"
+            />
+
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  regasificationPlantForm.get('name').errors &&
+                  (regasificationPlantForm.get('name').touched ||
+                    regasificationPlantForm.get('name').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="regasificationPlantForm.get('name').errors.required"
+                  >Name is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="regasificationPlantForm.get('name').errors.maxlength"
+                  >Maximun 10 characters</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">EIC Code</label>
+            <input
+              formControlName="eic"
+              type="text"
+              nbInput
+              id="eic"
+              fullWidth
+              [status]="
+                regasificationPlantForm.get('eic').errors &&
+                (regasificationPlantForm.get('eic').touched ||
+                  regasificationPlantForm.get('eic').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+              fieldSize="small"
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  regasificationPlantForm.get('eic').errors &&
+                  (regasificationPlantForm.get('eic').touched ||
+                    regasificationPlantForm.get('eic').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="regasificationPlantForm.get('eic').errors.required"
+                  >EIC is required</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form [formGroup]="tankForm">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+            <nb-select
+            placeholder="-"
+              formControlName="balance_zone_id"
+              fullWidth
+              (selectedChange)="onChangeBalanceZone($event)"
+              size="small"
+            >
+              <nb-option
+                *ngFor="let option of zoneOptions"
+                [value]="option.id"
+                >{{ option.label }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Virtual Balancing Points <span class="obligatory">*</span></label>
+            <nb-select
+            placeholder="-"
+              formControlName="balancing_point_id"
+              id="balancing_point"
+              [status]="errorBalancingPoint == true ? 'danger' : 'basic'"
+              (selectedChange)="onChangeBalancingPoint($event)"
+              fullWidth
+              size="small"
+            >
+              <nb-option
+                *ngFor="let option of vbpOptions"
+                [value]="option.id"
+                >{{ option.name }}</nb-option
+              >
+            </nb-select>
+            <div class="error-div">
+              <span class="error-block" *ngIf="errorBalancingPoint == true">
+                <span class="error" *ngIf="errorBalancingPoint == true"
+                  >There are no virtual balancing points results for this balance
+                  zone</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form [formGroup]="regasificationPlantForm">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="label">LNG Tank <span class="obligatory">*</span></label>
+            <nb-select
+            placeholder="-"
+              formControlName="parent_id"
+              id="vbt"
+              [status]="errorTank == true ? 'danger' : 'basic'"
+              fullWidth
+              size="small"
+            >
+              <nb-option
+                *ngFor="let option of vbtOptions"
+                [value]="option.id"
+                >{{ option.name }}</nb-option
+              >
+            </nb-select>
+            <div class="error-div">
+              <span class="error-block" *ngIf="errorTank == true">
+                <span class="error" *ngIf="errorTank == true"
+                  >There are no tanks results for this virtual balancing points</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!regasificationPlantForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

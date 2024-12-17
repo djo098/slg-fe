@@ -1,0 +1,1652 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="dialog-contract"
+>
+  <nb-card-header>{{ title }}</nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="contractForm">
+    <div class="row">
+      <div class="col-sm-7">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header">Contract Information</nb-card-header>
+          <nb-card-body>
+        
+            <input
+            formControlName="id"
+            type="number"
+            id="id"
+            nbInput
+            style="display: none"
+          />
+       
+        
+        
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Contract Code <span class="obligatory">*</span></label>
+    
+                <input
+                  type="text"
+                  nbInput
+                  fullWidth
+               
+                  
+                  formControlName="label"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('label').errors &&
+                        (contractForm.get('label').touched ||
+                          contractForm.get('label').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('label').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+               fieldSize="small"
+                />
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('label').errors &&
+                      (contractForm.get('label').touched ||
+                        contractForm.get('label').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('label').errors.required"
+                      >Contract Code is required</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('label').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('label').errors.required"
+                      >Contract Code is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Addendum Code <span class="obligatory">*</span></label>
+    
+                <input
+                  type="text"
+                  nbInput
+                  fullWidth
+                  
+                  formControlName="addendum"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('addendum').errors &&
+                        (contractForm.get('addendum').touched ||
+                          contractForm.get('addendum').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('addendum').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  fieldSize="small"
+                />
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('addendum').errors &&
+                      (contractForm.get('addendum').touched ||
+                        contractForm.get('addendum').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('addendum').errors.required"
+                      >Addendum Code is required</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('addendum').errors.pattern"
+                      >only integer numbers</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('addendum').errors.min"
+                      >numbers=>0</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('addendum').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('addendum').errors.required"
+                      >Addendum Code is required</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('addendum').errors.pattern"
+                      >only integer numbers</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('addendum').errors.min"
+                      >numbers=>0</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Date of formalization <span class="obligatory">*</span></label>
+                <input
+                  nbInput
+                  placeholder="dd.MM.yyyy"
+                  [nbDatepicker]="dateTimePicker"
+                  formControlName="formalization_date"
+                  fullWidth
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('formalization_date').errors &&
+                        (contractForm.get('formalization_date').touched ||
+                          contractForm.get('formalization_date').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('formalization_date').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  fieldSize="small"
+                />
+                <nb-date-timepicker
+                  #dateTimePicker
+                  withSeconds
+                  format="dd.MM.yyyy HH:mm:ss"
+                
+                ></nb-date-timepicker>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('formalization_date').errors &&
+                      (contractForm.get('formalization_date').touched ||
+                        contractForm.get('formalization_date').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('formalization_date').errors.required"
+                      >Formalization date is required or the format must be
+                      dd.MM.yyyy</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('formalization_date').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('formalization_date').errors.required"
+                      >Formalization date is required or the format must be
+                      dd.MM.yyyy</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Status <span class="obligatory">*</span></label>
+    
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="status"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('status').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of statusOptions"
+                    [value]="option"
+                    >{{ option }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('status').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('status').errors.required"
+                      >Status is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+    
+          
+          </div>
+        
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Country <span class="obligatory">*</span></label>
+    
+                <nb-select
+                placeholder="-"
+                  formControlName="country_code"
+                  id="country"
+                  (selectedChange)="onChangeCountry($event)"
+                  fullWidth
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('country_code').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of countriesOptions"
+                    [value]="option.code"
+                    >{{ option.code }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('country_code').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('country_code').errors.required"
+                      >Country is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  formControlName="balancing_zone"
+                  fullWidth
+                  [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                  (selectedChange)="onChangeZone($event)"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('balancing_zone').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of zoneOptions"
+                    [value]="option.id"
+                    >{{ option.label }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('balancing_zone').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('balancing_zone').errors.required"
+                      >Balancing zone is required</span
+                    >
+                    <span class="error" *ngIf="errorBalanceZone == true"
+                      >There are no balancing zone results for this country</span
+                    >
+                  </span>
+                </div>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span class="error-block" *ngIf="errorBalanceZone == true">
+                    <span class="error" *ngIf="errorBalanceZone == true"
+                      >There are no balancing zone results for this country</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">TSO <span class="obligatory">*</span></label>
+    
+                <nb-select
+                  placeholder="-"
+                  fullWidth
+                  formControlName="tso"
+                  [status]="errorLegalEntity2 == true ? 'danger' : 'basic'"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('tso').errors &&
+                        (contractForm.get('tso').touched ||
+                          contractForm.get('tso').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('tso').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of entitiesOptions2"
+                    [value]="option.id"
+                    >{{ option.name }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span class="error-block" *ngIf="contractForm.get('tso').invalid">
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('tso').errors.required"
+                      >TSO is required</span
+                    >
+                    <span class="error" *ngIf="errorLegalEntity2 == true"
+                      >There are no TSO results for this country</span
+                    >
+                  </span>
+                </div>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span class="error-block" *ngIf="errorLegalEntity2 == true">
+                    <span class="error" *ngIf="errorLegalEntity2 == true"
+                      >There are no TSO results for this country</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Owner <span class="obligatory">*</span></label>
+    
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="owner"
+                  [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('owner').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  (selectedChange)="onChangeOwner($event)"
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of entitiesOptions"
+                    [value]="option.id"
+                    >{{ option.name }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('owner').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('owner').errors.required"
+                      >Owner is required</span
+                    >
+                    <span class="error" *ngIf="errorLegalEntity == true"
+                      >There are no onwers results for this country</span
+                    >
+                  </span>
+                </div>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span class="error-block" *ngIf="errorLegalEntity == true">
+                    <span class="error" *ngIf="errorLegalEntity == true"
+                      >There are no onwers results for this country</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Infrastructure Type <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="infrastructure_type"
+                  (selectedChange)="onChangeInfrastructureType($event)"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('infrastructure_type').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                <nb-option
+                *ngFor="let option of infrastructureTypeOptions"
+                [value]="option.id"
+                >{{ option.label }}</nb-option
+              >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('infrastructure_type').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('infrastructure_type').errors.required
+                      "
+                      >Infrastructure type is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Element Type <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="element_type"
+                  (selectedChange)="onChangeElementType($event)"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('infrastructure_type').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of logisticElementsTypeOptions"
+                    [value]="option"
+                    >{{ option }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('infrastructure_type').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('infrastructure_type').errors.required
+                      "
+                      >Element Type is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+           
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Infrastructure/ Point <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="infrastructure"
+                  [status]="errorLogisticElement == true ? 'danger' : 'basic'"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('infrastructure').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of logisticElementOptions"
+                    [value]="option.id"
+                    >{{ option.name }}</nb-option
+                  >
+                </nb-select>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span class="error-block" *ngIf="errorLogisticElement == true">
+                    <span class="error" *ngIf="errorLogisticElement == true"
+                      >There are no infraestructures results for this country and
+                      balancing zone</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('infrastructure').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('infrastructure').errors.required &&
+                        errorLogisticElement == false
+                      "
+                      >Infrastructure is required</span
+                    >
+    
+                    <span class="error" *ngIf="errorLogisticElement == true"
+                      >There are no infrastructures results for this balancing
+                      zone</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label"> Service <span class="obligatory">*</span></label>
+    
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="service"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('service').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of serviceOptions"
+                    [value]="option.id"
+                    >{{ option.label }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('service').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('service').errors.required"
+                      >Service is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Operator <span class="obligatory">*</span></label>
+                <angular2-multiselect
+                [(ngModel)]="selectedItems" 
+                [data]="entitiesOptions3"
+                [settings]="settings"
+                [ngClass]="action == 'View'? 'disabled' : '' "
+                [ngClass]="action == 'Update' && loading == false
+                ? contractForm.get('operator').invalid
+                  ? 'error-select'
+                  : ''
+                : ''"
+                formControlName="operator">
+              </angular2-multiselect>
+           <!--      <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="operator"
+                  [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('operator').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of entitiesOptions3"
+                    [value]="option.id"
+                    >{{ option.name }}</nb-option
+                  >
+                </nb-select> -->
+                <div class="error-div">
+                  <span class="error-block" *ngIf="errorLegalEntity3 == true">
+                    <span class="error" *ngIf="errorLegalEntity3 == true"
+                      >There are no operators results for this country</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('operator').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('operator').errors.required"
+                      >Operator is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Nature of capacity <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="capacity_type"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('capacity_type').errors &&
+                        (contractForm.get('capacity_type').touched ||
+                          contractForm.get('capacity_type').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('capacity_type').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of capacityOptions"
+                    [value]="option"
+                    >{{ option }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('capacity_type').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('capacity_type').errors.required"
+                      >Nature of capacity is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Total booked capacity <span class="obligatory">*</span></label>
+    
+                <input
+                  type="text"
+                  nbInput
+                  fullWidth
+               
+                  
+                  formControlName="total_capacity_volume"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('total_capacity_volume').errors &&
+                        (contractForm.get('total_capacity_volume').touched ||
+                          contractForm.get('total_capacity_volume').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('total_capacity_volume').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  fieldSize="small"
+                />
+    
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('total_capacity_volume').errors &&
+                      (contractForm.get('total_capacity_volume').touched ||
+                        contractForm.get('total_capacity_volume').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('total_capacity_volume').errors.required
+                      "
+                      >Total booked capacity is required</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('total_capacity_volume').errors.pattern
+                      "
+                      >only numbers (only numbers (points as thousands and commas as
+                      decimals))</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('total_capacity_volume').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('total_capacity_volume').errors.required
+                      "
+                      >Total booked capacity is required</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('total_capacity_volume').errors.pattern
+                      "
+                      >only numbers (only numbers (points as thousands and commas as
+                      decimals))</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('total_capacity_volume').errors.min"
+                      >numbers=>0</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Unit <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  size="tiny"
+                  formControlName="total_capacity_unit"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('total_capacity_unit').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of measureUnitOptions"
+                    [value]="option"
+                    >{{ option }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('total_capacity_unit').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="
+                        contractForm.get('total_capacity_unit').errors.required
+                      "
+                      >Unit is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+           
+           
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Start Date - End Date <span class="obligatory">*</span></label>
+                <input
+                  nbInput
+                  placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                  [nbDatepicker]="rangepickerUpload"
+                  formControlName="date"
+                  [status]="errorDateRange == true ? 'danger' : 'basic'"
+                  fullWidth
+                  [value]="dateInput"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('date').errors &&
+                        (contractForm.get('date').touched ||
+                          contractForm.get('date').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('date').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  fieldSize="small"
+                />
+                <nb-rangepicker
+                  #rangepickerUpload
+                  format="dd.MM.yyyy"
+                ></nb-rangepicker>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('date').errors &&
+                      (contractForm.get('date').touched ||
+                        contractForm.get('date').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('date').errors.required"
+                      >Date range is required or the format must be dd.MM.yyyy</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('date').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('date').errors.required"
+                      >Date range is required or the format must be dd.MM.yyyy</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label class="label">Type of duration <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="duration_type"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? contractForm.get('duration_type').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  (selectedChange)="onChangeDurationType($event)"
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of durationTypeOptions"
+                    [value]="option"
+                    >{{ option }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('duration_type').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('duration_type').errors.required"
+                      >Type of duration is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="intradaily">
+              <div class="form-group">
+                <label class="label">Start Time <span class="obligatory">*</span></label>
+                <input
+                  id="start_time"
+                  [nbTimepicker]="timepicker"
+                  fullWidth
+                  nbInput
+                  formControlName="start_time"
+                  [status]="
+                    contractForm.get('start_time').invalid ? 'danger' : 'basic'
+                  "
+                  (ngModelChange)="calculateDuration()"
+                  fieldSize="small"
+                />
+                <nb-timepicker #timepicker></nb-timepicker>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('start_time').errors"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('start_time').errors.required"
+                      >Start time is required</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('start_time').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('start_time').errors.required"
+                      >Start time is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="intradaily">
+              <div class="form-group">
+                <label class="label">End Time <span class="obligatory">*</span></label>
+                <input
+                id="end_time"
+                  [nbTimepicker]="timepicker"
+                  fullWidth
+                  nbInput
+                  formControlName="end_time"
+                  [status]="
+                    contractForm.get('end_time').invalid
+                      ? 'danger'
+                      : errorTimeGas == true
+                      ? 'danger'
+                      : 'basic'
+                  "
+                  (ngModelChange)="calculateDuration()"
+                  fieldSize="small"
+                />
+                <nb-timepicker #timepicker></nb-timepicker>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('end_time').errors"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('end_time').errors.required"
+                      >End time is required</span
+                    >
+                  </span>
+                </div>
+                <div class="error-div" *ngIf="errorTimeGas == true">
+                  <span class="error-block" *ngIf="errorTimeGas == true">
+                    <span class="error" *ngIf="errorTimeGas == true"
+                      >The end time must be less than {{ start_time_hour }}</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="contractForm.get('end_time').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('end_time').errors.required"
+                      >End time is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="durationObligatory != '*'">
+              <div class="form-group">
+                <label class="label"
+                  >Duration (Hours) <span class="obligatory">{{ durationObligatory }}</span></label
+                >
+    
+                <input
+                  type="text"
+                  nbInput
+                  fullWidth
+              
+                  
+                  formControlName="duration_hours"
+                  [status]="
+                    action == 'Add'
+                      ? contractForm.get('duration_hours').errors &&
+                        (contractForm.get('duration_hours').touched ||
+                          contractForm.get('duration_hours').dirty)
+                        ? 'danger'
+                        : 'basic'
+                      : action == 'Update' && loading == false
+                      ? contractForm.get('duration_hours').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  fieldSize="small"
+                />
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Add' && intradaily == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('duration_hours').errors &&
+                      (contractForm.get('duration_hours').touched ||
+                        contractForm.get('duration_hours').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('duration_hours').errors.pattern"
+                      >only numbers (only numbers (points as thousands and commas as
+                      decimals))</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('duration_hours').errors.min"
+                      >numbers=>0</span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      contractForm.get('duration_hours').invalid &&
+                      intradaily == false
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('duration_hours').errors.pattern"
+                      >only numbers (only numbers (points as thousands and commas as
+                      decimals))</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="contractForm.get('duration_hours').errors.min"
+                      >numbers=>0</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+           
+          
+          </div>
+
+      
+       
+    
+      
+    
+        </nb-card-body>
+        </nb-card>
+        <nb-card class="card-table container-form" *ngIf="rows">
+          <nb-card-header class="container-form-header"  style="margin-bottom: 1.5rem;" >Nominations</nb-card-header>
+      
+       
+         
+            <revo-grid
+            [columns]="columns"
+            [theme]="revogridTheme"
+            [source]="rows"
+            row-size="30"
+          ></revo-grid>
+     
+       
+        
+        </nb-card>
+      </div>
+      <div class="col-sm-5">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header">Additional Information</nb-card-header>
+          <nb-card-body>
+            <div class="row">
+           
+            
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Nomination Ref</label>
+                  <angular2-multiselect
+                  [data]="contractLabels"
+                  [settings]="settingsNomination"
+                  formControlName="nomination_id"
+                >
+                </angular2-multiselect>
+           <!--        <input
+                    #autoInput
+                    nbInput
+                    fullWidth
+                    type="text"
+                    (input)="onChange()"
+                    [status]="
+                      contractForm.get('nomination_id').errors &&
+                      (contractForm.get('nomination_id').touched ||
+                        contractForm.get('nomination_id').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                    formControlName="nomination_id"
+                    fieldSize="small"
+                    [nbAutocomplete]="auto"
+                  /> -->
+      
+          <!--         <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
+                    <nb-option
+                      *ngFor="let option of filteredOptions$ | async"
+                      [value]="option"
+                    >
+                      {{ option }}
+                    </nb-option>
+                  </nb-autocomplete> -->
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Request number</label>
+      
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                
+                    
+                    formControlName="request_number"
+                    [status]="
+                      contractForm.get('request_number').errors &&
+                      (contractForm.get('request_number').touched ||
+                        contractForm.get('request_number').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        contractForm.get('request_number').errors &&
+                        (contractForm.get('request_number').touched ||
+                          contractForm.get('request_number').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="contractForm.get('request_number').errors.required"
+                        >Request number is required</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+          
+               
+        
+              
+      
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Transaction</label>
+      
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                 
+                    
+                    formControlName="transaction"
+                    [status]="
+                      contractForm.get('transaction').errors &&
+                      (contractForm.get('transaction').touched ||
+                        contractForm.get('transaction').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        contractForm.get('transaction').errors &&
+                        (contractForm.get('transaction').touched ||
+                          contractForm.get('transaction').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="contractForm.get('transaction').errors.required"
+                        >Transaction is required</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Distributor</label>
+                  <nb-select
+                  placeholder="-"
+                    fullWidth
+                    formControlName="distributor"
+                    [status]="
+                      errorLegalEntity2 == true && action != 'View'
+                        ? 'danger'
+                        : 'basic'
+                    "
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of entitiesOptions2"
+                      [value]="option.id"
+                      >{{ option.name }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+                <div class="error-div" *ngIf="action != 'View'">
+                  <span class="error-block" *ngIf="errorLegalEntity2 == true">
+                    <span class="error" *ngIf="errorLegalEntity2 == true"
+                      >There are no distributors results for this country</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Type of toll</label>
+      
+                  <nb-select
+                  placeholder="-"
+                    fullWidth
+                    formControlName="toll_type"
+                    [status]="
+                      errorToll == true && action != 'View' ? 'danger' : 'basic'
+                    "
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of tollOptions"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div" *ngIf="action != 'View'">
+                    <span class="error-block" *ngIf="errorToll == true">
+                      <span class="error" *ngIf="errorToll == true"
+                        >There are no types of tolls results for this balancing
+                        zone</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+      
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Termination Date</label>
+                  <input
+                    nbInput
+                    placeholder="dd.MM.yyyy"
+                    [nbDatepicker]="datePickerTerminationDate"
+                    formControlName="termination_date"
+                    [status]="
+                      contractForm.get('termination_date').errors &&
+                      (contractForm.get('termination_date').touched ||
+                        contractForm.get('termination_date').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                    fullWidth
+                    fieldSize="small"
+                  />
+                  <nb-datepicker
+                    #datePickerTerminationDate
+                    format="dd.MM.yyyy"
+                  ></nb-datepicker>
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        contractForm.get('termination_date').errors &&
+                        (contractForm.get('termination_date').touched ||
+                          contractForm.get('termination_date').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="contractForm.get('terminationDate').errors.required"
+                        >Termination date is required or the format must be
+                        dd.MM.yyyy</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            
+            </div>
+          </nb-card-body>
+          </nb-card>
+          <nb-card class="container-form">
+            <nb-card-header class="container-form-header">Auction Information</nb-card-header>
+            <nb-card-body>
+             
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Auction code</label>
+        
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                 
+                      
+                      formControlName="auction_code"
+                      fieldSize="small"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Offer/Transaction ID</label>
+        
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                   
+                      
+                      formControlName="offer_transaction_id"
+                      fieldSize="small"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Premium</label>
+        
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                 
+                      
+                      formControlName="premium_value"
+                      [status]="
+                        contractForm.get('premium_value').errors &&
+                        (contractForm.get('premium_value').touched ||
+                          contractForm.get('premium_value').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          contractForm.get('premium_value').errors &&
+                          (contractForm.get('premium_value').touched ||
+                            contractForm.get('premium_value').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="contractForm.get('premium_value').errors.pattern"
+                          >only numbers (only numbers (points as thousands and commas as
+                          decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="contractForm.get('premium_value').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Unit</label>
+                    <nb-select
+                    placeholder="-"
+                      fullWidth
+                      size="tiny"
+                      formControlName="premium_unit"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of measureUnitOptions"
+                        [value]="option"
+                        >{{ option }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Price</label>
+        
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                    
+                      
+                      formControlName="price_value"
+                      [status]="
+                        contractForm.get('price_value').errors &&
+                        (contractForm.get('price_value').touched ||
+                          contractForm.get('price_value').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          contractForm.get('price_value').errors &&
+                          (contractForm.get('price_value').touched ||
+                            contractForm.get('price_value').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="contractForm.get('price_value').errors.pattern"
+                          >only numbers (only numbers (points as thousands and commas as
+                          decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="contractForm.get('price_value').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Unit</label>
+                    <nb-select
+                    placeholder="-"
+                      fullWidth
+                      size="tiny"
+                      formControlName="price_unit"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of measureUnitOptions"
+                        [value]="option"
+                        >{{ option }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+              </div>
+            </nb-card-body>
+            </nb-card>
+        
+        
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="label">Comments</label>
+          <textarea
+            nbInput
+            fullWidth
+        
+            formControlName="comment"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+   
+   
+
+  </form>
+  </nb-card-body>
+
+  <nb-card-footer *ngIf="action != 'View'" style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="!contractForm.valid || errorTimeGas"
+      (click)="add()"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+  <nb-card-footer *ngIf="action == 'View'" style="text-align: right">
+    <button
+    *nbIsGranted="['create', 'purchase-sale-contract']"
+    class="cancel"
+    nbButton
+    status="success"
+    (click)="submitToETRM()"
+    size="small"
+
+  >
+    Submit to ETRM
+  </button>
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>

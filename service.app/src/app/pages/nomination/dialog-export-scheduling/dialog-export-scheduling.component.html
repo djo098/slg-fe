@@ -1,0 +1,61 @@
+<nb-card   [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"> 
+    <nb-card-header>{{ title }}</nb-card-header>
+    <nb-card-body>
+
+      
+      
+              <form [formGroup]="exportForm">
+            
+       
+                <div class="row">
+           
+           
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label class="label">Time</label>
+                  
+                      <nb-select
+                      placeholder="-"
+                        formControlName="time"
+                        size="small"
+              
+                
+                        fullWidth
+                      >
+                        <nb-option
+                          *ngFor="let option of dates"
+                          [value]="option"
+                          >{{ option }}</nb-option
+                        >
+                      </nb-select>
+                    </div>
+                  </div>
+               
+                </div>
+                </form>
+      
+   
+     
+    
+      
+  
+    </nb-card-body>
+    <nb-card-footer style="text-align: right;">
+      <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+        Close
+      </button>
+      <button
+        nbButton
+        status="success"
+        (click)="actionButton()"
+        [disabled]="!exportForm.valid"
+        id="add"
+        size="small"
+      >
+       Export
+      </button>
+    </nb-card-footer>
+  </nb-card>
+  

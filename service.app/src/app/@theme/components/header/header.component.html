@@ -1,0 +1,54 @@
+
+<div class="header-container">
+ 
+  <div class="logo-container">
+      <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline" pack="eva"></nb-icon>
+    </a> 
+    <a class="logo" href="#" (click)="navigateHome()"
+      ><span>SLG <img src="../../../../assets/images/edp_light.png" alt="Logo" /> <img src="../../../../assets/images/edp_dark.png" alt="Logo" /></span
+    ></a>
+  </div>
+   <nb-actions size="medium" class="section-menu" *ngFor="let element of menu">
+    <nb-action
+      class="action-menu"
+      [nbContextMenu]="element.children"
+      nbContextMenuPlacement="bottom"
+      nbContextMenuAdjustment="counterclockwise"
+      *ngIf="!element.hidden"
+
+    >
+      {{element.title}}<nb-icon icon="arrow-down"></nb-icon
+      ><nb-icon icon="arrow-up"></nb-icon
+    ></nb-action>
+
+  </nb-actions>
+</div>
+
+<div  class="additional-actions">
+  <nb-actions size="small">
+    <nb-action icon="question-mark-circle-outline" (click)="help()" title="help"> </nb-action>
+    <nb-action icon="settings" (click)="openDialogSettings()"> </nb-action>
+    <nb-action [icon]="icon_mode_theme" (click)="modeBackground()" > </nb-action>
+
+<!--     <nb-action icon="globe"> </nb-action>  -->
+
+
+    <nb-action class="user-action">
+      <nb-user
+        [title]="accountHome?.idTokenClaims.roles[0].toUpperCase()"
+      
+        [matMenuTriggerFor]="actionMenu"
+        [name]="profile?.displayName.toUpperCase()"
+        showName=false
+      >
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+  <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+    <button mat-menu-item class="action-button" (click)="logout()">
+      Log Out
+    </button>
+  </mat-menu>
+  <div></div>
+</div>

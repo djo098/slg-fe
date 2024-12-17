@@ -1,0 +1,23 @@
+[
+    {
+        "name" : "URL_SLG_FRONTEND",
+        "slotSetting" : false,
+        "value" : "/frontend"
+    },
+    {
+        "name" : "SLG_FRONTEND_ENVIRONMENT",
+        "slotSetting" : false,
+        "value" : "PRE"
+    },
+    {
+        "name" : "SLG_FRONTEND_USER",
+        "slotSetting" : false,
+        "value" : "user"
+    },
+    {
+        "name" : "SLG_FRONTEND_PASSWORD",
+        "slotSetting" : false,
+        "value" : "password"
+    }
+    
+]

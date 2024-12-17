@@ -1,0 +1,63 @@
+@import "../../../@theme/styles/themes";
+@include nb-install-component() {
+  .request-area{
+    min-height: 200px !important;
+  }
+  .dialog {
+    width: 900px;
+    max-height: 650px;
+   
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+  }
+  nb-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .action-container {
+      text-align: right;
+  }
+  nb-checkbox {
+    margin-bottom: 1rem;
+  }
+  nb-card-body {
+    padding: 1rem 1.5rem !important;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+  .cancel {
+    margin-right: 1rem;
+  }
+  .error-div {
+    margin-bottom: 0.25rem;
+  }
+  .card-table {
+    height: 300px;
+    border: 0.1rem solid #e4e9f2;
+  }
+
+  .obligatory {
+    color: #e32c2c;
+  }
+  ::ng-deep {
+    .selected-list{
+      .disabled{
+    
+        pointer-events: none;
+       } 
+     }
+     .selected-list .c-btn {
+     /*   span{
+        height: 14px;
+        overflow: hidden;
+      } */
+      .c-remove {
+        display: none;
+      } 
+    }
+  }
+}

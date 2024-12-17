@@ -1,0 +1,58 @@
+/* .action-bar {
+  background: white;
+  padding: 16px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  text-align: right;
+}
+.action-bar:empty {
+  display: none;
+}
+
+.mat-table {
+  width: 100%;
+}
+.mat-table thead {
+  background-color: #f9f9f9;
+}
+.mat-table thead tr th.mat-header-cell {
+  color: #616161;
+  font-size: 0.8rem;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+.mat-table tbody tr td.mat-cell {
+  font-size: 0.8rem;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+} */
+
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+ 
+ 
+  
+/*  .button-download {
+       float: right; 
+       text-align: right;
+       width: 50%; 
+      
+      }
+  .title{
+    width: 50%;
+  }
+
+  .select-pager{
+    float: left;
+    text-align: right;
+    .select-options {
+      text-align: right;
+    }
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+ 
+  } */
+
+
+  
+
+} 

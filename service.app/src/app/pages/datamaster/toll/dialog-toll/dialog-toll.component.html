@@ -1,0 +1,420 @@
+<nb-card class="dialog-service">
+  <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+  <nb-card-body class="body-principle">
+    <form [formGroup]="tollForm">
+      <div class="row">
+        <div class="col-sm-6">
+
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+      </div>
+      <input
+        formControlName="id"
+        type="number"
+        id="id"
+        nbInput
+        style="display: none"
+      />
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="label">Label <span class="obligatory">*</span></label>
+
+            <input
+              formControlName="label"
+              type="text"
+              nbInput
+              fullWidth
+              
+              fieldSize="small"
+              [status]="
+                tollForm.get('label').errors &&
+                (tollForm.get('label').touched || tollForm.get('label').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('label').errors &&
+                  (tollForm.get('label').touched || tollForm.get('label').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('label').errors.required"
+                  >Label is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('label').errors.maxlength"
+                  >Maximum 3 characters</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Min Pressure <span class="obligatory">*</span></label>
+
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              fieldSize="small"
+              
+              formControlName="min_pressure"
+              [status]="
+                tollForm.get('min_pressure').errors &&
+                (tollForm.get('min_pressure').touched ||
+                  tollForm.get('min_pressure').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('min_pressure').errors &&
+                  (tollForm.get('min_pressure').touched ||
+                    tollForm.get('min_pressure').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('min_pressure').errors.required"
+                  >Min pressure is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('min_pressure').errors.pattern"
+                  >only numbers (only numbers (points as thousands and commas as
+                  decimals))</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('min_pressure').errors.min"
+                  >numbers=>0</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Max Pressure <span class="obligatory">*</span></label>
+
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              fieldSize="small"
+              
+              formControlName="max_pressure"
+              [status]="
+                tollForm.get('max_pressure').errors &&
+                (tollForm.get('max_pressure').touched ||
+                  tollForm.get('max_pressure').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('max_pressure').errors &&
+                  (tollForm.get('max_pressure').touched ||
+                    tollForm.get('max_pressure').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('max_pressure').errors.required"
+                  >Max pressure is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('max_pressure').errors.pattern"
+                  >only numbers (only numbers (points as thousands and commas as
+                  decimals))</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('max_pressure').errors.min"
+                  >numbers=>0</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Min Capacity <span class="obligatory">*</span></label>
+
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              fieldSize = "small"
+              
+              formControlName="min_capacity"
+              [status]="
+                tollForm.get('min_capacity').errors &&
+                (tollForm.get('min_capacity').touched ||
+                  tollForm.get('min_capacity').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('min_capacity').errors &&
+                  (tollForm.get('min_capacity').touched ||
+                    tollForm.get('min_capacity').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('min_capacity').errors.required"
+                  >Min capacity is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('min_capacity').errors.pattern"
+                  >only numbers (only numbers (points as thousands and commas as
+                  decimals))</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('min_capacity').errors.min"
+                  >numbers=>0</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Max Capacity <span class="obligatory">*</span></label>
+
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              fieldSize="small"
+              
+              formControlName="max_capacity"
+              [status]="
+                tollForm.get('max_capacity').errors &&
+                (tollForm.get('max_capacity').touched ||
+                  tollForm.get('max_capacity').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('max_capacity').errors &&
+                  (tollForm.get('max_capacity').touched ||
+                    tollForm.get('max_capacity').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('max_capacity').errors.required"
+                  >Max capacity is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('max_capacity').errors.pattern"
+                  >only numbers (only numbers (points as thousands and commas as
+                  decimals))</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('max_capacity').errors.min"
+                  >numbers=>0</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Fixed Total <span class="obligatory">*</span></label>
+
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              fieldSize="small"
+              
+              formControlName="fixed_total"
+              [status]="
+                tollForm.get('fixed_total').errors &&
+                (tollForm.get('fixed_total').touched ||
+                  tollForm.get('fixed_total').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('fixed_total').errors &&
+                  (tollForm.get('fixed_total').touched ||
+                    tollForm.get('fixed_total').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('fixed_total').errors.required"
+                  >Fixed total is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('fixed_total').errors.pattern"
+                  >only numbers (only numbers (points as thousands and commas as
+                  decimals))</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('fixed_total').errors.min"
+                  >numbers=>0</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Variable Total <span class="obligatory">*</span></label>
+
+            <input
+              type="text"
+              nbInput
+              fullWidth
+              fieldSize="small"
+              
+              formControlName="variable_total"
+              [status]="
+                tollForm.get('variable_total').errors &&
+                (tollForm.get('variable_total').touched ||
+                  tollForm.get('variable_total').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  tollForm.get('variable_total').errors &&
+                  (tollForm.get('variable_total').touched ||
+                    tollForm.get('variable_total').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('variable_total').errors.required"
+                  >Variable total is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('variable_total').errors.pattern"
+                  >only numbers (only numbers (points as thousands and commas as
+                  decimals))</span
+                >
+                <span
+                  class="error"
+                  *ngIf="tollForm.get('variable_total').errors.min"
+                  >numbers=>0</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Country <span class="obligatory">*</span></label>
+
+            <nb-select
+              formControlName="country_code"
+              id="country"
+              (selectedChange)="onChangeCountry($event)"
+              fullWidth
+              size="small"
+              placeholder ="-"
+            >
+              <nb-option
+                *ngFor="let option of countriesOptions"
+                [value]="option.code"
+                >{{ option.code }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+            <nb-select
+              size="small"
+              formControlName="balance_zone_id"
+              fullWidth
+              [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+              placeholder ="-"
+            >
+              <nb-option
+                *ngFor="let option of zoneOptions"
+                [value]="option.id"
+                >{{ option.label }}</nb-option
+              >
+            </nb-select>
+            <div class="error-div">
+              <span class="error-block" *ngIf="errorBalanceZone == true">
+                <span class="error" *ngIf="errorBalanceZone == true"
+                  >There are no balancing zone results for this country</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!tollForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

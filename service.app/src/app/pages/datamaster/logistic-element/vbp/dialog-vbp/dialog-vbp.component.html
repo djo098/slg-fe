@@ -1,0 +1,298 @@
+<nb-card class="dialog-vpb">
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Virtual Balancing Point Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="vbpForm">
+              <input
+                formControlName="type"
+                type="hidden"
+                nbInput
+                id="type"
+                fullWidth
+              />
+
+              <input
+                formControlName="id"
+                type="number"
+                nbInput
+                id="id"
+                style="display: none"
+              />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label"
+                      >Name <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      formControlName="name"
+                      type="text"
+                      nbInput
+                      fullWidth
+                      id="name"
+                      fieldSize="small"
+                      [status]="
+                        vbpForm.get('name').errors &&
+                        (vbpForm.get('name').touched ||
+                          vbpForm.get('name').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          vbpForm.get('name').errors &&
+                          (vbpForm.get('name').touched ||
+                            vbpForm.get('name').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="vbpForm.get('name').errors.required"
+                          >Name is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="vbpForm.get('name').errors.maxlength"
+                          >Maximum 10 characters</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">EIC Code</label>
+                    <input
+                      formControlName="eic"
+                      type="text"
+                      nbInput
+                      id="eic"
+                      fullWidth
+                      fieldSize="small"
+                      [status]="
+                        vbpForm.get('eic').errors &&
+                        (vbpForm.get('eic').touched || vbpForm.get('eic').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          vbpForm.get('eic').errors &&
+                          (vbpForm.get('eic').touched ||
+                            vbpForm.get('eic').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="vbpForm.get('eic').errors.required"
+                          >EIC is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label"
+                      >Country <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                      placeholder="-"
+                      formControlName="country_code"
+                      size="small"
+                      id="country"
+                      fullWidth
+                      (selectedChange)="onChange($event)"
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label"
+                      >Balancing Zone <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                      placeholder="-"
+                      formControlName="balance_zone_id"
+                      size="small"
+                      id="balance_zone_name"
+                      fullWidth
+                      [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorBalanceZone == true"
+                      >
+                        <span class="error" *ngIf="errorBalanceZone == true"
+                          >There are no balance zone results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+ 
+      <div class="col-sm-6">
+        <nb-card class="card-table container-form">
+          <nb-card-header class="container-form-header"
+            >Uncommitted Values</nb-card-header
+          >
+          <form [formGroup]="uncommittedForm">
+            <div class="row" style="padding: 1rem 1.5rem">
+              <div class="col-sm-5">
+                <div class="form-group">
+                  <label class="label">Legal Entity</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="owner_id"
+                    fullWidth
+                    [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                    size="small"
+                    (selectedChange)="onChangeOwner($event)"
+                  >
+                    <nb-option
+                      *ngFor="let option of entitiesOptions"
+                      [value]="option.id"
+                      >{{ option.name }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorLegalEntity == true">
+                      <span class="error" *ngIf="errorLegalEntity == true"
+                        >There are no legal entities results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="form-group">
+                  <label class="label">Contract Code</label>
+                  <angular2-multiselect
+                    [data]="contractOptions"
+                    [settings]="settings"
+                    formControlName="contract_code"
+                    [ngClass]="errorContract == true ? 'error-select' : ''"
+                  >
+                  </angular2-multiselect>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorContract == true">
+                      <span class="error" *ngIf="errorContract == true"
+                        >There are no contracts for the specified legal
+                        entity.</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+           
+              <div class="col-sm-2" style="margin-top: 1.8rem">
+                <div class="form-group">
+                  <button
+                    nbButton
+                    status="success"
+                    size="tiny"
+                    (click)="addRowUncommitted()"
+                    [disabled]="!uncommittedForm.valid"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+            <div class="col-sm-12">
+              <div
+                *ngIf="validateRevoGridUncommitted == false"
+                class="error-div"
+              >
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; The values must be numbers and the date must be in
+                    the format yyyy-mm-dd
+                  </a></nb-alert
+                >
+              </div>
+              <div *ngIf="isDuplicateUncommitted == true" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; Contracts cannot be duplicated</a
+                  ></nb-alert
+                >
+              </div>
+            </div>
+          </div>
+
+          <revo-grid
+            id="uncommitted"
+            [columns]="columnsUncommitted"
+            [theme]="revogridTheme"
+            (beforeedit)="onBeforeEditUncommitted($event, $event)"
+            (afteredit)="onAfterEditUncommitted($event)"
+            row-size="30"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="
+        !vbpForm.valid || isDuplicateLinepack || isDuplicateUncommitted
+      "
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

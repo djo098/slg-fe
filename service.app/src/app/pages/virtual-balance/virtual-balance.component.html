@@ -1,0 +1,60 @@
+<nb-card  [nbSpinner]="loading"
+nbSpinnerSize="small"
+nbSpinnerStatus="primary" >
+  <nb-card-header> <span>Virtual Balances </span>
+    <nb-actions size="small">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV
+      </button>
+    </mat-menu></nb-card-header>
+  <nb-card-body>
+    <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5rem;">
+      <button
+      type="submit"
+      nbButton
+      status="basic"
+      (click)="refresh()"
+      size="tiny"
+  
+
+    >
+    <nb-icon icon="sync-outline"></nb-icon>
+    Refresh
+    </button>
+    &nbsp;&nbsp;&nbsp;
+      <nb-select       [(selected)]="selected" [(ngModel)]="defaultRowPerPage" size="tiny">
+        <nb-option *ngFor="let option of optionsPager"    [value]="option.value" (click)="setPager()">{{option.value }}</nb-option>
+      </nb-select>
+    </div> 
+    <div class="table-container col-md-12">
+      <ng2-smart-table
+        class="table-data"
+        [settings]="settings"
+        [source]="source"
+        (create)="onAdd($event)"
+        (delete)="onDelete($event)"
+        (edit)="onViewOperations($event)"
+      >
+      </ng2-smart-table>
+    </div>
+  </nb-card-body>
+</nb-card>

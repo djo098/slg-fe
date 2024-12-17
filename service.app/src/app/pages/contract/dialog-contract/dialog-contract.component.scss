@@ -1,0 +1,58 @@
+@import "../../../@theme/styles/themes";
+@include nb-install-component() {
+  .dialog-contract {
+    max-width: 1400px;
+    max-height: 650px;
+    nb-card-body {
+      padding: 1rem 1rem;
+    }
+  }
+  nb-checkbox {
+    margin-bottom: 1rem;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+  .cancel {
+    margin-right: 1rem;
+  }
+  .error-div {
+    margin-bottom: 0.25rem;
+  }
+  .card-table {
+    height: 300px;
+
+  }
+  .container-form-header {
+    padding: 0.1rem 1rem !important;
+    font-size: 0.9375rem !important;
+    border: none;
+    border-bottom: none;
+  }
+  .container-form {
+
+    margin-bottom: 1rem !important;
+  }
+  .obligatory {
+    color: #e32c2c;
+  }
+  ::ng-deep {
+    .selected-list{
+      .disabled{
+    
+        pointer-events: none;
+       } 
+     }
+     .selected-list .c-btn {
+     /*   span{
+        height: 14px;
+        overflow: hidden;
+      } */
+      .c-remove {
+        display: none;
+      } 
+    }
+  
+  }
+}

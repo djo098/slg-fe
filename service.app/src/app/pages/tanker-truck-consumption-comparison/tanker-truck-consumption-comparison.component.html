@@ -1,0 +1,245 @@
+<nb-accordion multi>
+  <nb-accordion-item #generateBalance>
+    <nb-accordion-item-header>
+      <span>Forecasted And Real Unloading Comparison</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <form [formGroup]="balanceForm">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label">Country</label>
+
+                  <nb-select
+                    formControlName="country_code"
+                    id="country"
+                    (selectedChange)="onChangeCountry($event)"
+                    placeholder="-"
+                    fullWidth
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label">Balancing Zone</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="balancing_zone"
+                    (selectedChange)="onChangeZone($event)"
+                    fullWidth
+                    [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of zoneOptions"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorBalanceZone == true">
+                      <span class="error" *ngIf="errorBalanceZone == true"
+                        >There are no balancing zone results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Legal Entity</label>
+              <nb-select
+                formControlName="legal_entity"
+                placeholder="-"
+                fullWidth
+                [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of entitiesOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorLegalEntity == true">
+                  <span class="error" *ngIf="errorLegalEntity == true"
+                    >There are no legal entities results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Start Date - End Date</label>
+              <input
+                nbInput
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                [nbDatepicker]="rangepicker"
+                formControlName="date"
+                [status]="errorDate == true ? 'danger' : 'basic'"
+                fullWidth
+                fieldSize="small"
+              />
+              <nb-rangepicker #rangepicker format="dd.MM.yyyy"></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate == true">
+                  <span class="error" *ngIf="errorDate == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!--     <div class="col-sm-1">
+                          <div class="form-group">
+                             <label class="label">End Date</label>
+                              <input nbInput formControlName="end_date" placeholder="End Date" type="date" fullWidth [status]="errorDate==true ? 'danger' : 'basic'" />
+                              <div class="error-div"> <span class="error-block" *ngIf="errorDate==true">
+                    <span class="error" *ngIf="errorDate==true">The end date must be greater than the start date</span>
+                                  </span>
+                              </div>
+                          </div>
+                      </div> -->
+
+     
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                type="submit"
+                nbButton
+                status="primary"
+                (click)="calculate(null, true)"
+                [disabled]="!balanceForm.valid"
+                size="small"
+              >
+                <nb-icon icon="arrow-right"></nb-icon>
+                Calculate
+              </button>
+              <button
+                type="submit"
+                nbButton
+                status="basic"
+                (click)="reset()"
+                size="small"
+                [disabled]="!balanceForm.valid"
+              >
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+
+<nb-card [nbSpinner]="loading" nbSpinnerSize="small" nbSpinnerStatus="primary">
+  <nb-card-header>
+    <span>Forecasted And Real Unloading Comparison View</span>
+    <nb-actions size="small" style="text-align: right">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!data"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV
+      </button>
+    </mat-menu>
+  </nb-card-header>
+
+  <nb-card-body>
+    <nb-tabset
+      *ngIf="data"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of data"
+        tabTitle="{{ element.name }}"
+        [active]="element.isActive"
+      >
+        <div class="export-container col-sm-12"></div>
+        <div *ngIf="validateRevogrid == false" class="error-div">
+          <nb-alert outline="danger">
+            <a style="color: #a3162e !important; font-size: 0.8rem"
+              ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The
+              values must be numbers greater than 0!
+            </a></nb-alert
+          >
+        </div>
+        <div class="row">
+          <div
+            class="col-sm-11"
+            style="font-size: 0.7rem !important; margin-top: 1rem"
+          ></div>
+          <div class="col-sm-1">
+            <button
+              type="submit"
+              nbButton
+              status="basic"
+              (click)="refresh()"
+              size="tiny"
+            >
+              <nb-icon icon="sync-outline"></nb-icon>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <nb-card size="medium" class="card-table" id="cardTable">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            theme="material"
+            filter="{true}"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (viewportscroll)="OnViewPortScroll($event)"
+            exporting="true"
+            row-size="30"
+            range="true"
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

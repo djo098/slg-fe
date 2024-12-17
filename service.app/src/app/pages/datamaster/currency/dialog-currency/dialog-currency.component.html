@@ -1,0 +1,108 @@
+<nb-card>
+  <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+  <nb-card-body class="body-principle">
+    <form [formGroup]="currencyForm">
+      <input
+        formControlName="id"
+        type="number"
+        nbInput
+        id="id"
+        style="display: none"
+      />
+      <div class="form-group row">
+        <label class="label">Code <span class="obligatory">*</span></label>
+
+        <input
+          formControlName="code"
+          type="text"
+          nbInput
+          fullWidth
+          id="code"
+          fieldSize="small"
+          [status]="
+            currencyForm.get('code').errors &&
+            (currencyForm.get('code').touched || currencyForm.get('code').dirty)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+        <div class="error-div">
+          <span
+            class="error-block"
+            *ngIf="
+              currencyForm.get('code').errors &&
+              (currencyForm.get('code').touched ||
+                currencyForm.get('code').dirty)
+            "
+          >
+            <span class="error" *ngIf="currencyForm.get('code').errors.required"
+              >Code is required</span
+            >
+            <span
+              class="error"
+              *ngIf="currencyForm.get('code').errors.maxlength"
+              >Maximum 3 characters</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="label">Description <span class="obligatory">*</span></label>
+
+        <input
+          formControlName="description"
+          type="text"
+          nbInput
+          fullWidth
+          id="description"
+          fieldSize="small"
+          [status]="
+            currencyForm.get('description').errors &&
+            (currencyForm.get('description').touched ||
+              currencyForm.get('description').dirty)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+
+        <div class="error-div">
+          <span
+            class="error-block"
+            *ngIf="
+              currencyForm.get('description').errors &&
+              (currencyForm.get('description').touched ||
+                currencyForm.get('description').dirty)
+            "
+          >
+            <span
+              class="error"
+              *ngIf="currencyForm.get('description').errors.required"
+              >Description is required</span
+            >
+            <span
+              class="error"
+              *ngIf="currencyForm.get('description').errors.maxlength"
+              >Maximun 35 characters</span
+            >
+          </span>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!currencyForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,86 @@
+<nb-card>
+<nb-card-header><span>Default Query Form Setup</span></nb-card-header>
+  <nb-card-body class="body-principle">
+  
+    <form [formGroup]="settingsForm">
+      <div class="col-sm-12">
+        <div class="form-group row">
+          <label class="label">Country</label>
+
+          <nb-select
+            formControlName="country_code"
+            id="country"
+            (selectedChange)="onChangeCountry($event)"
+            placeholder="-"
+            fullWidth
+            size="small"
+          >
+            <nb-option
+              *ngFor="let option of countriesOptions"
+              [value]="option.code"
+              >{{ option.code }}</nb-option
+            >
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group row">
+          <label class="label">Balancing Zone</label>
+          <nb-select
+            placeholder="-"
+            formControlName="balancing_zone"
+            fullWidth
+            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+            size="small"
+            id="country"
+            (selectedChange)="onChangeZone($event)"
+          >
+            <nb-option *ngFor="let option of zoneOptions" [value]="option.id">{{
+              option.label
+            }}</nb-option>
+          </nb-select>
+          <div class="error-div">
+            <span class="error-block" *ngIf="errorBalanceZone == true">
+              <span class="error" *ngIf="errorBalanceZone == true"
+                >There are no balancing zone results for this country</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div style="margin-bottom: 1rem">
+        <button
+          class="cancel"
+          nbButton
+     
+          status="primary"
+          (click)="clear()"
+          size="tiny"
+        >
+          Clear
+        </button>
+      </div>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!settingsForm.valid"
+      id="add"
+      size="small"
+    >
+      save
+    </button>
+  </nb-card-footer>
+</nb-card>

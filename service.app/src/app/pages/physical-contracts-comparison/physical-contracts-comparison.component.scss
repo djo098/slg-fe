@@ -1,0 +1,180 @@
+@import "../../@theme/styles/themes/";
+@include nb-install-component() {
+  .buttons-actions {
+    padding-bottom: 0.5rem;
+    float: left;
+  }
+  .select-pager {
+    float: left;
+    text-align: right;
+    .select-options {
+      text-align: right;
+    }
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+  }
+  nb-card {
+    transform: translate3d(0, 0, 0);
+    margin-top: 1rem;
+  }
+  /*   .table-container {
+    overflow-x: auto;
+
+  }     */
+  nb-checkbox {
+    margin-bottom: 1rem;
+  }
+  .form-inline [fullWidth] {
+    flex: 1;
+  }
+  .form-inline > * {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+  nb-card.inline-form-card nb-card-body {
+    padding-bottom: 0;
+  }
+  .labelform {
+    color: #8f9bb3;
+    font-size: 0.85rem;
+    font-family: Open Sans, sans-serif;
+    font-weight: 700;
+    line-height: 1rem;
+  }
+  nb-tabset {
+    font-size: 0.5rem !important;
+  }
+  .flex-parent-element {
+    display: flex;
+    width: 100%;
+  }
+  .flex-child-element {
+    flex: 1;
+    margin: 10px;
+  }
+  .flex-child-element:first-child {
+    margin-right: 20px;
+  }
+  .download {
+    text-align: right;
+  }
+  nb-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .export-container {
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+
+  nb-tabset > ul {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .button-calculate {
+    margin-top: 1.5rem;
+  }
+  .button-filter {
+    margin-top: 1.5rem;
+  }
+  .balance-table {
+    width: 100%;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    width: 300px;
+  }
+
+  ul li {
+    background: #ccc;
+    display: inline-block;
+    padding: 15px;
+    margin-left: -3px;
+    margin-bottom: 1px;
+  }
+
+  ul li:hover {
+    background: #ddd;
+  }
+  ::ng-deep {
+  
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-input) {
+      background: #088e47;
+      color: white;
+    }
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-output) {
+      background: #6d32ff;
+      color: white;
+    }
+/*     .nb-theme-default-custom-theme {
+      .rgHeaderCell.sortable:has(.header-content):has(span.column-both) {
+        background: #a7a7a7;
+        color: white;
+      }
+      .rgHeaderCell.sortable:has(.header-content):has(span.column-both):hover {
+        background: #cacaca !important;
+        color: white;
+      }
+    } */
+
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-stock) {
+      background: #212e3e !important;
+      color: white;
+    }
+
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-input):hover {
+      background: #36bb67 !important;
+      color: white;
+    }
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-output):hover {
+      background: #9665ff !important;
+      color: white;
+    }
+
+
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-stock):hover {
+      background: #424d5b !important;
+      color: white;
+    }
+    revo-grid {
+      height: 70vh;
+    }
+    ::ng-deep {
+      .container-alert {
+     
+        height: 20px;
+        overflow: hidden;
+      }
+    
+      
+      .show {
+        overflow: visible;
+        height: auto;
+      }
+      revo-grid {
+        height: 70vh;
+      }
+      .notificaction-stock{
+        padding: 1rem 1.125rem !important;
+      }
+    
+    }
+/*     .nb-theme-dark-custom-theme {
+      .rgHeaderCell.sortable:has(.header-content):has(span.column-both) {
+        background: #505050eb !important;
+        color: white;
+      }
+      .rgHeaderCell.sortable:has(.header-content):has(span.column-both):hover {
+        background: #505050 !important;
+        color: white;
+      }
+    } */
+  }
+}

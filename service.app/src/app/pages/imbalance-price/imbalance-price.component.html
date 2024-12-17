@@ -1,0 +1,463 @@
+<nb-accordion *nbIsGranted="['create', 'imbalance-prices']">
+  <nb-accordion-item #generateBalance>
+    <nb-accordion-item-header>
+      <span>Upload Prices</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body [nbSpinner]="loadingUpload">
+      <form [formGroup]="manualUploadForm">
+        <div class="row upload-container">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Type of price</label>
+
+              <nb-select
+                formControlName="typePrice"
+                placeholder="-"
+                id="typePrice"
+                fullWidth
+                size="small"
+              >
+                <nb-option
+
+                  value="imbalance"
+                  >Imbalance</nb-option
+                >
+                <nb-option
+
+                value="purchase_sale"
+                >Purchase/sale</nb-option
+              >
+              </nb-select>
+            </div>
+          </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Country</label>
+
+                  <nb-select
+                    formControlName="country_code"
+                    placeholder="-"
+                    id="country"
+                    (selectedChange)="onChangeCountry1($event)"
+                    fullWidth
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Balancing Zone</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="balancing_zone_id"
+                    fullWidth
+                    [status]="errorBalanceZone1 == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of zoneOptions1"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorBalanceZone1 == true">
+                      <span class="error" *ngIf="errorBalanceZone1 == true"
+                        >There are no balancing zone results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+          
+
+          <div class="col-sm-3">
+            <div class="form-group file-container">
+              <input
+                type="file"
+                nbInput
+                name="file"
+                formControlName="file"
+                id="file"
+                fullWidth
+                accept=".xlsx"
+                (change)="onFileChange($event)"
+                (click)="onFileClick($event)"
+                style="display: none"
+                fieldSize="small"
+              />
+
+              <div class="dropzone">
+                <label for="file" class="labelLink">
+                  <span class="textLink"
+                    ><nb-icon
+                      class="icon"
+                      nbPrefix
+                      icon="upload-outline"
+                      pack="eva"
+                    ></nb-icon
+                    >Select your file</span
+                  ></label
+                >
+                &nbsp; &nbsp;
+                <span *ngIf="fileName == ''">No file chosen</span>
+                <span *ngIf="fileName != ''">{{ fileName }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" style="margin: 1.7rem">
+              <nb-toggle
+                formControlName="logView"
+                labelPosition="start"
+                (checkedChange)="onToggle($event)"
+                fullWidth
+              >
+                <label class="label">Hide/Show Log</label>
+              </nb-toggle>
+            </div>
+          </div>
+      
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                nbButton
+                status="primary"
+                (click)="manualUpload()"
+                [disabled]="!fileValid || !manualUploadForm.valid"
+                [nbSpinner]="loadingUpload"
+                nbSpinnerStatus="basic"
+                nbSpinnerSize="large"
+                nbSpinnerMessage=""
+                size="small"
+           
+              >
+                <nb-icon
+                  class="icon"
+                  nbPrefix
+                  icon="arrow-circle-up-outline"
+                  pack="eva"
+                ></nb-icon>
+                Upload
+              </button>
+              <button
+                nbButton
+                status="primary"
+                (click)="download()"
+                [disabled]="!manualUploadForm.valid"
+                nbSpinnerStatus="basic"
+                nbSpinnerSize="large"
+                nbSpinnerMessage=""
+          
+                size="small"
+              >
+                <nb-icon
+                  class="icon"
+                  nbPrefix
+                  icon="cloud-download-outline"
+                  pack="eva"
+                ></nb-icon>
+                Template
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="card-table log-container"
+          style="
+   
+            padding: 1rem 1rem 1rem 1rem;
+            font-size: 0.7875rem;
+            height: 150px;
+          "
+          *ngIf="logContainerDiv"
+        >
+          <div *ngIf="logContainer">
+            <i>
+              ({{ timestamp }})&nbsp;&nbsp;&nbsp;&nbsp; |
+              &nbsp;&nbsp;&nbsp;&nbsp; *{{ successes }} records were uploaded
+              CORRECTLY* &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;*{{
+                creation_errors_count
+              }}
+              ERRORS found*<br />
+
+              <span *ngFor="let error of creation_errors; let i = index">
+                ERROR - {{ error }}<br />
+              </span>
+              <span
+                *ngFor="let success of successfully_operations; let i = index"
+              >
+                SUCCESS - {{ success }}<br />
+              </span>
+            </i>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+<nb-accordion>
+  <nb-accordion-item #generatePrices   [nbSpinner]="loadingVisualizeForm"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary">
+    <nb-accordion-item-header>
+      <span>Visualize Prices</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <form [formGroup]="generatePricesForm">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Type of price</label>
+
+              <nb-select
+                formControlName="typePrice"
+                (selectedChange)="onChangeTypeOfPrice($event)"
+                placeholder="-"
+                id="typePrice"
+                fullWidth
+                size="small"
+              >
+                <nb-option
+
+                  value="imbalance"
+                  >Imbalance</nb-option
+                >
+                <nb-option
+
+                value="purchase_sale"
+                >Purchase/sale</nb-option
+              >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Country</label>
+
+              <nb-select
+                formControlName="country_code"
+                id="country"
+                (selectedChange)="onChangeCountry2($event)"
+                placeholder="-"
+                fullWidth
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of countriesOptions"
+                  [value]="option.code"
+                  >{{ option.code }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Balancing Zone</label>
+              <nb-select
+                placeholder="-"
+                formControlName="balancing_zone"
+                (selectedChange)="onChangeZone($event)"
+                fullWidth
+                [status]="errorBalanceZone2 == true ? 'danger' : 'basic'"
+
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of zoneOptions2"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorBalanceZone2 == true">
+                  <span class="error" *ngIf="errorBalanceZone2 == true"
+                    >There are no balancing zone results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="generatePricesForm.get('typePrice').value=='purchase_sale'">
+            <div class="form-group">
+              <label class="label">Curve</label>
+              <nb-select
+                placeholder="-"
+                formControlName="curve"
+                fullWidth
+                [status]="errorCurve== true ? 'danger' : 'basic'"
+
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of curves"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorCurve == true">
+                  <span class="error" *ngIf="errorCurve == true"
+                    >There are no curve results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Start Date - End Date</label>
+              <input
+                nbInput
+                fieldSize="small"
+                [nbDatepicker]="rangepickerGenerateLogisticCost"
+                formControlName="date"
+                [status]="errorDate1 == true ? 'danger' : 'basic'"
+                fullWidth
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+              />
+              <nb-rangepicker
+                #rangepickerGenerateLogisticCost
+                format="dd.MM.yyyy"
+              ></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate1 == true">
+                  <span class="error" *ngIf="errorDate1 == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          
+    
+        </div>
+
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                nbButton
+                status="primary"
+                (click)="calculate(true)"
+                size="small"
+                [disabled]="!generatePricesForm.valid"
+              >
+                <nb-icon icon="arrow-right"></nb-icon>
+                Calculate
+              </button>
+              <button
+                nbButton
+                status="basic"
+                (click)="reset()"
+                size="small"
+                [disabled]="!generatePricesForm.valid"
+              >
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item></nb-accordion
+>
+<nb-card
+  [nbSpinner]="loadingGetPrices"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>
+    <span>Prices View</span>
+
+    <nb-actions size="small" style="text-align: right">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!dataView"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        CSV
+      </button>
+    </mat-menu>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-tabset
+      *ngIf="dataView"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of dataView"
+        tabTitle="{{ element.name }}"
+        tabId="{{ element.id }}"
+        [active]="true"
+      >
+        <div class="row">
+    
+          <div class="col-sm-12" style="text-align: right;">
+            <button
+
+            type="submit"
+            nbButton
+            status="basic"
+            (click)="refresh()"
+            size="tiny"
+          >
+            <nb-icon icon="sync-outline"></nb-icon>
+            Refresh
+          </button>
+          </div>
+      
+        </div>
+
+        <nb-card class="card-table" id="card-table">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            (viewportscroll)="OnViewPortScroll($event)"
+            exporting="true"
+            row-size="30"
+            range="true"
+            stretch="false"
+            [readonly]="true"
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>
+

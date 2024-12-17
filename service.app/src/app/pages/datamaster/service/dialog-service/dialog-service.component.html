@@ -1,0 +1,80 @@
+<nb-card class="dialog-service">
+  <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+  <nb-card-body class="body-principle">
+    <form [formGroup]="serviceForm">
+      <div class="form-group row">
+        <label class="label">Label*</label>
+
+        <input
+          formControlName="label"
+          type="text"
+          nbInput
+          fullWidth
+          
+          
+          [status]="
+            serviceForm.get('label').errors &&
+            (serviceForm.get('label').touched || serviceForm.get('label').dirty)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+        <div class="error-div">
+          <span
+            class="error-block"
+            *ngIf="
+              serviceForm.get('label').errors &&
+              (serviceForm.get('label').touched ||
+                serviceForm.get('label').dirty)
+            "
+          >
+            <span class="error" *ngIf="serviceForm.get('label').errors.required"
+              >label is required</span
+            >
+            <span
+              class="error"
+              *ngIf="serviceForm.get('label').errors.maxlength"
+              >Maximum 3 characters</span
+            >
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label">Connection Point*</label>
+        <nb-select
+          
+          formControlName="connection_point_id"
+          fullWidth
+          [status]="errorConnectionPoint == true ? 'danger' : 'basic'"
+        >
+          <nb-option
+            *ngFor="let option of connectionPointOptions"
+            [value]="option.id"
+            >{{ option.name }}</nb-option
+          >
+        </nb-select>
+        <div class="error-div">
+          <span class="error-block" *ngIf="errorConnectionPoint == true">
+            <span class="error" *ngIf="errorConnectionPoint == true"
+              >There are no connection points results for this country</span
+            >
+          </span>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="basic" (click)="cancel()">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!serviceForm.valid"
+      id="add"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

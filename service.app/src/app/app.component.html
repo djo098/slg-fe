@@ -1,0 +1,18 @@
+<div  *ngIf="loading" class='spinner-container'>
+<!--   <div class='spinner-route'>
+
+  </div> -->
+  <div class="spinner-route">
+    <div class="blob blob-0"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+  </div>
+</div>
+<app-layout *ngIf="isUserLoggedIn" >
+    <nb-menu [items]="menu"></nb-menu>
+
+    <router-outlet></router-outlet>
+  </app-layout>

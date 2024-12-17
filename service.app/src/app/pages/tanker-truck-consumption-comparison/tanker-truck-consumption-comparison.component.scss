@@ -1,0 +1,93 @@
+@import "../../@theme/styles/themes/";
+@include nb-install-component() {
+  .buttons-actions {
+    padding-bottom: 0.5rem;
+    float: left;
+  }
+  .select-pager {
+    float: left;
+    text-align: right;
+    .select-options {
+      text-align: right;
+    }
+  }
+  button[nbButton] {
+    margin: 0.2rem;
+  }
+  nb-card {
+    transform: translate3d(0, 0, 0);
+    margin-top: 1rem;
+  }
+  /*   .table-container {
+    overflow-x: auto;
+
+  }     */
+  nb-checkbox {
+    margin-bottom: 1rem;
+  }
+  .form-inline [fullWidth] {
+    flex: 1;
+  }
+  .form-inline > * {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+  nb-card.inline-form-card nb-card-body {
+    padding-bottom: 0;
+  }
+  .labelform {
+    color: #8f9bb3;
+    font-size: 0.85rem;
+    font-family: Open Sans, sans-serif;
+    font-weight: 700;
+    line-height: 1rem;
+  }
+  nb-tabset {
+    font-size: 0.5rem !important;
+  }
+  .flex-parent-element {
+    display: flex;
+    width: 100%;
+  }
+  .flex-child-element {
+    flex: 1;
+    margin: 10px;
+  }
+  .flex-child-element:first-child {
+    margin-right: 20px;
+  }
+  .download {
+    text-align: right;
+  }
+  nb-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .export-container {
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+  .export-to-csv-container {
+    min-width: 6rem;
+  }
+
+  nb-tabset > ul {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .button-calculate {
+    margin-top: 1.4rem;
+    min-width: 4.8rem;
+  }
+  .button-filter {
+    margin-top: 1.3rem;
+  }
+  .balance-table {
+    width: 100%;
+  }
+}

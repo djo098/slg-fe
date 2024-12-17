@@ -1,0 +1,373 @@
+<nb-accordion multi *nbIsGranted="['create', 'request-single-clients']">
+  <nb-accordion-item #generateBalance>
+    <nb-accordion-item-header>
+      <span>Retrieval of TSO request numbers</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body
+      [nbSpinner]="loadingGetTSORequestNumbers"
+      nbSpinnerSize="small"
+      nbSpinnerStatus="primary"
+    >
+      <form [formGroup]="getTSORequestNumberForm">
+        <div class="row upload-container">
+          
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Country</label>
+
+                  <nb-select
+                    placeholder="-"
+                    formControlName="country_code"
+                    id="country"
+                    (selectedChange)="onChangeCountry2($event)"
+                    fullWidth
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label class="label">Balancing Zone</label>
+                  <nb-select
+                    placeholder="-"
+                    formControlName="balancing_zone_id"
+                    fullWidth
+                    [status]="errorBalanceZone2 == true ? 'danger' : 'basic'"
+                    size="small"
+                  >
+                    <nb-option
+                      *ngFor="let option of zoneOptions2"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+                  <div class="error-div">
+                    <span class="error-block" *ngIf="errorBalanceZone2 == true">
+                      <span class="error" *ngIf="errorBalanceZone2 == true"
+                        >There are no balancing zone results for this
+                        country</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+          
+
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Legal Entity</label>
+              <nb-select
+                placeholder="-"
+                formControlName="legal_entity"
+                fullWidth
+                [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of entitiesOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorLegalEntity == true">
+                  <span class="error" *ngIf="errorLegalEntity == true"
+                    >There are no legal entities results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Start Date - End Date</label>
+              <input
+                nbInput
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                [nbDatepicker]="rangepickerUpload"
+                formControlName="date"
+                [status]="errorDateUpload == true ? 'danger' : 'basic'"
+                fullWidth
+                fieldSize="small"
+              />
+              <nb-rangepicker
+                #rangepickerUpload
+                format="dd.MM.yyyy"
+              ></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDateUpload == true">
+                  <span class="error" *ngIf="errorDateUpload == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" style="margin: 1.7rem">
+              <nb-toggle
+                formControlName="logView"
+                labelPosition="start"
+                (checkedChange)="onToggle($event)"
+                fullWidth
+              >
+                <label class="label">Hide/Show Log</label>
+              </nb-toggle>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+              type="submit"
+              nbButton
+              status="primary"
+              (click)="getTSORequestNumbers()"
+              [disabled]="!getTSORequestNumberForm.valid"
+              size="small"
+            >
+              <nb-icon
+                class="icon"
+                nbPrefix
+                icon="arrow-circle-down-outline"
+                pack="eva"
+              ></nb-icon>
+              Download
+            </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="card-table log-container"
+          style="
+      
+            padding: 1rem 1rem 1rem 1rem;
+            font-size: 0.7875rem;
+            height: 150px;
+          "
+          *ngIf="logContainerDiv"
+        >
+          <div *ngIf="logContainer">
+            <i>
+              ({{ timestamp }})&nbsp;&nbsp;&nbsp;&nbsp; |
+              &nbsp;&nbsp;&nbsp;&nbsp; *{{ successes_count }} TSO codes were
+              uploaded CORRECTLY* &nbsp;&nbsp;&nbsp;&nbsp; |
+              &nbsp;&nbsp;&nbsp;&nbsp;*{{ creation_errors_count }} ERRORS
+              found*<br />
+
+              <span *ngFor="let error of creation_errors; let i = index">
+                ERROR- {{ error }}<br />
+              </span>
+              <span *ngFor="let e of successes; let i = index">
+                SUCCESS- {{ e }}<br />
+              </span>
+              <span *ngFor="let e of info; let i = index">
+                INFO- {{ e }}<br />
+              </span>
+            </i>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+<nb-card
+  [nbSpinner]="loadingGetOperations"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>
+    <span>Requests (Single-Clients)</span>
+
+    <nb-actions size="small">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+      >
+        Export
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="TSOMenu" class="action-button" *nbIsGranted="['create', 'request-single-clients']">
+        TSO Action
+      </button>
+    </mat-menu>
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        class="action-button"
+        (click)="openDialogScheduling3()"
+        [matMenuTriggerFor]="exportContracts"
+      >
+        Request data
+      </button>
+    </mat-menu>
+    <mat-menu #exportContracts="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV
+      </button>
+    </mat-menu>
+    <mat-menu #TSOMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        class="action-button"
+        (click)="openDialogScheduling3()"
+      >
+        Submit Scheduling
+      </button>
+      <button
+        mat-menu-item
+        class="action-button"
+        [matMenuTriggerFor]="TSOExportMenu"
+      >
+        Export Data
+      </button>
+    </mat-menu>
+    <mat-menu #TSOExportMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        class="action-button"
+        (click)="openDialogScheduling1()"
+      >
+        XLS Scheduling
+      </button>
+      <button
+        mat-menu-item
+        class="action-button"
+        (click)="openDialogScheduling2()"
+      >
+        XML Scheduling
+      </button>
+    </mat-menu>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="col-sm-6">
+      <nb-accordion multi class="filter-container">
+        <nb-accordion-item>
+          <nb-accordion-item-header class="filter-container-header">
+            <span>Advanced Filter (Delivery Date)</span>
+          </nb-accordion-item-header>
+          <nb-accordion-item-body class="filter-container-body">
+            <form [formGroup]="filterForm">
+              <div class="row filter-group">
+                <div class="col-sm-8">
+                  <div class="form-group">
+                    <label class="label"
+                      >Start Date - End Date (Delivery Date)</label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                      [nbDatepicker]="rangepicker"
+                      fullWidth
+                      formControlName="date"
+                      [status]="errorDateFilter == true ? 'danger' : 'basic'"
+                      fieldSize="small"
+                    />
+                    <nb-rangepicker
+                      #rangepicker
+                      format="dd.MM.yyyy"
+                    ></nb-rangepicker>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorDateFilter == true">
+                        <span class="error" *ngIf="errorDateFilter == true"
+                          >The format must be dd.MM.yyyy and start date <= end
+                          date</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <div class="form-group button-filter">
+                    <button
+                      type="submit"
+                      nbButton
+                      status="primary"
+                      (click)="filter()"
+                      size="tiny"
+                      fullWidth
+                      [disabled]="!filterForm.valid"
+                    >
+                      Filter
+                    </button>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <div class="form-group button-filter">
+                    <button
+                      type="submit"
+                      nbButton
+                      status="primary"
+                      (click)="reset()"
+                      size="tiny"
+                      [disabled]="!filterForm.valid"
+                      fullWidth
+                      outline
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-accordion-item-body>
+        </nb-accordion-item>
+      </nb-accordion>
+    </div>
+
+    <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5rem">
+      <button
+        type="submit"
+        nbButton
+        status="basic"
+        (click)="refresh()"
+        size="tiny"
+      >
+        <nb-icon icon="sync-outline"></nb-icon>
+        Refresh
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <nb-select
+        [(selected)]="selected"
+        [(ngModel)]="defaultRowPerPage"
+        size="tiny"
+      >
+        <nb-option
+          *ngFor="let option of optionsPager"
+          [value]="option.value"
+          (click)="setPager()"
+          >{{ option.value }}</nb-option
+        >
+      </nb-select>
+    </div>
+    <div class="table-container col-md-12">
+      <ng2-smart-table
+        class="table-data"
+        [settings]="settings"
+        [source]="source"
+        (edit)="onEdit($event)"
+        (create)="onAdd($event)"
+        (delete)="onView($event)"
+      >
+      </ng2-smart-table>
+    </div>
+  </nb-card-body>
+</nb-card>

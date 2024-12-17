@@ -1,0 +1,1192 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="dialog-workflow"
+>
+  <nb-card-header>{{ title }}</nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="workflowForm"> 
+    <div class="row">
+      <div class="col-sm-12">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header">Workflow Information</nb-card-header>
+          <nb-card-body>
+
+            
+          <div class="row">
+            <div class="col-sm-1">
+              <div class="form-group text-center">
+                <label class="label">Activate</label>
+                  <br><nb-toggle
+                      formControlName="active"
+                      
+                      fullWidth
+                      
+                  ></nb-toggle>
+                  
+              </div>
+          </div>
+
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label class="label">Label <span class="obligatory">*</span></label>
+    
+                <input
+                  
+                  type="text"
+                  nbInput
+                  fullWidth
+                  formControlName="label"
+                  
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? workflowForm.get('label').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  fieldSize="small"
+                />
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      workflowForm.get('label').errors &&
+                      (workflowForm.get('label').touched ||
+                        workflowForm.get('label').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="workflowForm.get('label').errors.required"
+                      >Label is required. </span
+                    >
+                  </span>
+                </div>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="workflowForm.get('label').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="workflowForm.get('label').errors.required"
+                      >Label is required. </span
+                    >
+                  </span>
+                </div>
+                
+
+              </div>
+            </div>
+
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label class="label">Country <span class="obligatory">*</span></label>
+    
+                <nb-select
+                  placeholder="-"
+                  formControlName="country_code"
+                  id="country"
+                  (selectedChange)="onChangeCountry($event)"
+                  fullWidth
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? workflowForm.get('country_code').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                >
+                  <nb-option
+                    *ngFor="let option of countriesOptions"
+                    [value]="option.code"
+                    >{{ option.code }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="workflowForm.get('country_code').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="workflowForm.get('country_code').errors.required"
+                      >Country is required. </span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  formControlName="balance_zone_id"
+                  fullWidth
+                  [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? workflowForm.get('balance_zone_id').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                  (selectedChange)="onChangeZone($event)"
+                >
+                  <nb-option
+                    *ngFor="let option of zoneOptions"
+                    [value]="option.id"
+                    >{{ option.label }}</nb-option
+                  >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="workflowForm.get('balance_zone_id').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="workflowForm.get('balance_zone_id').errors.required"
+                      >Balancing zone is required. </span
+                    >
+                    <span class="error" *ngIf="errorBalanceZone == true"
+                      >There are no balancing zone results for this country.</span
+                    >
+                  </span>
+                </div>
+                <div class="error-div" *ngIf="action == 'Add'">
+                  <span class="error-block" *ngIf="errorBalanceZone == true">
+                    <span class="error" *ngIf="errorBalanceZone == true"
+                      >There are no balancing zone results for this country.</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label class="label">Legal Entity <span class="obligatory">*</span></label>
+                <nb-select
+                placeholder="-"
+                  formControlName="legal_entity"
+                  fullWidth
+                  
+                  [status]="
+                    action == 'Update' && loading == false
+                      ? workflowForm.get('legal_entity').invalid
+                        ? 'danger'
+                        : 'basic'
+                      : 'basic'
+                  "
+                  size="small"
+                  
+                >
+                <nb-option
+                  *ngFor="let option of entitiesOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+                </nb-select>
+                <div
+                  class="error-div"
+                  *ngIf="action == 'Update' && loading == false"
+                >
+                  <span
+                    class="error-block"
+                    *ngIf="workflowForm.get('legal_entity').invalid"
+                  >
+                    <span
+                      class="error"
+                      *ngIf="workflowForm.get('legal_entity').errors.required"
+                      >Legal entity is required. </span
+                    >
+                    
+                  </span>
+                </div>
+                
+              </div>
+            </div>
+
+            <div class="col-sm-1">
+                <div class="form-group">
+                  <label class="label">Periodicity <span class="obligatory">*</span></label>
+                  <nb-select
+                    formControlName="periodicity"
+                    id="periodicity"
+                    placeholder="-"
+                    fullWidth
+                    size="small"
+                    
+                  >
+                    <nb-option value="1">1 min</nb-option>
+                    <nb-option value="5">5 min</nb-option>
+                    <nb-option value="10">10 min</nb-option>
+                    <nb-option value="15">15 min</nb-option>
+                    <nb-option value="30">30 min</nb-option>
+                    <nb-option value="45">45 min</nb-option>
+                    <nb-option value="60">60 min</nb-option>
+        
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-1">
+                <div class="form-group">
+                  <label class="label"
+                      >Start time
+                      <span class="obligatory">*</span>
+                
+                  </label>
+                  <input
+                      id="startTime"
+                      [nbTimepicker]="timepickerStart"
+                      fullWidth
+                      nbInput
+                      formControlName="startTime"
+                  
+                      fieldSize="small"
+                      readonly
+                      (keydown)="false"
+                      onpaste="return false;"
+
+                      
+                  />  
+                  <nb-timepicker #timepickerStart></nb-timepicker>
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                      workflowForm.get('startTime').errors &&
+                        (workflowForm.get('startTime').touched ||
+                        workflowForm.get('startTime').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="workflowForm.get('startTime').errors.required"
+                        >Start time is required. </span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="workflowForm.get('startTime').errors.patterns"
+                        >Invalid time format. Please enter a time in HH:mm format</span
+                      >
+                      </span
+                      >
+                  </div>
+                  
+                </div>
+              </div>
+
+              <div class="col-sm-1">
+                <div class="form-group">
+                  <label class="label"
+                      >End time
+                      <span class="obligatory">*</span>
+                  </label>
+                  <input
+                      id="endTime"
+                      [nbTimepicker]="timepickerEnd"
+                      fullWidth
+                      nbInput
+                      formControlName="endTime"
+                      [status]="workflowForm.get('endTime').invalid && workflowForm.get('endTime').touched ? 'danger' : 'basic'"
+                      fieldSize="small"
+                      readonly
+                      (keydown)="false"
+                      onpaste="return false;"
+              
+
+                  />
+                  <nb-timepicker #timepickerEnd></nb-timepicker>
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                      workflowForm.get('endTime').errors &&
+                        (workflowForm.get('endTime').touched ||
+                        workflowForm.get('endTime').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="workflowForm.get('endTime').errors.required"
+                        >Start time is required. </span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="workflowForm.get('endTime').errors.patterns"
+                        >Invalid time format. Please enter a time in HH:mm format</span
+                      >
+                      </span
+                      >
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="label">Error message <span class="obligatory">*</span></label>
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    [status]="
+                      action == 'Update' && loading == false
+                        ? workflowForm.get('errorMessage').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                    formControlName="errorMessage"
+                  />
+                  
+                  <div class="error-div" *ngIf="action == 'Add'">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        workflowForm.get('errorMessage').errors &&
+                        (workflowForm.get('errorMessage').touched ||
+                          workflowForm.get('errorMessage').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="workflowForm.get('errorMessage').errors.required"
+                        >Error message is required. </span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="error-div"
+                    *ngIf="action == 'Update' && loading == false"
+                  >
+                    <span
+                      class="error-block"
+                      *ngIf="workflowForm.get('errorMessage').invalid"
+                    >
+                      <span
+                        class="error"
+                        *ngIf="workflowForm.get('errorMessage').errors.required"
+                        >Error message is required. </span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+          </div>
+       
+        
+       
+
+      
+       
+    
+      
+    
+      
+      </div>
+      <div class="row">
+      <div class="col-sm-6">
+        <nb-card class=" container-form">
+          <nb-card-header class="container-form-header">Action Preferences</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="actionPreferencesForm">
+                <div class="row">
+                    
+            <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Connection Point Type</label>
+                  <nb-select
+                    placeholder="-"
+                    fullWidth
+                    formControlName="connection_type"
+                    (selectedChange)="onChangeLogisticElementType($event)"
+                    size="small"
+                    [status]="
+                      actionPreferencesForm.get('connection_type').errors &&
+                      (actionPreferencesForm.get('connection_type').touched ||
+                        actionPreferencesForm.get('connection_type').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  >
+                    <nb-option
+                      *ngFor="let option of logisticElementsTypeOptions"
+                      [value]="option"
+                      >{{ option }}</nb-option
+                    >
+                  </nb-select>
+
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        actionPreferencesForm.get('connection_type').errors &&
+                        (actionPreferencesForm.get('connection_type').touched ||
+                          actionPreferencesForm.get('connection_type').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          actionPreferencesForm.get('connection_type').errors.required
+                        "
+                        >Connection Point Type is required. </span
+                      >
+                      
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+
+
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Connection Point</label>
+                  <nb-select
+                    placeholder="-"
+                    fullWidth
+                    formControlName="connection_point"
+                    size="small"
+                    (selectedChange)="onChangeConnectionPoint($event)"
+                    [status]="
+                      actionPreferencesForm.get('connection_point').errors &&
+                      (actionPreferencesForm.get('connection_point').touched ||
+                        actionPreferencesForm.get('connection_point').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  >
+                    <nb-option
+                      *ngFor="let option of logisticElementOptions"
+                      [value]="option.id"
+                      >{{ option.name }}</nb-option
+                    >
+                    
+                  </nb-select>
+
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        actionPreferencesForm.get('connection_point').errors &&
+                        (actionPreferencesForm.get('connection_point').touched ||
+                          actionPreferencesForm.get('connection_point').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          actionPreferencesForm.get('connection_point').errors.required
+                        "
+                        >Connection Point is required. </span
+                      >
+                      
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="label">Service</label>
+    
+                  <nb-select
+                    fullWidth
+                    placeholder="-"
+                    formControlName="service"
+                    [(selected)]="selectedServices"
+                    size="small"
+                    (selectedChange)="onChangeService($event)"
+                    [status]="
+                      actionPreferencesForm.get('service').errors &&
+                      (actionPreferencesForm.get('service').touched ||
+                        actionPreferencesForm.get('service').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  >
+                  
+                    <nb-option
+                      *ngFor="let option of serviceOptions"
+                      [value]="option.id"
+                      >{{ option.label }}</nb-option
+                    >
+                  </nb-select>
+
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        actionPreferencesForm.get('service').errors &&
+                        (actionPreferencesForm.get('service').touched ||
+                          actionPreferencesForm.get('service').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          actionPreferencesForm.get('service').errors.required
+                        "
+                        >Service is required. </span
+                      >
+                      
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+              
+
+                </div>
+                <div class="row">
+                
+                  
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Action</label>
+                      <nb-select
+                        placeholder="-"
+                        formControlName="action"  
+                        fullWidth
+                        [status]=""  
+                        size="small"
+                        [status]="
+                          actionPreferencesForm.get('action').errors &&
+                          (actionPreferencesForm.get('action').touched ||
+                            actionPreferencesForm.get('action').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                      >
+                        <nb-option value="Increase">Increase</nb-option>
+                        <nb-option value="Decrease">Decrease</nb-option>
+                      </nb-select>
+
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            actionPreferencesForm.get('action').errors &&
+                            (actionPreferencesForm.get('action').touched ||
+                              actionPreferencesForm.get('action').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              actionPreferencesForm.get('action').errors.required
+                            "
+                            >Action is required. </span
+                          >
+                          
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="label">Priority</label>
+      
+                      <input
+                        type="text"
+                        nbInput
+                        fullWidth
+                        formControlName="priority"
+                        [status]="
+                          actionPreferencesForm.get('priority').errors &&
+                          (actionPreferencesForm.get('priority').touched ||
+                            actionPreferencesForm.get('priority').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        fieldSize="small"
+                      />
+      
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            actionPreferencesForm.get('priority').errors &&
+                            (actionPreferencesForm.get('priority').touched ||
+                              actionPreferencesForm.get('priority').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              actionPreferencesForm.get('priority').errors.required
+                            "
+                            >Priority is required. </span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="
+                              actionPreferencesForm.get('priority').errors.pattern || actionPreferencesForm.get('priority').errors.min 
+                            "
+                            >Only positive integer numbers (no decimals)</span
+                          >
+                    
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label class="label">Limit</label>
+      
+                      <input
+                        type="text"
+                        nbInput
+                        fullWidth
+                        formControlName="limit"
+                        [status]="
+                          actionPreferencesForm.get('limit').errors &&
+                          (actionPreferencesForm.get('limit').touched ||
+                            actionPreferencesForm.get('limit').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        fieldSize="small"
+                      />
+      
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            actionPreferencesForm.get('limit').errors &&
+                            (actionPreferencesForm.get('limit').touched ||
+                              actionPreferencesForm.get('limit').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              actionPreferencesForm.get('limit').errors.required
+                            "
+                            >Limit is required. </span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="
+                              actionPreferencesForm.get('limit').errors.pattern
+                            "
+                            >Only numbers (points as thousands and
+                            commas as decimals)</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Date</label>
+                      <input
+                        nbInput
+                        placeholder="dd.MM.yyyy"
+                        [nbDatepicker]="datePicker"
+                        formControlName="date"
+                        [status]="
+                              actionPreferencesForm.get('date').errors &&
+                              (actionPreferencesForm.get('date').touched ||
+                              actionPreferencesForm.get('date').dirty)
+                              ? 'danger'
+                              : 'basic'
+                        "
+                        fieldSize="small"
+                        fullWidth
+                      />
+                      <nb-datepicker
+                        #datePicker 
+                        
+                        format="dd.MM.yyyy"
+                      ></nb-datepicker>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            actionPreferencesForm.get('date').errors &&
+                            (actionPreferencesForm.get('date').touched ||
+                            actionPreferencesForm.get('date').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              actionPreferencesForm.get('date').errors
+                                .required
+                            "
+                            >Date is required or the format must be
+                            dd.MM.yyyy</span
+                          >
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+                  <div class="col-sm-2" style="margin-top: 1.8rem; text-align: right">
+                    <div class="form-group">
+                      <button
+                        nbButton
+                        status="success"
+                        size="tiny"
+                        (click)="addRowActionPreferences()"
+                        [disabled]="!actionPreferencesForm.valid"
+                    
+                      >
+                        <nb-icon icon="arrow-down"></nb-icon>
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+                <div class="col-sm-12">
+                  <div *ngIf="validateRevogrid == false" class="error-div">
+                    <nb-alert outline="danger">
+                      <a style="color: #a3162e !important; font-size: 0.8rem"
+                        ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                        &nbsp; The values must be numbers (points as thousands and
+                        commas as decimals).
+                      </a></nb-alert
+                    >
+                  </div>
+
+                  <div *ngIf="isDuplicatePriority == true" class="error-div">
+                    <nb-alert outline="danger">
+                      <a style="color: #a3162e !important; font-size: 0.8rem"
+                        ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                        &nbsp; Priorities cannot be duplicated on the same date and action</a
+                      ></nb-alert
+                    >
+                  </div>
+
+                  <!--        <div *ngIf="totalQuantityValid == false" class="error-div">
+                    <nb-alert outline="warning">
+                      <a style="color: #b19100 !important; font-size: 0.8rem"
+                        ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                        The total quantity of all swap schedules must be 0!</a
+                      ></nb-alert
+                    >
+                  </div>  -->
+                </div>
+              </div>
+    
+              <revo-grid
+                id="revogridActionPreferences"
+                [columns]="columnsActionPreferences"
+                [theme]="revogridTheme"
+                [source]="rowsActionPreferences"
+                rowSize="30"
+                range="true"
+                stretch="false"
+                resize="true"
+              ></revo-grid>
+          </nb-card-body>
+          </nb-card>
+        
+        
+      </div>
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+            <nb-card-header class="container-form-header">Threshold Preferences</nb-card-header>
+            <nb-card-body>
+              <form [formGroup]="thresholdPreferencesForm">
+                <div class="row">
+                    
+         
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label disabled-label">Delivery Point Type</label>
+                      <nb-select
+                        [disabled]="true"
+                        placeholder="logistic_element"
+                        fullWidth
+                        formControlName="threshold_connection_type"
+                        
+                        size="small"
+                        class="disabled-selector"
+                      >
+                      
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Element Type</label>
+                      <nb-select
+                        placeholder="-"
+                        fullWidth
+                        formControlName="threshold_element_type"
+                        [status]="
+                          thresholdPreferencesForm.get('threshold_element_type').errors &&
+                          (thresholdPreferencesForm.get('threshold_element_type').touched ||
+                          thresholdPreferencesForm.get('threshold_element_type').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        size="small"
+                        (selectedChange)="onChangeElementType($event)"
+                      >
+                      
+                        <nb-option value="underground_storage">underground_storage</nb-option>
+                        <nb-option value="virtual_balancing_point">virtual_balancing_point</nb-option>
+                        <nb-option value="tank">tank</nb-option>
+                        
+                      </nb-select>
+
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            thresholdPreferencesForm.get('threshold_element_type').errors &&
+                            (thresholdPreferencesForm.get('threshold_element_type').touched ||
+                              thresholdPreferencesForm.get('threshold_element_type').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('threshold_element_type').errors.required
+                            "
+                            >Element Type is required. </span
+                          >
+                          
+                        </span>
+                      </div>
+                      
+      
+                    </div>
+                  </div>
+      
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label">Infrastructure</label>
+        
+                      <nb-select
+                        fullWidth
+                        placeholder="-"
+                        formControlName="threshold_infrastructure"
+                        size="small"
+                        (selectedChange)="onChangeInfrastructure($event)"
+                        [status]="
+                          thresholdPreferencesForm.get('threshold_infrastructure').errors &&
+                          (thresholdPreferencesForm.get('threshold_infrastructure').touched ||
+                          thresholdPreferencesForm.get('threshold_infrastructure').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                      > 
+                        <nb-option
+                          *ngFor="let option of deliveryPointOptions"
+                          [value]="option.id"
+                          >{{ option.name }}</nb-option
+                        >
+                      </nb-select>
+
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            thresholdPreferencesForm.get('threshold_infrastructure').errors &&
+                            (thresholdPreferencesForm.get('threshold_infrastructure').touched ||
+                            thresholdPreferencesForm.get('threshold_infrastructure').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('threshold_infrastructure').errors.required
+                            "
+                            >Infrastructure is required. </span
+                          >
+                        </span>
+                      </div>
+      
+                    </div>
+                  </div>
+                  
+                </div>  <!-- Closing Parameters row -->
+        
+                <div class="row">
+      
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Lower threshold</label>
+      
+                      <input
+                        type="text"
+                        nbInput
+                        fullWidth
+                        formControlName="lower_threshold"
+                        [status]="
+                          thresholdPreferencesForm.get('lower_threshold').errors &&
+                          (thresholdPreferencesForm.get('lower_threshold').touched ||
+                          thresholdPreferencesForm.get('lower_threshold').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        fieldSize="small"
+                        (ngModelChange)="onLowerThresholdKeydown($event)"
+                      />
+      
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            thresholdPreferencesForm.get('lower_threshold').errors &&
+                            (thresholdPreferencesForm.get('lower_threshold').touched ||
+                            thresholdPreferencesForm.get('lower_threshold').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('lower_threshold').errors.required
+                            "
+                            >Lower threshold is required. </span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('lower_threshold').errors.pattern
+                            "
+                            >Only numbers (points as thousands and
+                            commas as decimals)</span
+                          >
+                          
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+      
+      
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Upper threshold</label>
+      
+                      <input
+                        type="text"
+                        nbInput
+                        fullWidth
+                        formControlName="upper_threshold"
+                        [status]="
+                          thresholdPreferencesForm.get('upper_threshold').errors &&
+                          (thresholdPreferencesForm.get('upper_threshold').touched ||
+                          thresholdPreferencesForm.get('upper_threshold').dirty)
+                            ? 'danger'
+                            : 'basic'
+                        "
+                        [status]="errorUpperThreshold==true
+                          ? 'danger'
+                          : 'basic'
+                          "
+
+                        fieldSize="small"
+                        (ngModelChange)="onUpperThresholdKeydown($event)"
+                      />
+      
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            thresholdPreferencesForm.get('upper_threshold').errors &&
+                            (thresholdPreferencesForm.get('upper_threshold').touched ||
+                            thresholdPreferencesForm.get('upper_threshold').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('upper_threshold').errors.required
+                            "
+                            >Upper threshold is required. </span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('upper_threshold').errors.pattern
+                            "
+                            >Only numbers (points as thousands and
+                            commas as decimals)</span
+                          >
+                          
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('upper_threshold').errors && 
+                              thresholdPreferencesForm.get('upper_threshold').errors.upperThresholdInvalid
+                            "
+                            >Upper threshold is invalid (must be greater than Lower Threshold)</span
+                          >
+                          
+                        </span>
+                      </div>
+                      <div class="error-div">
+                        <span class="error-block" *ngIf="errorUpperThreshold == true">
+                          <span class="error" *ngIf="errorUpperThreshold == true"
+                            >Lower Threshold cannot be greater that Upper Threshold</span
+                          >
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                  
+      
+                  
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label class="label">Date</label>
+                      <input
+                        nbInput
+                        placeholder="dd.MM.yyyy"
+                        [nbDatepicker]="thresholdDatePicker"
+                        formControlName="threshold_date"
+                        [status]="
+                              thresholdPreferencesForm.get('threshold_date').errors &&
+                              (thresholdPreferencesForm.get('threshold_date').touched ||
+                              thresholdPreferencesForm.get('threshold_date').dirty)
+                              ? 'danger'
+                              : 'basic'
+                        "
+                        fieldSize="small"
+                        fullWidth
+                      />
+                      <nb-datepicker
+                        #thresholdDatePicker 
+                        
+                        format="dd.MM.yyyy"
+                      ></nb-datepicker>
+                      <div class="error-div">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            thresholdPreferencesForm.get('threshold_date').errors &&
+                            (thresholdPreferencesForm.get('threshold_date').touched ||
+                            thresholdPreferencesForm.get('threshold_date').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              thresholdPreferencesForm.get('threshold_date').errors
+                                .required
+                            "
+                            >Date is required or the format must be
+                            dd.MM.yyyy</span
+                          >
+                        </span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="col-sm-3" style="margin-top: 1.8rem; text-align: right">
+                    <div class="form-group">
+                      <button
+                        nbButton
+                        status="success"
+                        size="tiny"
+                    
+                        (click)="addRowThresholdPreferences()"
+                        [disabled]="!thresholdPreferencesForm.valid || errorUpperThreshold"
+                      >
+                        <nb-icon icon="arrow-down"></nb-icon>
+                        Add
+                      </button>
+                    </div>
+                  </div>
+          
+                </div>
+          
+              </form>
+              <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+                <div class="col-sm-12">
+                  <div *ngIf="validateRevogrid == false" class="error-div">
+                    <nb-alert outline="danger">
+                      <a style="color: #a3162e !important; font-size: 0.8rem"
+                        ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                        &nbsp; The values must be numbers (points as thousands and
+                        commas as decimals).
+                      </a></nb-alert
+                    >
+                  </div>
+                  <!--        <div *ngIf="totalQuantityValid == false" class="error-div">
+                    <nb-alert outline="warning">
+                      <a style="color: #b19100 !important; font-size: 0.8rem"
+                        ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                        The total quantity of all swap schedules must be 0!</a
+                      ></nb-alert
+                    >
+                  </div>  -->
+                </div>
+              </div>
+              <revo-grid
+              id="revogridThresholdPreferences"
+              [columns]="columnsThresholdPreferences"
+              [theme]="revogridTheme"
+              [source]="rowsThresholdPreferences"
+              rowSize="30"
+              range="true"
+              stretch="false"
+              resize="true"
+            ></revo-grid>
+            </nb-card-body>
+            </nb-card>
+      </div>
+      </div>
+ 
+
+   
+   
+
+   </form> 
+  </nb-card-body>
+
+  <nb-card-footer *ngIf="action != 'View'" style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="!workflowForm.valid || isDuplicatePriority"
+      (click)="add()"
+
+      size="small"
+    >
+      {{ action }}
+    </button>
+    
+  </nb-card-footer>
+</nb-card>

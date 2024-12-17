@@ -1,0 +1,35 @@
+<nb-card>
+ 
+    <nb-card-body>
+      
+        <form [formGroup]="downloadForm">
+            <label class="label">Start Date - End Date</label>
+            <input
+              nbInput
+              placeholder="dd.mm.yyyy - dd.mm.yyyy"
+              [nbDatepicker]="rangepicker"
+              formControlName="date"
+              [status]="errorDate1 == true ? 'danger' : 'basic'"
+              fullWidth
+              fieldSize="small"
+            />
+            <nb-rangepicker #rangepicker format="dd.MM.yyyy"></nb-rangepicker>
+            <div class="error-div" *ngIf="downloadForm.get('date').errors &&
+            (downloadForm.get('date').touched ||
+              downloadForm.get('date').dirty)">
+              <span class="error-block" *ngIf="errorDate1 == true">
+                <span class="error" *ngIf="errorDate1 == true"
+                  >The format must be dd.MM.yyyy and start date <= end
+                  date</span
+                >
+              </span>
+            </div>
+        </form>
+              
+             
+    </nb-card-body>
+    <nb-card-footer style="text-align: right;">
+        <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">Close</button>
+        <button nbButton status="success" (click)="download()" [disabled]="!downloadForm.valid" size="small">download</button>
+    </nb-card-footer>
+</nb-card>

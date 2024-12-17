@@ -1,0 +1,132 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="dialog"
+>
+
+  <nb-card-header>
+    <span>{{ title }}</span>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="detailForm">
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Start Time</label>
+        <div class="col-sm-9">
+          <input
+            fieldSize="small"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="timestamp"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">User</label>
+        <div class="col-sm-9">
+          <input
+            fieldSize="small"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="user_id"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Source</label>
+        <div class="col-sm-9">
+          <input
+            fieldSize="small"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="source"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Destination</label>
+        <div class="col-sm-9">
+          <input
+            fieldSize="small"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="destination"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Endpoint</label>
+        <div class="col-sm-9">
+          <input
+            fieldSize="small"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="endpoint"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Method</label>
+        <div class="col-sm-9">
+          <input
+            fieldSize="small"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="method"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Status</label>	&nbsp;	&nbsp;	&nbsp;
+        <div *ngIf="status == '200'">
+          <i style="color: #088e47" class="fas fa-check-circle fa-lg"></i>	&nbsp;	&nbsp;	&nbsp;
+        Success
+        </div>
+        <div *ngIf="status != '200'">
+          <i style="color: #e32c2c" class="fas fa-times-circle fa-lg"></i>	&nbsp;	&nbsp;	&nbsp;Error
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Request Data</label>
+        <div class="col-sm-9">
+          <textarea
+            class="request-area"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="request_data"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="label col-sm-2 col-form-label">Response Data</label>
+        <div class="col-sm-9">
+          <textarea
+            class="request-area"
+            nbInput
+            fullWidth
+            size="large"
+            formControlName="response_data"
+          ></textarea>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>

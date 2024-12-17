@@ -1,0 +1,528 @@
+<nb-accordion multi   [nbSpinner]="loadingForm"
+nbSpinnerSize="small"
+nbSpinnerStatus="primary">
+  <nb-accordion-item #generateassignment>
+    <nb-accordion-item-header>
+      <span>Generate Assignments</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <form [formGroup]="assignmentForm">
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Country</label>
+
+              <nb-select
+                placeholder="-"
+                formControlName="country_code"
+                id="country"
+                (selectedChange)="onChangeCountry($event)"
+                size="small"
+                fullWidth
+              >
+                <nb-option
+                  *ngFor="let option of countriesOptions"
+                  [value]="option.code"
+                  >{{ option.code }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Balancing Zone</label>
+              <nb-select
+                placeholder="-"
+                formControlName="balancing_zone"
+                fullWidth
+                [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                (selectedChange)="onChangeBalanceZone($event)"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of zoneOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorBalanceZone == true">
+                  <span class="error" *ngIf="errorBalanceZone == true"
+                    >There are no balancing zone results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Connection Point type</label>
+              <nb-select
+                placeholder="-"
+                fullWidth
+                formControlName="connection_type"
+                (selectedChange)="onChangeLogisticElementType($event)"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of logisticElementsTypeOptions"
+                  [value]="option"
+                  >{{ option }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Connection Point</label>
+              <nb-select
+                placeholder="-"
+                fullWidth
+                formControlName="connection_point"
+                [status]="errorLogisticElement == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of logisticElementOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+                <div class="error-div">
+                  <span
+                    class="error-block"
+                    *ngIf="errorLogisticElement == true"
+                  >
+                    <span class="error" *ngIf="errorLogisticElement == true"
+                      >There are no infraestructures results for this country
+                      and balancing zone</span
+                    >
+                  </span>
+                </div>
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label class="label">Service</label>
+
+              <nb-select
+                placeholder="-"
+                fullWidth
+                formControlName="service"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of serviceOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Legal Entity</label>
+              <nb-select
+                placeholder="-"
+                formControlName="legal_entity"
+                fullWidth
+                [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of entitiesOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorLegalEntity == true">
+                  <span class="error" *ngIf="errorLegalEntity == true"
+                    >There are no legal entities results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+   
+            <div class="form-group">
+              <label class="label">Start Date - End Date</label>
+              <input
+                nbInput
+                fieldSize="small"
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                [nbDatepicker]="rangepicker"
+                formControlName="date"
+                [status]="errorDate == true ? 'danger' : 'basic'"
+                fullWidth
+              />
+              <nb-rangepicker #rangepicker format="dd.MM.yyyy"></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate == true">
+                  <span class="error" *ngIf="errorDate == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+  
+
+       
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                nbButton
+                status="primary"
+                (click)="calculate(false, true)"
+                [disabled]="!assignmentForm.valid"
+                size="small"
+              >
+                <nb-icon icon="arrow-right"></nb-icon>
+                Calculate
+              </button>
+              <button
+                nbButton
+                status="basic"
+                (click)="reset()"
+                size="small"
+                [disabled]="!assignmentForm.valid"
+              >
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+  <!--      <nb-accordion-item #assignmentView [nbSpinner]="loadingViewassignment" nbSpinnerSize="small" nbSpinnerStatus="primary">
+      <nb-accordion-item-header>
+        assignment View
+      </nb-accordion-item-header>
+      <nb-accordion-item-body>
+        <nb-tabset *ngIf="dataView" id="tabset" name="tabset" #tabset (changeTab)="onChangeTab($event)">
+          <nb-tab *ngFor="let element of dataView" tabTitle="{{ element.name }}" [active]="true">
+            <form [formGroup]="exportForm">
+              <div class="row">
+                <div class="col-sm-5">
+                  <nb-list>
+                    <nb-list-item>
+                      <span style="
+                          background-color: #90979f26;
+                          border: 1px solid;
+                          border-color: #898989;
+                        ">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</span>
+                      &nbsp; Disabled Cells
+                    </nb-list-item>
+                  </nb-list>
+                </div>
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-1" style="margin-top: 3.1rem;">
+                  <div class="form-group">
+                    <button nbButton status="primary" size="small" fullWidth (click)="submit()">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <nb-card class="export-container">
+                    <nb-card-header class="export-container-header">Export Options</nb-card-header>
+                    <nb-card-body  class="export-container-body">
+                      <div class="row">
+                        <div class="col-sm-7" style="margin-top: 0.2rem;">
+                          <div class="form-group">
+                            <nb-select 
+                              <nb-option *ngFor="let option of exportOptions" [value]="option.id">{{ option.label
+                                }}</nb-option>
+                            </nb-select>
+                          </div>
+    
+                        </div>
+                        <div class="col-sm-5">
+                          <div class="form-group">
+                            <button outline status="primary" size="small" [disabled]="!exportForm.valid" nbButton outline
+                              fullWidth (click)="export('view')">
+                              Export
+                            </button>
+                          </div>
+    
+                        </div>
+    
+                      </div>
+    
+    
+    
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+    
+    
+              </div>
+            </form>
+    
+            <div *ngIf="validateRevogridView == false" class="error-div">
+              <nb-alert outline="danger">The values must be numbers!</nb-alert>
+            </div>
+            <div *ngIf="validateCapacityView == false" class="error-div">
+              <nb-alert outline="danger">
+                The values entered were reversed because they exceed the capacity of
+                the following contracts: {{ errorsString }}</nb-alert>
+            </div>
+    
+            <nb-card size="medium" class="card-table" id="cardTable">
+              <revo-grid id="view" [source]="element.rows"
+                [columns]="element.columns" theme="material" filter="{true}" (afteredit)="onAfterEdit($event)"
+                (beforeedit)="onBeforeEdit($event, $event)" (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+                exporting="true" row-size="30" range="true"></revo-grid>
+            </nb-card>
+          </nb-tab>
+        </nb-tabset>
+      
+      </nb-accordion-item-body>
+    </nb-accordion-item>  -->
+  <!--   <nb-accordion-item #assignmentView [nbSpinner]="loadingViewassignment" nbSpinnerSize="small" nbSpinnerStatus="primary">
+      <nb-accordion-item-header>
+        assignment Comparison
+      </nb-accordion-item-header>
+      <nb-accordion-item-body>
+        <nb-tabset *ngIf="dataComparion" id="tabset" name="tabset" #tabset (changeTab)="onChangeTab($event)">
+          <nb-tab *ngFor="let element of   dataComparion" tabTitle="{{ element.name }}" [active]="true">
+            <form [formGroup]="exportForm">
+              <div class="row">
+                <div class="col-sm-5">
+                  <nb-list>
+                    <nb-list-item>
+                      <span style="
+                          background-color: #90979f26;
+                          border: 1px solid;
+                          border-color: #898989;
+                        ">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</span>
+                      &nbsp; Disabled Cells
+                    </nb-list-item>
+                  </nb-list>
+                </div>
+                <div class="col-sm-3">
+                </div>
+             
+                <div class="col-sm-3">
+                  <nb-card class="export-container">
+                    <nb-card-header class="export-container-header">Export Options</nb-card-header>
+                    <nb-card-body  class="export-container-body">
+                      <div class="row">
+                        <div class="col-sm-7" style="margin-top: 0.2rem;">
+                          <div class="form-group">
+                            <nb-select 
+                              <nb-option *ngFor="let option of exportOptions" [value]="option.id">{{ option.label
+                                }}</nb-option>
+                            </nb-select>
+                          </div>
+    
+                        </div>
+                        <div class="col-sm-5">
+                          <div class="form-group">
+                            <button outline status="primary" size="small" [disabled]="!exportForm.valid" nbButton outline
+                              fullWidth (click)="export()">
+                              Export
+                            </button>
+                          </div>
+    
+                        </div>
+    
+                      </div>
+    
+    
+    
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+    
+    
+              </div>
+            </form>
+    
+            <div *ngIf="validateRevogrid == false" class="error-div">
+              <nb-alert outline="danger">The values must be numbers!</nb-alert>
+            </div>
+            <div *ngIf="validateCapacity == false" class="error-div">
+              <nb-alert outline="danger">
+                The values entered were reversed because they exceed the capacity of
+                the following contracts: {{ errorsString }}</nb-alert>
+            </div>
+    
+            <nb-card size="medium" class="card-table" id="cardTable">
+              <revo-grid id="comparison" [source]="element.rows"
+                [columns]="element.columns" theme="material" filter="{true}" (afteredit)="onAfterEdit($event)"
+                (beforeedit)="onBeforeEdit($event, $event)" (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+                exporting="true" row-size="30" range="true"></revo-grid>
+            </nb-card>
+          </nb-tab>
+        </nb-tabset>
+      
+      </nb-accordion-item-body>
+    </nb-accordion-item> 
+  </nb-accordion>
+    <nb-accordion-item #assignmentComparison [nbSpinner]="loadingComparison" nbSpinnerSize="small" nbSpinnerStatus="primary">
+      <nb-accordion-item-header>
+        assignment Comparison
+      </nb-accordion-item-header>
+      <nb-accordion-item-body>
+      </nb-accordion-item-body>
+    </nb-accordion-item> -->
+</nb-accordion>
+
+<nb-card
+  [nbSpinner]="loadingViewassignment"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>
+    <span>Assignments View</span>
+    <nb-actions size="small">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!dataView"
+      >
+        Export
+      </button>
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="TSOMenu"
+        class="action-button"
+        [disabled]="!dataView"
+        *nbIsGranted="['create', 'assignments']"
+      >
+        TSO Action
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV Current Sheet
+      </button>
+    </mat-menu>
+    <mat-menu #TSOMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="submit()">
+        Submit Current Sheet
+      </button>
+      <button mat-menu-item class="action-button" (click)="compare()">
+        Compare Current Sheet
+      </button>
+      <button
+        mat-menu-item
+        class="action-button"
+        [matMenuTriggerFor]="TSOExportMenu"
+      >
+        Export Data
+      </button>
+    </mat-menu>
+    <mat-menu #TSOExportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLS Current Sheet
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsXML()">
+        XML Current Sheet
+      </button>
+    </mat-menu>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-tabset
+      *ngIf="dataView"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of dataView"
+        tabTitle="{{ element.name }}"
+        tabId="{{ element.id }}"
+        [active]="true"
+      >
+        <div class="row" style="margin-bottom: 1rem">
+          <div class="col-sm-12" style="text-align: right;">
+            <button
+
+            type="submit"
+            nbButton
+            status="basic"
+            (click)="refresh()"
+            size="tiny"
+          >
+            <nb-icon icon="sync-outline"></nb-icon>
+            Refresh
+          </button>
+          </div>
+        </div>
+        <form [formGroup]="exportForm"></form>
+        <div *ngIf="errorsCompare">
+          <nb-alert
+            outline="warning"
+            *ngIf="errorsCompare"
+            style="font-size: 0.7rem"
+          >
+            <a style="color: #b19100 !important; font-size: 0.8rem"
+              ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp;
+              &nbsp; ({{ timestamp }}) <br />
+
+              {{ errorsCompare }}
+            </a>
+          </nb-alert>
+        </div>
+        <div *ngIf="validateRevogridView == false" class="error-div">
+          <nb-alert outline="danger">
+            <a style="color: #a3162e !important; font-size: 0.8rem"
+              ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The
+              values must be numbers (points as thousands and commas as
+              decimals) greater than 0.
+            </a></nb-alert
+          >
+        </div>
+        <div *ngIf="element.errorsContracts" class="error-div">
+          <nb-alert outline="warning">
+            <a style="color: #b19100 !important; font-size: 0.8rem"
+              ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp;
+              &nbsp; The following contracts exceed capacity:
+              {{ element.errorsContracts }}
+            </a>
+          </nb-alert>
+        </div>
+
+        <nb-card  class="card-table" id="card-table">
+          <revo-grid
+            [source]="element.rows"
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (viewportscroll)="OnViewPortScroll($event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            exporting="true"
+            row-size="30"
+            range="true"
+            stretch="false"
+            [readonly]="readonly"
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>
+

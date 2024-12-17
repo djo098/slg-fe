@@ -1,0 +1,60 @@
+<nb-card [nbSpinner]="loading" nbSpinnerSize="small" nbSpinnerStatus="primary" class="main-container">
+  <nb-card-header>
+    <span>{{ legalEntityName }}</span>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="dataView">
+      <div *ngFor="let element of dataView">
+        <div class="row mb-1">
+          <div class="col-sm-12 mt-1 text-right">
+            <button type="submit" nbButton status="basic" (click)="refresh()" size="tiny">
+              <nb-icon icon="sync-outline"></nb-icon> Refresh
+            </button>
+          </div>
+        </div>
+
+        <nb-alert outline="danger" *ngIf="!validateRevogridView" class="error-div">
+          <a style="color: #a3162e !important; font-size: 0.8rem">
+            <nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The values must be numbers (points as thousands and commas as decimals) greater than 0.
+          </a>
+        </nb-alert>
+
+        <nb-alert outline="danger" *ngIf="!validateCapacity" class="error-div">
+          <a style="color: #a3162e !important; font-size: 0.8rem">
+            <nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The contracts with 0 capacity cannot be nominated.
+          </a>
+        </nb-alert>
+
+        <nb-alert outline="warning" *ngIf="element.errorsContracts" class="error-div">
+          <a style="color: #b19100 !important; font-size: 0.8rem">
+            <nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp; &nbsp; The following contracts exceed capacity: {{ element.errorsContracts }}.
+          </a>
+        </nb-alert>
+
+        <nb-card class="card-table">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            exporting="true"
+            row-size="30"
+            col-size="150"
+            range="true"
+            stretch="false"
+            [readonly]="readonly"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer class="text-right">
+    <button nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>

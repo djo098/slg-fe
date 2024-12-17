@@ -1,0 +1,163 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="entityAssociationForm">
+      <input
+      formControlName="id"
+      type="number"
+      nbInput
+      id="id"
+      style="display: none"
+    />
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Country <span class="obligatory">*</span></label>
+            <nb-select 
+              formControlName="country_code"
+              size="small"
+              id="country"
+              fullWidth
+              (selectedChange)="onChangeCountry($event)"
+              placeholder="-"
+            >
+              <nb-option
+                *ngFor="let option of countriesOptions"
+                [value]="option.code"
+                >{{ option.code }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-6">
+           
+      <div class="form-group">
+        <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+        <nb-select
+          formControlName="balance_zone_id"
+          size="small"
+          id="balance_zone_name"
+          fullWidth
+          [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+          placeholder="-"
+        >
+          <nb-option *ngFor="let option of zoneOptions" [value]="option.id">{{
+            option.label
+          }}</nb-option>
+        </nb-select>
+        <div class="error-div">
+          <span class="error-block" *ngIf="errorBalanceZone == true">
+            <span class="error" *ngIf="errorBalanceZone == true"
+              >There are no balance zone results for this country</span
+            >
+          </span>
+        </div>
+      </div>
+        </div>
+        <div class="col-sm-6">
+          
+      <div class="form-group">
+        <label class="label">Legal Entity <span class="obligatory">*</span></label>
+        <angular2-multiselect
+
+        [data]="entitiesOptions"
+        [settings]="settingsEntity"
+        [ngClass]="errorLegalEntity== true
+          ? 'error-select'
+          : ''"
+          formControlName="legal_entity_id"
+      >
+      </angular2-multiselect>
+    <!--     <nb-select
+          size="small"
+          fullWidth
+          formControlName="legal_entity_id"
+          [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+          placeholder="-"
+        >
+          <nb-option
+            *ngFor="let option of entitiesOptions"
+            [value]="option.id"
+            >{{ option.name }}</nb-option
+          >
+        </nb-select> -->
+        <div class="error-div">
+          <span class="error-block" *ngIf="errorLegalEntity == true">
+            <span class="error" *ngIf="errorLegalEntity == true"
+              >There are no legal entities results for this country</span
+            >
+          </span>
+        </div>
+      </div>
+        </div>
+        <div class="col-sm-6">
+          
+      <div class="form-group">
+        <label class="label">TSO Code <span class="obligatory">*</span></label>
+        <input
+          formControlName="tso_code"
+          type="text"
+          nbInput
+          id="tso_code"
+          fullWidth
+          fieldSize="small"
+          [status]="
+            entityAssociationForm.get('tso_code').errors &&
+            (entityAssociationForm.get('tso_code').touched ||
+              entityAssociationForm.get('tso_code').dirty)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+        <div class="error-div">
+          <span
+            class="error-block"
+            *ngIf="
+              entityAssociationForm.get('tso_code').errors &&
+              (entityAssociationForm.get('tso_code').touched ||
+                entityAssociationForm.get('tso_code').dirty)
+            "
+          >
+            <span
+              class="error"
+              *ngIf="entityAssociationForm.get('tso_code').errors.required"
+              >TSO Code is required</span
+            >
+          </span>
+        </div>
+      </div>
+    
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <nb-checkbox formControlName="primary" status="primary"
+            nbTooltip="Indicates if this is the main code for sending to TSO"
+            nbTooltipPlacement="right"
+            nbTooltipStatus="primary" >Primary Code</nb-checkbox
+            >
+          </div>
+        </div> 
+      </div>
+   
+
+    
+
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!entityAssociationForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

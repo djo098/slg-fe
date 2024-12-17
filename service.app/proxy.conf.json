@@ -1,0 +1,13 @@
+{
+    "/api/*": {
+      "target": "https://slg2-pre-app-03.azurewebsites.net/",
+      "secure": false,
+      "pathRewrite": {
+        "^/api": ""
+       
+      },
+      "changeOrigin": true
+  
+    }
+  }
+

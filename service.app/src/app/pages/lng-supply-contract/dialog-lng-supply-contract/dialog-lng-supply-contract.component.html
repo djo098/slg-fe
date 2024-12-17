@@ -1,0 +1,1453 @@
+<nb-card
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+  class="dialog-parameter"
+>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Contract Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="lngsupplyForm">
+              <div class="row">
+                <input
+                  formControlName="id"
+                  type="number"
+                  id="id"
+                  nbInput
+                  style="display: none"
+                />
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Trade Id <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="trade_id"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('trade_id').errors &&
+                            (lngsupplyForm.get('trade_id').touched ||
+                              lngsupplyForm.get('trade_id').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('trade_id').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          lngsupplyForm.get('trade_id').errors &&
+                          (lngsupplyForm.get('trade_id').touched ||
+                            lngsupplyForm.get('trade_id').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_id').errors.required"
+                          >Trade id Code is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_id').errors.pattern"
+                          >only integer numbers</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_id').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('trade_id').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_id').errors.required"
+                          >Trade id Code is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_id').errors.pattern"
+                          >only integer numbers</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_id').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+             <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Registration Date
+                      <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.MM.yyyy HH:mm:ss"
+                      [nbDatepicker]="dateTimePicker"
+                      formControlName="registration_date"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('registration_date').errors &&
+                            (lngsupplyForm.get('registration_date').touched ||
+                              lngsupplyForm.get('registration_date').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('registration_date').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-date-timepicker
+                      #dateTimePicker
+                      withSeconds
+                      format="dd.MM.yyyy HH:mm:ss"
+                      
+                    ></nb-date-timepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          lngsupplyForm.get('registration_date').errors &&
+                          (lngsupplyForm.get('registration_date').touched ||
+                            lngsupplyForm.get('registration_date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('registration_date').errors
+                              .required
+                          "
+                          >Registration date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('registration_date').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('registration_date').errors
+                              .required
+                          "
+                          >Registration date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+               <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Trade Date
+                      <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.MM.yyyy HH:mm:ss"
+                      [nbDatepicker]="dateTimePickerTrade"
+                      formControlName="trade_date"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('trade_date').errors &&
+                            (lngsupplyForm.get('trade_date').touched ||
+                              lngsupplyForm.get('trade_date').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('trade_date').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-date-timepicker
+                      #dateTimePickerTrade
+                      withSeconds
+                      format="dd.MM.yyyy HH:mm:ss"
+                    ></nb-date-timepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          lngsupplyForm.get('trade_date').errors &&
+                          (lngsupplyForm.get('trade_date').touched ||
+                            lngsupplyForm.get('trade_date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_date').errors.required"
+                          >Trade date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('trade_date').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('trade_date').errors.required"
+                          >Trade date is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+               <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Status <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="status"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('status').errors &&
+                          (lngsupplyForm.get('status').touched ||
+                            lngsupplyForm.get('status').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('status').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('status').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('status').errors.required"
+                          >Status is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Legal Entity <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="legal_entity"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('legal_entity').errors &&
+                          (lngsupplyForm.get('legal_entity').touched ||
+                            lngsupplyForm.get('legal_entity').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('legal_entity').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorLegalEntity == true"
+                      >
+                        <span class="error" *ngIf="errorLegalEntity == true"
+                          >There are no legal entities results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('legal_entity').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('legal_entity').errors.required
+                          "
+                          >Legal entity is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Contract Type <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="contract_type"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('contract_type').errors &&
+                          (lngsupplyForm.get('contract_type').touched ||
+                            lngsupplyForm.get('contract_type').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('contract_type').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('contract_type').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('contract_type').errors.required
+                          "
+                          >Contract Type is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4" *ngIf="lngsupplyForm.get('contract_type').value=='Exchange'">
+                    <div class="form-group">
+                      <label class="label"
+                        >Market <span class="obligatory">*</span></label
+                      >
+                      <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="market"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('market').errors &&
+                            (lngsupplyForm.get('market').touched ||
+                              lngsupplyForm.get('market').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('market').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                      <div
+                        class="error-div"
+                        *ngIf="action == 'Update' && loading == false"
+                      >
+                        <span
+                          class="error-block"
+                          *ngIf="lngsupplyForm.get('market').invalid"
+                        >
+                          <span
+                            class="error"
+                            *ngIf="
+                              lngsupplyForm.get('market').errors.required
+                            "
+                            >Market is required</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                 <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Counterparty <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="counterparty"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('counterparty').errors &&
+                          (lngsupplyForm.get('counterparty').touched ||
+                            lngsupplyForm.get('counterparty').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('counterparty').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('counterparty').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('counterparty').errors.required
+                          "
+                          >Counterparty is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                 <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Purchase/Sale <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="p_s"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('p_s').errors &&
+                          (lngsupplyForm.get('p_s').touched ||
+                            lngsupplyForm.get('p_s').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('p_s').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('p_s').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('p_s').errors.required"
+                          >Purchase/Sell is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                  <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Hub <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="hub"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('hub').errors &&
+                          (lngsupplyForm.get('hub').touched ||
+                            lngsupplyForm.get('hub').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('hub').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('hub').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('hub').errors.required"
+                          >Hub is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Product <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="product"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('product').errors &&
+                          (lngsupplyForm.get('product').touched ||
+                            lngsupplyForm.get('product').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('product').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('product').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('product').errors.required"
+                          >Product is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                 <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Delivery period <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                      [nbDatepicker]="rangepickerUpload"
+                      formControlName="deliveryPeriod"
+                      [status]="errorDateRangePeriod == true ? 'danger' : 'basic'"
+                      fullWidth
+                    
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('deliveryPeriod').errors &&
+                            (lngsupplyForm.get('deliveryPeriod').touched ||
+                              lngsupplyForm.get('deliveryPeriod').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('deliveryPeriod').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <nb-rangepicker
+                      #rangepickerUpload
+                      format="dd.MM.yyyy"
+                    ></nb-rangepicker>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          lngsupplyForm.get('deliveryPeriod').errors &&
+                          (lngsupplyForm.get('deliveryPeriod').touched ||
+                            lngsupplyForm.get('deliveryPeriod').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('deliveryPeriod').errors.required
+                          "
+                          >Delivery period is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('deliveryPeriod').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('deliveryPeriod').errors.required
+                          "
+                          >Delivery period is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+          
+               <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Quantity <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="quantity"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('quantity').errors &&
+                            (lngsupplyForm.get('quantity').touched ||
+                              lngsupplyForm.get('quantity').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('quantity').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          lngsupplyForm.get('quantity').errors &&
+                          (lngsupplyForm.get('quantity').touched ||
+                            lngsupplyForm.get('quantity').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('quantity').errors.required"
+                          >Quantity is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('quantity').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('quantity').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('quantity').errors.required"
+                          >Quantity is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('quantity').errors.pattern"
+                          >only numbers (only numbers (points as thousands and
+                          commas as decimals))</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('quantity').errors.min"
+                          >numbers=>0</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                  <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >UOM <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="uom"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('uom').errors &&
+                          (lngsupplyForm.get('uom').touched ||
+                            lngsupplyForm.get('uom').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('uom').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('uom').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('uom').errors.required"
+                          >UOM is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                      <label class="label"
+                        >Price <span class="obligatory">*</span></label
+                      >
+                      <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="price"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('price').errors &&
+                            (lngsupplyForm.get('price').touched ||
+                              lngsupplyForm.get('price').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('price').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+  
+                      <div class="error-div" *ngIf="action == 'Add'">
+                        <span
+                          class="error-block"
+                          *ngIf="
+                            lngsupplyForm.get('price').errors &&
+                            (lngsupplyForm.get('price').touched ||
+                              lngsupplyForm.get('price').dirty)
+                          "
+                        >
+                          <span
+                            class="error"
+                            *ngIf="lngsupplyForm.get('price').errors.required"
+                            >Price is required</span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="lngsupplyForm.get('price').errors.pattern"
+                            >only numbers (only numbers (points as thousands and
+                            commas as decimals))</span
+                          >
+                        </span>
+                      </div>
+                      <div
+                        class="error-div"
+                        *ngIf="action == 'Update' && loading == false"
+                      >
+                        <span
+                          class="error-block"
+                          *ngIf="lngsupplyForm.get('price').invalid"
+                        >
+                          <span
+                            class="error"
+                            *ngIf="lngsupplyForm.get('price').errors.required"
+                            >Price is required</span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="lngsupplyForm.get('price').errors.pattern"
+                            >only numbers (only numbers (points as thousands and
+                            commas as decimals))</span
+                          >
+                          <span
+                            class="error"
+                            *ngIf="lngsupplyForm.get('price').errors.min"
+                            >numbers=>0</span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+           <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Price Index <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      formControlName="price_index"
+                      [status]="
+                        action == 'Add'
+                          ? lngsupplyForm.get('price_index').errors &&
+                            (lngsupplyForm.get('price_index').touched ||
+                              lngsupplyForm.get('price_index').dirty)
+                            ? 'danger'
+                            : 'basic'
+                          : action == 'Update' && loading == false
+                          ? lngsupplyForm.get('price_index').invalid
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fieldSize="small"
+                    />
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          lngsupplyForm.get('price_index').errors &&
+                          (lngsupplyForm.get('price_index').touched ||
+                            lngsupplyForm.get('price_index').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('price_index').errors.required
+                          "
+                          >Price index is required</span
+                        >
+                      </span>
+                    </div>
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('price_index').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            lngsupplyForm.get('price_index').errors.required
+                          "
+                          >Price index is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                 <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Currency <span class="obligatory">*</span></label
+                    >
+                    <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    
+                    formControlName="currency"
+                    [status]="
+                      action == 'Add'
+                        ? lngsupplyForm.get('currency').errors &&
+                          (lngsupplyForm.get('currency').touched ||
+                            lngsupplyForm.get('currency').dirty)
+                          ? 'danger'
+                          : 'basic'
+                        : action == 'Update' && loading == false
+                        ? lngsupplyForm.get('currency').invalid
+                          ? 'danger'
+                          : 'basic'
+                        : 'basic'
+                    "
+                    fieldSize="small"
+                  />
+                    <div
+                      class="error-div"
+                      *ngIf="action == 'Update' && loading == false"
+                    >
+                      <span
+                        class="error-block"
+                        *ngIf="lngsupplyForm.get('currency').invalid"
+                      >
+                        <span
+                          class="error"
+                          *ngIf="lngsupplyForm.get('currency').errors.required"
+                          >Unit is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+           
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+
+      <div class="col-sm-6" >
+        <div *ngIf="action != 'View'">
+            <nb-card class="container-form">
+                <nb-card-header class="container-form-header"
+                  >Add LNG Supply Scheduling</nb-card-header
+                >
+                <nb-card-body>
+                   <form [formGroup]="lngsupplyScheduleForm">
+                    <div class="row" *ngIf="action != 'View'">
+                    <!--   <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Country</label>
+      
+                          <nb-select
+                            formControlName="country_code"
+                            id="country"
+                            (selectedChange)="onChangeCountry($event)"
+                            placeholder="-"
+                            size="small"
+                            fullWidth
+                          >
+                            <nb-option
+                              *ngFor="let option of countriesOptions"
+                              [value]="option.code"
+                              >{{ option.code }}</nb-option
+                            >
+                          </nb-select>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Balancing Zone</label>
+                          <nb-select
+                            placeholder="-"
+                            formControlName="balancing_zone"
+                            fullWidth
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            (selectedChange)="onChangeZone($event)"
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of zoneOptions"
+                              [value]="option.id"
+                              >{{ option.label }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorBalanceZone == true"
+                            >
+                              <span class="error" *ngIf="errorBalanceZone == true"
+                                >There are no balancing zone results for this
+                                country</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div> -->
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Country</label>
+      
+                          <nb-select
+                            formControlName="country_code"
+                            id="country"
+                            (selectedChange)="onChangeCountry($event)"
+                            placeholder="-"
+                            size="small"
+                            fullWidth
+                          >
+                            <nb-option
+                              *ngFor="let option of countriesOptions"
+                              [value]="option.code"
+                              >{{ option.code }}</nb-option
+                            >
+                          </nb-select>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Balancing Zone</label>
+                          <nb-select
+                          placeholder="-"
+                            formControlName="balancing_zone"
+                            fullWidth
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            (selectedChange)="onChangeZone($event)"
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of zoneOptions"
+                              [value]="option.id"
+                              >{{ option.label }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorBalanceZone == true"
+                            >
+                              <span class="error" *ngIf="errorBalanceZone == true"
+                                >There are no balancing zone results for this
+                                country</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label"> Start Date - End Date</label>
+                          <input
+                            nbInput
+                            [nbDatepicker]="datePickerDate"
+                            formControlName="date"
+                            [status]="
+                              lngsupplyScheduleForm.get('date').errors &&
+                              (lngsupplyScheduleForm.get('date').touched ||
+                                lngsupplyScheduleForm.get('date').dirty)
+                                ? 'danger'
+                                : 'basic'
+                            "
+                            fieldSize="small"
+                          />
+                          <nb-rangepicker
+                            #datePickerDate
+                            format="dd.MM.yyyy"
+                          ></nb-rangepicker>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                lngsupplyScheduleForm.get('date').errors &&
+                                (lngsupplyScheduleForm.get('date').touched ||
+                                  lngsupplyScheduleForm.get('date').dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  lngsupplyScheduleForm.get('date').errors.required
+                                "
+                                >Date is required and the format must be
+                                dd.MM.yyyy</span
+                              >
+                              <span
+                                class="error"
+                                *ngIf="errorDateRangeSchedule == true"
+                                >start date <= end date</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Delivery Point Type</label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            size="medium"
+                            formControlName="delivery_point_type"
+                            [status]="
+                              lngsupplyScheduleForm.get('delivery_point_type')
+                                .errors &&
+                              (lngsupplyScheduleForm.get('delivery_point_type')
+                                .touched ||
+                                lngsupplyScheduleForm.get('delivery_point_type').dirty)
+                                ? 'danger'
+                                : 'basic'
+                            "
+                            (selectedChange)="onChangeDeliveryPointType($event)"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of deliveryPointTypeOptions"
+                              [value]="option"
+                              >{{ option }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                lngsupplyScheduleForm.get('delivery_point_type')
+                                  .errors &&
+                                (lngsupplyScheduleForm.get('delivery_point_type')
+                                  .touched ||
+                                  lngsupplyScheduleForm.get('delivery_point_type')
+                                    .dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  lngsupplyScheduleForm.get('delivery_point_type')
+                                    .errors.required
+                                "
+                                >Delivery point type is required</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Element Type</label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            formControlName="element_type"
+                            (selectedChange)="onChangeElementType($event)"
+                            [status]="
+                            lngsupplyScheduleForm.get('element_type').errors &&
+                            (lngsupplyScheduleForm.get('element_type').touched ||
+                              lngsupplyScheduleForm.get('element_type').dirty)
+                              ? 'danger'
+                              : 'basic'
+                          "
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of logisticElementsTypeOptions"
+                              [value]="option"
+                              >{{ option }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                lngsupplyScheduleForm.get('element_type').errors &&
+                                (lngsupplyScheduleForm.get('element_type').touched ||
+                                  lngsupplyScheduleForm.get('element_type').dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  lngsupplyScheduleForm.get('element_type').errors
+                                    .required
+                                "
+                                >Element type is required</span
+                              >
+                            </span>
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                          <label class="label">Delivery Point</label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            size="medium"
+                            formControlName="delivery_point"
+                            [status]="
+                              lngsupplyScheduleForm.get('delivery_point').errors &&
+                              (lngsupplyScheduleForm.get('delivery_point').touched ||
+                                lngsupplyScheduleForm.get('delivery_point').dirty)
+                                ? 'danger'
+                                : 'basic'
+                            "
+                            (selectedChange)="onChangeDeliveryPoint($event)"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of deliveryPointOptions"
+                              [value]="option.id"
+                              >{{ option.name }}{{ option.label }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorDeliveryPoint == true"
+                            >
+                              <span class="error" *ngIf="errorDeliveryPoint == true"
+                                >There are no delivery points results for this balance
+                                zone</span
+                              >
+                            </span>
+                          </div>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                lngsupplyScheduleForm.get('delivery_point').errors &&
+                                (lngsupplyScheduleForm.get('delivery_point').touched ||
+                                  lngsupplyScheduleForm.get('delivery_point').dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  lngsupplyScheduleForm.get('delivery_point').errors
+                                    .required
+                                "
+                                >Delivery point is required</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3" >
+                          <div class="form-group">
+                            <label class="label">Vessel</label>
+        
+                            <nb-select
+                              formControlName="vessel"
+                          
+                              (selectedChange)="onChangeVessel($event)"
+                              placeholder="-"
+                              size="small"
+                              fullWidth
+                            >
+                              <nb-option
+                                *ngFor="let option of vesselOptions"
+                                [value]="option.id"
+                                >{{ option.name }}</nb-option
+                              >
+                            </nb-select>
+                          </div>
+                        </div>
+                        <div class="col-sm-3" >
+                          <div class="form-group">
+                            <label class="label">Source Location</label>
+        
+                            <nb-select
+                              formControlName="source_location"
+                        
+                              (selectedChange)="onChangeSource($event)"
+                              placeholder="-"
+                              size="small"
+                              fullWidth
+                            >
+                              <nb-option
+                                *ngFor="let option of sourceLocationOptions"
+                                [value]="option.id"
+                                >{{ option.name }}</nb-option
+                              >
+                            </nb-select>
+                          </div>
+                        </div>
+                     
+                   
+                     
+                     
+                      <div class="col-sm-1">
+                        <div class="form-group addRow-container">
+                          <button
+                            nbButton
+                            status="success"
+                            size="tiny"
+                            [disabled]="!lngsupplyScheduleForm.valid"
+                            (click)="addRow()"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form> 
+                </nb-card-body>
+              </nb-card>
+        </div>
+       
+        <nb-card class="card-table">
+          <nb-card-header
+            class="container-form-header"
+            style="margin-bottom: 1.5rem"
+            >LNG Supply Scheduling</nb-card-header
+          >
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+            <div class="col-sm-12">
+              <div *ngIf="validateRevogrid == false" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; The values must be numbers!
+                  </a></nb-alert
+                >
+              </div>
+            <!--   <div *ngIf="totalQuantityMbtuValid == false" class="error-div">
+                <nb-alert outline="warning">
+                  <a style="color: #b19100 !important; font-size: 0.8rem"
+                    ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                    The total quantity (MMbtu) of all lngsupply schedules must be 0!</a
+                  ></nb-alert
+                >
+              </div> 
+              <div *ngIf="totalQuantityKwhValid == false" class="error-div">
+                <nb-alert outline="warning">
+                  <a style="color: #b19100 !important; font-size: 0.8rem"
+                    ><nb-icon icon="alert-triangle-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                    The total quantity (Kwh) of all lngsupply schedules must be 0!</a
+                  ></nb-alert
+                >
+              </div>  -->
+            </div>
+          </div>
+
+          <revo-grid
+            [columns]="columns"
+            theme="compact"
+            [source]="rows"
+            rowSize="30"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            range="true"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-7"></div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer *ngIf="action != 'View'" style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="
+      !validateRevogrid"
+      (click)="update()"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+  <nb-card-footer *ngIf="action == 'View'" style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+  </nb-card-footer>
+</nb-card>
+

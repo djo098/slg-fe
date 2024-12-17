@@ -1,0 +1,179 @@
+<nb-card>
+    <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+    <nb-card-body class="body-principle">
+      <form [formGroup]="sourceForm">
+        <input
+          formControlName="id"
+          type="number"
+          nbInput
+          id="id"
+          style="display: none"
+        /> <div class="row">
+          
+            
+            <div class="col-sm-6">   <div class="form-group">
+                <label class="label">Name <span class="obligatory">*</span></label>
+        
+                <input
+                  formControlName="name"
+                  type="text"
+                  nbInput
+                  fullWidth
+                  id="name"
+                  fieldSize="small"
+                  [status]="
+                    sourceForm.get('name').errors &&
+                    (sourceForm.get('name').touched ||
+                      sourceForm.get('name').dirty)
+                      ? 'danger'
+                      : 'basic'
+                  "
+                />
+        
+                <div class="error-div">
+                  <span
+                    class="error-block"
+                    *ngIf="
+                      sourceForm.get('name').errors &&
+                      (sourceForm.get('name').touched ||
+                        sourceForm.get('name').dirty)
+                    "
+                  >
+                    <span
+                      class="error"
+                      *ngIf="sourceForm.get('name').errors.required"
+                      >Name is required</span
+                    >
+                    <span
+                      class="error"
+                      *ngIf="sourceForm.get('name').errors.maxlength"
+                      >Maximun 35 characters</span
+                    >
+                  </span>
+                </div>
+              </div></div>
+         
+            <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label">Country <span class="obligatory">*</span></label>
+      
+                  <nb-select
+                  placeholder="-"
+                    formControlName="country_code"
+                    size="small"
+                    id="country"
+                 
+                    fullWidth
+                  >
+                    <nb-option
+                      *ngFor="let option of countriesOptions"
+                      [value]="option.code"
+                      >{{ option.code }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="label">Code</label>
+            
+                    <input
+                      formControlName="code"
+                      type="text"
+                      nbInput
+                      fullWidth
+                      id="code"
+                      fieldSize="small"
+                      [status]="
+                        sourceForm.get('code').errors &&
+                        (sourceForm.get('code').touched || sourceForm.get('code').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          sourceForm.get('code').errors &&
+                          (sourceForm.get('code').touched ||
+                            sourceForm.get('code').dirty)
+                        "
+                      >
+                        <span class="error" *ngIf="sourceForm.get('code').errors.required"
+                          >Code is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="sourceForm.get('code').errors.maxlength"
+                          >Maximum 3 characters</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+            </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label">Higher Calorific Value (kWh/m3)</label>
+          
+                  <input
+                    formControlName="gas_density"
+                    type="text"
+                    nbInput
+                    id="gas_density"
+                    fullWidth
+                    fieldSize="small"
+                    [status]="
+                      sourceForm.get('gas_density').errors &&
+                      (sourceForm.get('gas_density').touched ||
+                        sourceForm.get('gas_density').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        sourceForm.get('gas_density').errors &&
+                        (sourceForm.get('gas_density').touched ||
+                          sourceForm.get('gas_density').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="sourceForm.get('gas_density').errors.required"
+                        >Gas density is required</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="sourceForm.get('gas_density').errors.pattern"
+                        >only numbers (only numbers (points as thousands and commas as
+                        decimals))</span
+                      >
+                     
+                    </span>
+                  </div>
+                </div>
+               </div>
+        </div>
+       
+      </form>
+    </nb-card-body>
+    <nb-card-footer style="text-align: right;">
+      <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+        Close
+      </button>
+      <button
+        nbButton
+        status="success"
+        (click)="add()"
+        [disabled]="!sourceForm.valid"
+        id="add"
+        size="small"
+      >
+        {{ action }}
+      </button>
+    </nb-card-footer>
+  </nb-card>
+  

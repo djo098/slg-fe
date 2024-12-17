@@ -1,0 +1,62 @@
+@import '../../@theme/styles/themes/';
+
+@include nb-install-component() {
+    .flex-parent-element {
+        display: flex;
+        width: 100%;
+    }
+
+    .flex-child-element {
+        flex: 1;
+        margin: 10px;
+        align-items: center;
+    }
+
+    .flex-child-element:first-child {
+        margin-right: 20px;
+    }
+
+    .download {
+        text-align: right;
+    }
+    ::ng-deep {
+      a.ng2-smart-action.ng2-smart-action-delete-delete.ng-star-inserted:hover {
+        color: #263cc8;
+      }
+    }
+ 
+    nb-card {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .table-container {
+        overflow-x: auto;
+
+    }
+
+    nb-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+
+    }
+    ::ng-deep {
+      .filter-group{
+        margin-left: 0rem;
+        margin-bottom: 1rem;
+      }
+      .button-filter {
+        margin-top: 1.7rem;
+    }
+    .filter-container {
+      box-shadow: none;
+      border: none;
+    }
+
+    
+  
+    }
+   
+
+}

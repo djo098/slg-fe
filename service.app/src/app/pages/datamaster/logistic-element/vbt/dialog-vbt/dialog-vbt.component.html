@@ -1,0 +1,155 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="vbtForm">
+      <input
+        formControlName="id"
+        type="number"
+        id="id"
+        nbInput
+        style="display: none"
+      />
+
+      <input formControlName="type" type="hidden" id="type" nbInput fullWidth />
+     <div class="row">
+       <div class="col-sm-6">
+        <div class="form-group">
+            <label class="label">Name <span class="obligatory">*</span></label>
+    
+            <input
+              formControlName="name"
+              type="text"
+              nbInput
+              id="name"
+              fullWidth
+              fieldSize="small"
+              
+              [status]="
+                vbtForm.get('name').errors &&
+                (vbtForm.get('name').touched || vbtForm.get('name').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+    
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  vbtForm.get('name').errors &&
+                  (vbtForm.get('name').touched || vbtForm.get('name').dirty)
+                "
+              >
+                <span class="error" *ngIf="vbtForm.get('name').errors.required"
+                  >Name is required</span
+                >
+                <span class="error" *ngIf="vbtForm.get('name').errors.maxlength"
+                  >Maximum 10 characters</span
+                >
+              </span>
+            </div>
+          </div>
+       </div>
+       <div class="col-sm-6">
+         
+      <div class="form-group">
+        <label class="label">EIC Code</label>
+        <input
+          formControlName="eic"
+          type="text"
+          nbInput
+          id="eic"
+          fullWidth
+          fieldSize="small"
+          [status]="
+            vbtForm.get('eic').errors &&
+            (vbtForm.get('eic').touched || vbtForm.get('eic').dirty)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+        <div class="error-div">
+          <span
+            class="error-block"
+            *ngIf="
+              vbtForm.get('eic').errors &&
+              (vbtForm.get('eic').touched || vbtForm.get('eic').dirty)
+            "
+          >
+            <span class="error" *ngIf="vbtForm.get('eic').errors.required"
+              >EIC is required</span
+            >
+          </span>
+        </div>
+      </div>
+       </div>
+    
+     </div>
+    </form>
+     <div class="row">
+           <div class="col-sm-6">
+             
+    <form [formGroup]="balanceZoneForm">
+        <div class="form-group">
+          <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+          <nb-select
+          placeholder="-"
+            size="small"
+            formControlName="balance_zone_id"
+            fullWidth
+            (selectedChange)="onChange($event)"
+          >
+            <nb-option *ngFor="let option of zoneOptions" [value]="option.id">{{
+              option.label
+            }}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+           </div>
+       <div class="col-sm-6">
+        <form [formGroup]="vbtForm">
+            <div class="form-group">
+              <label class="label">Virtual Balancing Points <span class="obligatory">*</span></label>
+              <nb-select
+              placeholder="-"
+                formControlName="parent_id"
+                size="small"
+                id="country"
+                [status]="errorBalancingPoint == true ? 'danger' : 'basic'"
+                fullWidth
+              >
+                <nb-option *ngFor="let option of vbpOptions" [value]="option.id">{{
+                  option.name
+                }}</nb-option>
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorBalancingPoint == true">
+                  <span class="error" *ngIf="errorBalancingPoint == true"
+                    >There are no virtual balancing points results for this balance zone</span
+                  >
+                </span>
+              </div>
+            </div>
+          </form>
+       </div>
+     </div>
+   
+ 
+
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!vbtForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

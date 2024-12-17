@@ -1,0 +1,124 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="serviceNominableForm">
+      <input
+        formControlName="id"
+        type="number"
+        nbInput
+        id="id"
+        style="display: none"
+      />
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label class="label">Country  <span class="obligatory">*</span></label>
+          <nb-select
+            formControlName="country"
+            size="small"
+            id="country"
+            fullWidth
+            (selectedChange)="onChangeCountry($event)"
+            placeholder ="-"
+          >
+            <nb-option
+              *ngFor="let option of countriesOptions"
+              [value]="option.code"
+              >{{ option.code }}</nb-option
+            >
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+          <nb-select
+            formControlName="balance_zone_id"
+            size="small"
+            id="balance_zone_name"
+            fullWidth
+            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+            placeholder ="-"
+          >
+            <nb-option *ngFor="let option of zoneOptions" [value]="option.id">{{
+              option.label
+            }}</nb-option>
+          </nb-select>
+          <div class="error-div">
+            <span class="error-block" *ngIf="errorBalanceZone == true">
+              <span class="error" *ngIf="errorBalanceZone == true"
+                >There are no balance zone results for this country</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="label">Service  <span class="obligatory">*</span></label>
+          <nb-select
+            size="small"
+            fullWidth
+            formControlName="service_id"
+            placeholder ="-"
+          >
+            <nb-option
+              *ngFor="let option of serviceOptions"
+              [value]="option.id"
+              >{{ option.label }}</nb-option
+            >
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="form-group">
+          <label class="label">Granularity <span class="obligatory">*</span></label>
+          <nb-select
+            fullWidth
+            formControlName="granularity"
+            placeholder="-"
+            size="small"
+          >
+          <nb-option
+          *ngFor="let option of granularityOptions"
+          [value]="option.id"
+          >{{ option.label }}</nb-option
+        >
+          </nb-select>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="form-group" style="margin-top: 2rem">
+          <nb-checkbox
+            [checked]="true"
+            (checkedChange)="toggle($event)"
+            formControlName="nominable"
+            size="small">Scheduling in TSO</nb-checkbox
+          >
+        </div>
+      </div>
+    </div>
+     
+    
+
+     
+
+     
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!serviceNominableForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,31 @@
+@import "../../styles/themes";
+@import "~bootstrap/scss/mixins/breakpoints";
+@import "~@nebular/theme/styles/global/breakpoints";
+
+@include nb-install-component() {
+  .menu-sidebar ::ng-deep .scrollable {
+    padding-top: nb-theme(layout-padding-top);
+  }
+
+  @media only screen and (min-width: 1024px) {
+    /* For desktop: */
+    nb-sidebar{
+      display: none;
+      width: 0%;
+    }
+    nb-context-menu nb-menu{
+      overflow: auto;
+    }
+    nb-menu.context-menu {
+      max-height: 620px !important;
+    }
+    nb-context-menu.nb-overlay-bottom {
+      max-height: 620px !important;
+    }
+
+
+    
+  }
+ 
+
+}

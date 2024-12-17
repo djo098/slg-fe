@@ -1,0 +1,247 @@
+<nb-card class="dialog-parameter">
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Parameter Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="balanceRuleParameterForm">
+              <div class="row">
+                <input
+                  formControlName="id"
+                  type="number"
+                  nbInput
+                  id="id"
+                  fullWidth
+                  style="display: none"
+                />
+
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label"
+                      >Label <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      formControlName="label"
+                      type="text"
+                      nbInput
+                      
+                      fullWidth
+                      fieldSize="small"
+                      [status]="
+                        balanceRuleParameterForm.get('label').errors &&
+                        (balanceRuleParameterForm.get('label').touched ||
+                          balanceRuleParameterForm.get('label').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          balanceRuleParameterForm.get('label').errors &&
+                          (balanceRuleParameterForm.get('label').touched ||
+                            balanceRuleParameterForm.get('label').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="
+                            balanceRuleParameterForm.get('label').errors
+                              .required
+                          "
+                          >Label is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="
+                            balanceRuleParameterForm.get('label').errors
+                              .maxlength
+                          "
+                          >Maximum 10 characters</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label"
+                      >Country <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                    placeholder="-"
+                      formControlName="country_code"
+                      size="small"
+                      id="country"
+                      fullWidth
+                      (selectedChange)="onChangeCountry($event)"
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Balancing Zone<span class="obligatory">*</span></label>
+
+                    <nb-select
+                    placeholder="-"
+                      formControlName="balance_zone_id"
+                      size="small"
+                      id="balance_zone_name"
+                      fullWidth
+                      [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                      (selectedChange)="onChangeZone($event)"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorBalanceZone == true"
+                      >
+                        <span class="error" *ngIf="errorBalanceZone == true"
+                          >There are no balance zone results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="label"
+                      >Rule <span class="obligatory">*</span></label
+                    >
+
+                    <nb-select
+                    placeholder="-"
+                      size="small"
+                      formControlName="balance_rule_label"
+                      fullWidth
+                      [status]="errorRule == true ? 'danger' : 'basic'"
+                      (selectedChange)="onChangeRule($event)"
+                    >
+                      <nb-option
+                        *ngFor="let option of ruleOptions"
+                        [value]="option.label"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorRule == true">
+                        <span class="error" *ngIf="errorRule == true"
+                          >There are no balance rules results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-sm-6">
+        <nb-card class="card-table container-form">
+          <nb-card-header class="container-form-header">Values</nb-card-header>
+
+          <div
+            class="row"
+            style="
+              text-align: right;
+              margin-bottom: 0.2rem;
+              margin-right: 0.1rem;
+            "
+          >
+            <div class="col-sm-12">
+              <div class="form-group">
+                <button
+                  nbButton
+                  status="success"
+                  size="tiny"
+                  (click)="addRow()"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem;">
+            <div class="col-sm-12">
+              <div *ngIf="validateRevoGrid == false" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline" ></nb-icon> &nbsp; &nbsp; &nbsp;
+                    The values must be numbers and the date must be in the format
+                    yyyy-mm-dd
+                  </a></nb-alert
+                >
+              </div>
+              <div *ngIf="isDuplicate == true" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                    Start dates cannot be duplicated</a
+                  ></nb-alert
+                >
+              </div>
+            </div>
+         
+          </div>
+
+          <revo-grid
+            [columns]="columns"
+            [theme]="revogridTheme"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            (afteredit)="onAfterEdit($event)"
+            row-size="30"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      id="add"
+      [disabled]="!balanceRuleParameterForm.valid || isDuplicate"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

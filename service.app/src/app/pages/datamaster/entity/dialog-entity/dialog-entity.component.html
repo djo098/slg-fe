@@ -1,0 +1,329 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="entityForm">
+      <input
+        formControlName="id"
+        type="number"
+        nbInput
+        id="id"
+        style="display: none"
+      />
+      <div class="row">
+       
+        <div class="col-sm-9">
+          <div class="form-group">
+            <label class="label">Name <span class="obligatory">*</span></label>
+            <input
+              formControlName="name"
+              type="text"
+              nbInput
+              id="name"
+              fullWidth
+              fieldSize="small"
+              [status]="
+                entityForm.get('name').errors &&
+                (entityForm.get('name').touched || entityForm.get('name').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  entityForm.get('name').errors &&
+                  (entityForm.get('name').touched ||
+                    entityForm.get('name').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('name').errors.required"
+                  >Name is required</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <nb-checkbox formControlName="active" status="primary"
+              >Active</nb-checkbox
+            >
+          </div>
+        </div> 
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label"
+              >Country <span class="obligatory">*</span></label
+            >
+
+            <nb-select
+              formControlName="country_code"
+              size="small"
+              id="country"
+              fullWidth
+              placeholder="-"
+            >
+              <nb-option
+                *ngFor="let option of countriesOptions"
+                [value]="option.code"
+                >{{ option.code }}</nb-option
+              >
+            </nb-select>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Type <span class="obligatory">*</span></label>
+
+            <nb-select
+              formControlName="type"
+              size="small"
+              fullWidth
+              placeholder="-"
+            >
+              <nb-option *ngFor="let option of typeOptions" [value]="option">{{
+                option
+              }}</nb-option>
+            </nb-select>
+          </div>
+        </div>
+  
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label class="label">Internal Code</label>
+            <input
+              formControlName="code"
+              type="text"
+              nbInput
+              id="code"
+              fullWidth
+              fieldSize="small"
+              [status]="
+                entityForm.get('code').errors &&
+                (entityForm.get('code').touched || entityForm.get('code').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  entityForm.get('code').errors &&
+                  (entityForm.get('code').touched ||
+                    entityForm.get('code').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('code').errors.required"
+                  >Code is required</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label
+              class="label"
+              nbTooltip="Energy Identification Code"
+              nbTooltipPlacement="right"
+              nbTooltipStatus="primary"
+              >EIC Code</label
+            >
+            <input
+              formControlName="eic"
+              type="text"
+              nbInput
+              id="eic"
+              fullWidth
+              fieldSize="small"
+              [status]="
+                entityForm.get('eic').errors &&
+                (entityForm.get('eic').touched || entityForm.get('eic').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  entityForm.get('eic').errors &&
+                  (entityForm.get('eic').touched || entityForm.get('eic').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('eic').errors.required"
+                  >EIC is required</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label
+              class="label"
+              nbTooltip="Value Added Tax"
+              nbTooltipPlacement="right"
+              nbTooltipStatus="primary"
+              >VAT</label
+            >
+            <input
+              formControlName="vat_code"
+              type="text"
+              nbInput
+              id="eic"
+              fullWidth
+              fieldSize="small"
+              [status]="
+                entityForm.get('vat_code').errors &&
+                (entityForm.get('vat_code').touched ||
+                  entityForm.get('vat_code').dirty)
+                  ? 'danger'
+                  : 'basic'
+              "
+            />
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  entityForm.get('vat_code').errors &&
+                  (entityForm.get('vat_code').touched ||
+                    entityForm.get('vat_code').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('vat_code').errors.required"
+                  >VAT is required</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label
+              class="label"
+              nbTooltipPlacement="right"
+              nbTooltipStatus="primary"
+              >Email</label
+            >
+            <nb-form-field>
+              <nb-icon nbPrefix icon="at-outline" pack="eva"></nb-icon>
+              <input
+                formControlName="email"
+                type="text"
+                nbInput
+                id="email"
+                fullWidth
+                fieldSize="small"
+                [status]="
+                  entityForm.get('email').errors &&
+                  (entityForm.get('email').touched ||
+                    entityForm.get('email').dirty)
+                    ? 'danger'
+                    : 'basic'
+                "
+              />
+            </nb-form-field>
+
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  entityForm.get('email').errors &&
+                  (entityForm.get('email').touched ||
+                    entityForm.get('email').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('email').errors.required"
+                  >email is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('email').errors.pattern"
+                >
+                  Email should be the real one!</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="label">Address</label>
+            <textarea
+              nbInput
+              fullWidth
+              [status]="
+              entityForm.get('address').errors &&
+              (entityForm.get('address').touched ||
+                entityForm.get('address').dirty)
+                ? 'danger'
+                : 'basic'
+            "
+              formControlName="address"
+            ></textarea>
+            <div class="error-div">
+              <span
+                class="error-block"
+                *ngIf="
+                  entityForm.get('address').errors &&
+                  (entityForm.get('address').touched ||
+                    entityForm.get('address').dirty)
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('address').errors.required"
+                  >address is required</span
+                >
+                <span
+                  class="error"
+                  *ngIf="entityForm.get('address').errors.pattern"
+                >
+                  address should be the real one!</span
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      
+      
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!entityForm.valid"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

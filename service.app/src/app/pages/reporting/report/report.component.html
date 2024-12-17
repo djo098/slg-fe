@@ -1,0 +1,372 @@
+<nb-accordion multi>
+  <nb-accordion-item #generateReport [nbSpinner]="loading" nbSpinnerSize="small" nbSpinnerStatus="primary">
+    <nb-accordion-item-header>
+      <span>Generate Report</span>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <form [formGroup]="reportForm">
+        <div class="row filter-group">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Report</label>
+
+              <nb-select
+                formControlName="report"
+                placeholder="-"
+                fullWidth
+                size="small"
+                (selectedChange)="onChangeReport($event)"
+              >
+                <nb-option value="gas_swaps">Gas Physical Swaps</nb-option>
+                <nb-option value="gas_purchases_and_sales"
+                  >Gas Physical Purchases/Sales</nb-option
+                >
+                <nb-option value="daily_balance">Daily Balance</nb-option>
+                <nb-option value="aggregated_balance"
+                  >Aggregated Balance</nb-option
+                >
+                <nb-option value="aggregated_balance_comparison"
+                  >Aggregated Balance Comparison</nb-option
+                >
+                <nb-option value="cores">CORES</nb-option>
+                <nb-option value="risk_level">Risk Level</nb-option>
+                <nb-option value="detailed_balance">Detailed Balance</nb-option>
+              </nb-select>
+            </div>
+          </div>
+
+          <div [ngClass]="balanceZoneView == false ? 'col-sm-2' : 'col-sm-2'">
+            <div class="form-group">
+              <label class="label">Country</label>
+
+              <nb-select
+                formControlName="country_code"
+                id="country"
+                (selectedChange)="onChange($event)"
+                placeholder="-"
+                fullWidth
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of countriesOptions"
+                  [value]="option.code"
+                  >{{ option.code }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="balanceZoneView == true">
+            <div class="form-group">
+              <label class="label">Balancing Zone</label>
+              <nb-select
+                placeholder="-"
+                formControlName="balancing_zone"
+                fullWidth
+                [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                size="small"
+              >
+                <nb-option
+                  *ngFor="let option of zoneOptions"
+                  [value]="option.id"
+                  >{{ option.label }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorBalanceZone == true">
+                  <span class="error" *ngIf="errorBalanceZone == true"
+                    >There are no balancing zone results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label class="label">Legal Entity</label>
+              <nb-select
+                formControlName="legal_entity"
+                fullWidth
+                [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                size="small"
+                placeholder="-"
+              >
+                <nb-option
+                  *ngFor="let option of entitiesOptions"
+                  [value]="option.id"
+                  >{{ option.name }}</nb-option
+                >
+              </nb-select>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorLegalEntity == true">
+                  <span class="error" *ngIf="errorLegalEntity == true"
+                    >There are no legal entities results for this country</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="dateView == true">
+            <div class="form-group">
+              <label class="label"
+                >Start Date - End Date
+                <span *ngIf="dateView1 == true">(Month 1)</span></label
+              >
+              <input
+                nbInput
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                [nbDatepicker]="rangepicker"
+                formControlName="date"
+                [status]="
+                  errorDate == true
+                    ? 'danger'
+                    : errorMonth == true
+                    ? 'danger'
+                    : 'basic'
+                "
+                fullWidth
+                fieldSize="small"
+              />
+              <nb-rangepicker #rangepicker format="dd.MM.yyyy"></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate == true">
+                  <span class="error" *ngIf="errorDate == true"
+                    >The format must be dd.MM.yyyy and start date <= end date
+                  </span>
+                </span>
+                <span class="error-block" *ngIf="errorMonth == true">
+                  <span class="error" *ngIf="errorMonth == true"
+                    >The start date and end date must be same month</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="dateView3 == true">
+            <div class="form-group">
+              <label class="label">Date</label>
+              <input
+                nbInput
+                placeholder="dd.MM.yyyy"
+                [nbDatepicker]="dateTimePicker"
+                formControlName="date3"
+                fullWidth
+                fieldSize="small"
+              />
+              <nb-datepicker
+                #dateTimePicker
+                withSeconds
+                format="dd.MM.yyyy"
+                [filter]="filterFn"
+              ></nb-datepicker>
+            </div>
+          </div>
+          <div class="col-sm-2" *ngIf="dateView1 == true">
+            <div class="form-group">
+              <label class="label">Start Date - End Date (Month 2)</label>
+              <input
+                nbInput
+                placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                [nbDatepicker]="rangepicker1"
+                [status]="
+                  errorDate1 == true
+                    ? 'danger'
+                    : errorMonth1 == true
+                    ? 'danger'
+                    : 'basic'
+                "
+                formControlName="date1"
+                [status]="errorDate1 == true ? 'danger' : 'basic'"
+                fullWidth
+                fieldSize="small"
+              />
+              <nb-rangepicker
+                #rangepicker1
+                format="dd.MM.yyyy"
+              ></nb-rangepicker>
+              <div class="error-div">
+                <span class="error-block" *ngIf="errorDate1 == true">
+                  <span class="error" *ngIf="errorDate1 == true"
+                    >The format must be dd.MM.yyyy and start date <= end
+                    date</span
+                  >
+                </span>
+                <span class="error-block" *ngIf="errorMonth1 == true">
+                  <span class="error" *ngIf="errorMonth1 == true"
+                    >The start date and end date must be same month</span
+                  >
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="text-align: right">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button
+                type="submit"
+                nbButton
+                status="primary"
+                (click)="calculate()"
+                [disabled]="!reportForm.valid"
+                size="small"
+      
+              >
+                <nb-icon icon="arrow-right"></nb-icon>
+                Calculate
+              </button>
+              <button
+                type="submit"
+                nbButton
+                status="basic"
+                (click)="reset()"
+                size="small"
+                [disabled]="!reportForm.valid"
+       
+              >
+                <nb-icon icon="close-outline"></nb-icon>
+
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>
+<nb-card [nbSpinner]="loading" nbSpinnerSize="small" nbSpinnerStatus="primary">
+  <!--   <nb-card-header>
+      
+          <div class="title">  countries</div>
+     
+   
+      
+          <div class="button-download"><button nbButton status="primary">
+            <nb-icon icon="arrow-circle-down-outline" pack="eva" (click)="exportAsXLSX()"></nb-icon>
+        </button></div> 
+        </nb-card-header> -->
+  <nb-card-header>
+    <span>Report View</span>
+    <!--  <button
+        nbButton
+        status="primary"
+        outline
+        (click)="exportAsXLSX()"
+        size="small"
+      >
+        Export to Excel
+      </button> -->
+    <nb-actions size="small">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+        [disabled]="!rows"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV
+      </button>
+    </mat-menu>
+  </nb-card-header>
+
+  <nb-card-body>
+    <!--     <div     *ngIf="dataView && report != 'daily_balance'" >
+      <nb-card
+      size="medium"
+      class="card-table"
+      id="cardTable"
+      *ngFor="let element of dataView"
+      tabTitle="{{ element.name }}"
+      tabId="{{ element.id }}"
+      [active]="true"
+  
+    >
+   
+      <revo-grid
+     
+        id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+        [source]="element.rows"
+        [columns]="element.columns"
+        theme="material"
+        filter="{true}"
+        exporting="true"
+        row-size="30"
+        range="true"
+        
+      ></revo-grid>
+    </nb-card>
+    </div> -->
+
+    <nb-tabset
+      *ngIf="dataView"
+      id="tabset"
+      name="tabset"
+      #tabset
+      (changeTab)="onChangeTab($event)"
+    >
+      <nb-tab
+        *ngFor="let element of dataView"
+        tabTitle="{{ element.name }}"
+        [active]="element.isActive"
+      >
+        <nb-card  class="card-table" id="cardTable">
+          <revo-grid
+            id="{{ element.name.replace(' ', '_').toLowerCase() }}"
+            [source]="element.rows"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            filter="{true}"
+            exporting="true"
+            row-size="30"
+            range="true"
+            stretch="false"
+          ></revo-grid>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+    <!--   <div class="table-container col-sm-12" style="text-align: right; margin-bottom: 0.5rem;"  *ngIf="rows">
+        <nb-select       [(selected)]="selected" [(ngModel)]="defaultRowPerPage" size="tiny">
+          <nb-option *ngFor="let option of optionsPager"    [value]="option.value" (click)="setPager()">{{option.value }}</nb-option>
+        </nb-select>
+      </div> 
+      <div class="table-container col-md-12" *ngIf="rows">
+        <ng2-smart-table
+          class="table-data"
+          [settings]="settings"
+          [source]="source"
+        >
+        </ng2-smart-table>
+      </div> -->
+  </nb-card-body>
+</nb-card>
+<!-- <nb-card *ngFor="let option of urlsReport">
+  <nb-card-header>
+    <span>{{ option.title }}</span></nb-card-header
+  >
+  <nb-card-body>
+    <iframe
+      title="{{ option.title }}"
+      width="1140"
+      height="541.25"
+      [src]="option.URL | safe"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe
+    >';
+  </nb-card-body>
+</nb-card> -->

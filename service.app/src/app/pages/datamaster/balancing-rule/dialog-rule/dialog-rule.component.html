@@ -1,0 +1,101 @@
+<nb-card>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="balanceRuleForm">
+      <div class="form-group row">
+        <label class="label">Label*</label>
+
+        <input
+          formControlName="label"
+          type="text"
+          nbInput
+          fullWidth
+          
+          
+          [status]="
+            balanceRuleForm.get('label').errors &&
+            (balanceRuleForm.get('label').touched ||
+              balanceRuleForm.get('label').dirty)
+              ? 'danger'
+              : 'basic'
+          "
+        />
+      </div>
+      <div class="error-div">
+        <span
+          class="error-block"
+          *ngIf="
+            balanceRuleForm.get('label').errors &&
+            (balanceRuleForm.get('label').touched ||
+              balanceRuleForm.get('label').dirty)
+          "
+        >
+          <span
+            class="error"
+            *ngIf="balanceRuleForm.get('label').errors.required"
+            >Label is required</span
+          >
+          <span
+            class="error"
+            *ngIf="balanceRuleForm.get('label').errors.maxlength"
+            >Maximum 10 characters</span
+          >
+        </span>
+      </div>
+
+      <div class="form-group row">
+        <label class="label">Start Date*</label>
+
+        <input
+          nbInput
+          formControlName="start_date"
+          
+          type="date"
+          id="start_date"
+        />
+      </div>
+
+      <div class="form-group row">
+        <label class="label">Min*</label>
+
+        <nb-select
+          
+          fullWidth
+          formControlName="min_value_id"
+          id="min"
+        >
+          <nb-option *ngFor="let option of paramsOptions" [value]="option.id">{{
+            option.label
+          }}</nb-option>
+        </nb-select>
+      </div>
+      <div class="form-group row">
+        <label class="label">Max*</label>
+        <nb-select
+          
+          fullWidth
+          formControlName="max_value_id"
+          id="max"
+        >
+          <nb-option *ngFor="let option of paramsOptions" [value]="option.id">{{
+            option.label
+          }}</nb-option>
+        </nb-select>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="basic" (click)="cancel()">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!balanceRuleForm.valid"
+      id="add"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,98 @@
+@import "../../../@theme/styles/themes";
+@include nb-install-component() {
+  .dialog-service {
+    max-width: 1200px;
+    max-height: 600px;
+  }
+  nb-checkbox {
+    margin-bottom: 1rem;
+  }
+  .form-inline [fullWidth] {
+    flex: 1;
+  }
+  .form-inline > * {
+    margin: 0 1.5rem 1.5rem 0;
+  }
+  nb-card.inline-form-card nb-card-body {
+    padding-bottom: 0;
+  }
+  .error {
+    font-size: 0.8rem;
+    color: #e32c2c;
+  }
+  input {
+    width: 100%;
+  }
+  .cancel {
+    margin-right: 1rem;
+  }
+  .card-table {
+    height: 250px;
+  }
+  .card-table1 {
+    height: 450px;
+  }
+  .obligatory {
+    color: #e32c2c;
+  }
+  .container-form-header {
+    padding: 0.1rem 1rem !important;
+    font-size: 0.9375rem !important;
+    border: none;
+    border-bottom: none;
+  }
+  .container-form {
+    margin-bottom: 1rem !important;
+  }
+  ::ng-deep {
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-ps) {
+      background: #088e47;
+      color: white;
+    }
+    .rgHeaderCell:has(.header-content):has(span.column-ps) {
+      background: #088e47;
+      color: white;
+    }
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-lgso) {
+      background: #6d32ff;
+      color: white;
+    }
+    .rgHeaderCell:has(.header-content):has(span.column-lgso) {
+      background: #6d32ff;
+      color: white;
+    }
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-swaps) {
+      background: #263cc8;
+      color: white;
+    }
+    .rgHeaderCell:has(.header-content):has(span.column-swaps) {
+      background: #263cc8;
+      color: white;
+    }
+
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-ps):hover {
+      background: #36bb67 !important;
+      color: white;
+    }
+    .rgHeaderCell:has(.header-content):has(span.column-ps):hover {
+      background: #36bb67 !important;
+      color: white;
+    }
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-lgso):hover {
+      background: #9665ff !important;
+      color: white;
+    }
+    .rgHeaderCell:has(.header-content):has(span.column-lgso):hover {
+      background: #9665ff !important;
+      color: white;
+    }
+    .rgHeaderCell.sortable:has(.header-content):has(span.column-swaps):hover {
+      background: #576bde !important;
+      color: white;
+    }
+    .rgHeaderCell:has(.header-content):has(span.column-swaps):hover {
+      background: #576bde !important;
+      color: white;
+    }
+  }
+}

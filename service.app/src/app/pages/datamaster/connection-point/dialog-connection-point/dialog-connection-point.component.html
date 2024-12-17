@@ -1,0 +1,695 @@
+<nb-card class="dialog-connection-point">
+  <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+  <nb-card-body class="body-principle">
+    <form [formGroup]="connectionPointForm">
+      <input
+        formControlName="id"
+        type="number"
+        id="id"
+        nbInput
+        style="display: none"
+      />
+      <div class="row">
+        <div class="col-sm-6">
+          <nb-card class="container-form" style="height: 350px;">
+            <nb-card-header class="container-form-header"
+              >Connection Point Information</nb-card-header
+            >
+          
+            <nb-card-body>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Name <span class="obligatory">*</span></label>
+        
+                    <input
+                      formControlName="name"
+                      type="text"
+                      nbInput
+                      fullWidth
+                      
+                      fieldSize="small"
+                      [status]="
+                        connectionPointForm.get('name').errors &&
+                        (connectionPointForm.get('name').touched ||
+                          connectionPointForm.get('name').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          connectionPointForm.get('name').errors &&
+                          (connectionPointForm.get('name').touched ||
+                            connectionPointForm.get('name').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="connectionPointForm.get('name').errors.required"
+                          >Name is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="connectionPointForm.get('name').errors.maxlength"
+                          >Maximum 3 characters</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">EIC Code <span class="obligatory">*</span></label>
+        
+                    <input
+                      type="text"
+                      nbInput
+                      fullWidth
+                      fieldSize="small"
+                      
+                      formControlName="eic_code"
+                      [status]="
+                        connectionPointForm.get('eic_code').errors &&
+                        (connectionPointForm.get('eic_code').touched ||
+                          connectionPointForm.get('eic_code').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          connectionPointForm.get('eic_code').errors &&
+                          (connectionPointForm.get('eic_code').touched ||
+                            connectionPointForm.get('eic_code').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="connectionPointForm.get('eic_code').errors.required"
+                          >EIC code Code is required</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="label">Connection Point type <span class="obligatory">*</span></label>
+                    <nb-select
+                      size="small"
+                      fullWidth
+                      formControlName="connection_type"
+                      (selectedChange)="onChangeLogisticElementType($event)"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of logisticElementsTypeOptions"
+                        [value]="option"
+                        >{{ option }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+
+                <div class="col-sm-6" *ngIf="viewInternationalConnection == true">
+                  <div class="form-group">
+                    <label class="label">Mirror Connection Point </label>
+                    <nb-select
+                      size="small"
+                      fullWidth
+                      formControlName="mirrored_point"
+                      placeholder="-"
+                    >
+                      <nb-option
+                      *ngFor="let option of pointsElementOptions"
+                      [value]="option.id"
+                      >{{ option.name }}</nb-option
+                    >
+
+                    </nb-select>
+                  </div>
+                </div>
+
+
+              </div>
+            
+           
+          
+          
+         
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label">Losses Source-Destination (%) <span class="obligatory">*</span></label>
+      
+                  <input
+                    formControlName="src_dest_losses"
+                    type="text"
+                    nbInput
+                    fullWidth
+                    fieldSize="small"
+                    [status]="
+                      connectionPointForm.get('src_dest_losses').errors &&
+                      (connectionPointForm.get('src_dest_losses').touched ||
+                        connectionPointForm.get('src_dest_losses').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        connectionPointForm.get('src_dest_losses').errors &&
+                        (connectionPointForm.get('src_dest_losses').touched ||
+                          connectionPointForm.get('src_dest_losses').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('src_dest_losses').errors.required
+                        "
+                        >Injection is required</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('src_dest_losses').errors.pattern
+                        "
+                        >only numbers (only numbers (points as thousands and commas as
+                        decimals))</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('src_dest_losses').errors.min ||
+                          connectionPointForm.get('src_dest_losses').errors.max
+                        "
+                        >numbers 0 to 100</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf='connectionPointForm.get("connection_type").value!="conventional_consumer_connection"'>
+                <div class="form-group">
+                  <label class="label">Losses Destination-Source (%) <span class="obligatory">*</span></label>
+      
+                  <input
+                    formControlName="dest_src_losses"
+                    type="text"
+                    nbInput
+                    fullWidth
+                    fieldSize="small"
+                    [status]="
+                      connectionPointForm.get('dest_src_losses').errors &&
+                      (connectionPointForm.get('dest_src_losses').touched ||
+                        connectionPointForm.get('dest_src_losses').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        connectionPointForm.get('dest_src_losses').errors &&
+                        (connectionPointForm.get('dest_src_losses').touched ||
+                          connectionPointForm.get('dest_src_losses').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('dest_src_losses').errors.required
+                        "
+                        >Injection is required</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('dest_src_losses').errors.pattern
+                        "
+                        >only numbers (only numbers (points as thousands and commas as
+                        decimals))</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('dest_src_losses').errors.min ||
+                          connectionPointForm.get('dest_src_losses').errors.max
+                        "
+                        >numbers 0 to 100</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="label">Conversion Factor Source-Destination <span class="obligatory">*</span></label>
+      
+                  <input
+                    formControlName="src_dest_temp_factor"
+                    type="text"
+                    nbInput
+                    fullWidth
+                    fieldSize="small"
+                    [status]="
+                      connectionPointForm.get('src_dest_temp_factor').errors &&
+                      (connectionPointForm.get('src_dest_temp_factor').touched ||
+                        connectionPointForm.get('src_dest_temp_factor').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        connectionPointForm.get('src_dest_temp_factor').errors &&
+                        (connectionPointForm.get('src_dest_temp_factor').touched ||
+                          connectionPointForm.get('src_dest_temp_factor').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('src_dest_temp_factor').errors.required
+                        "
+                        >Injection is required</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('src_dest_temp_factor').errors.pattern
+                        "
+                        >only numbers (only numbers (points as thousands and commas as
+                        decimals))</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('src_dest_temp_factor').errors.min
+                        "
+                        >numbers 0</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf='connectionPointForm.get("connection_type").value!="conventional_consumer_connection"'>
+                <div class="form-group">
+                  <label class="label">Conversion Factor Destination-Source <span class="obligatory">*</span></label>
+      
+                  <input
+                    formControlName="dest_src_temp_factor"
+                    type="text"
+                    nbInput
+                    fullWidth
+                    fieldSize="small"
+                    [status]="
+                      connectionPointForm.get('dest_src_temp_factor').errors &&
+                      (connectionPointForm.get('dest_src_temp_factor').touched ||
+                        connectionPointForm.get('dest_src_temp_factor').dirty)
+                        ? 'danger'
+                        : 'basic'
+                    "
+                  />
+                  <div class="error-div">
+                    <span
+                      class="error-block"
+                      *ngIf="
+                        connectionPointForm.get('dest_src_temp_factor').errors &&
+                        (connectionPointForm.get('dest_src_temp_factor').touched ||
+                          connectionPointForm.get('dest_src_temp_factor').dirty)
+                      "
+                    >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('dest_src_temp_factor').errors.required
+                        "
+                        >Injection is required</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('dest_src_temp_factor').errors.pattern
+                        "
+                        >only numbers (only numbers (points as thousands and commas as
+                        decimals))</span
+                      >
+                      <span
+                        class="error"
+                        *ngIf="
+                          connectionPointForm.get('dest_src_temp_factor').errors.min
+                        "
+                        >numbers 0</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+              </nb-card-body>
+              </nb-card>
+        </div>
+        <div class="col-sm-6">
+          <nb-card class="card-table container-form">
+            <nb-card-header class="container-form-header">TSO Codes</nb-card-header>
+   
+            <form [formGroup]="TSOForm">
+              <div
+              class="row"
+              style="
+            padding: 1rem 1.5rem;
+              "
+            >
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="label"> Service </label>
+    
+                <nb-select
+                placeholder="-"
+                  fullWidth
+                  formControlName="service"
+                  size="small"
+                  (selectedChange)="onChangeService($event)"
+                >
+                  <nb-option
+                    *ngFor="let option of serviceOptions"
+                    [value]="option.id"
+                    >{{ option.label }}</nb-option
+                  >
+                </nb-select>
+              </div>
+            </div>
+           
+              <div class="col-sm-3" style="margin-top: 1.8rem;">
+                <div class="form-group">
+                  <button
+                    nbButton
+                    status="success"
+                    size="tiny"
+                    (click)="addRow()"
+                    [disabled]="!TSOForm.valid"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            </form>
+          
+    
+            <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem;">
+              <div class="col-sm-12">
+                <div *ngIf="validateRevoGrid == false" class="error-div">
+                  <nb-alert outline="danger">
+                    <a style="color: #a3162e !important; font-size: 0.8rem"
+                      ><nb-icon icon="close-outline" ></nb-icon> &nbsp; &nbsp; &nbsp;
+                      The values must be numbers and the date must be in the format
+                      yyyy-mm-dd
+                    </a></nb-alert
+                  >
+                </div>
+                <div *ngIf="isDuplicate== true" class="error-div">
+                  <nb-alert outline="danger">
+                    <a style="color: #a3162e !important; font-size: 0.8rem"
+                      ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                      Services cannot be duplicated</a
+                    ></nb-alert
+                  >
+                </div>
+              </div>
+           
+            </div>
+    
+          
+            <revo-grid
+            [columns]="columnsTSO"
+            [theme]="revogridTheme"
+            row-size="30"
+          ></revo-grid>
+          </nb-card>
+        </div>
+        <div class="col-sm-6">
+          <nb-card class="container-form">
+            <nb-card-header class="container-form-header"
+            *ngIf="viewInternationalConnection == false" >Logistic Element Information</nb-card-header
+            >
+            <nb-card-header class="container-form-header"
+            *ngIf="viewInternationalConnection == true" >Logistic Element 1 Information</nb-card-header
+            >
+         
+            <nb-card-body>
+              <div class="row">
+                <div [class]="classItem">
+                  <div class="form-group">
+                    <label class="label">Country <span class="obligatory">*</span></label>
+        
+                    <nb-select
+                      formControlName="country_code1"
+                      id="country"
+                      (selectedChange)="onChangeCountry1($event)"
+                      size="small"
+                      fullWidth
+                      placeholder="-"
+                      [status]="errorCountryInternationalConnection == true ? 'danger' : 'basic'"
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorCountryInternationalConnection == true">
+                        <span class="error" *ngIf="errorCountryInternationalConnection == true"
+                          >The countries must be differents</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [class]="classItem">
+                  <div class="form-group">
+                    <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+                    <nb-select
+                      size="small"
+                      formControlName="balance_zone_id1"
+                      fullWidth
+                      [status]="errorBalanceZone1 == true ? 'danger' : 'basic'"
+                      (selectedChange)="onChangeZone1($event)"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions1"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorBalanceZone1 == true">
+                        <span class="error" *ngIf="errorBalanceZone1 == true"
+                          >There are no balancing zone results for this country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [class]="classItem">
+                  <div class="form-group">
+                    <label class="label">Logistic Element 1<span class="obligatory">*</span></label>
+                    <nb-select
+                      size="small"
+                      formControlName="logistic_element_id1"
+                      fullWidth
+                      [status]="errorLogisticElement == true ? 'danger' : 'basic'"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of logisticElementOptions1"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorLogisticElement == true">
+                        <span class="error" *ngIf="errorLogisticElement == true"
+                          >There are no logistic elements results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-sm-6"
+                  *ngIf="
+                    viewInternationalConnection == false && viewLogisticElement2 == true
+                  "
+                >
+                  <div class="form-group">
+                    <label class="label">Logistic Element 2 <span class="obligatory">{{ ob }}</span></label>
+                    <nb-select
+                      size="small"
+                      formControlName="logistic_element_id2"
+                      fullWidth
+                      [status]="errorLogisticElement == true ? 'danger' : 'basic'"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of logisticElementOptions2"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorLogisticElement == true">
+                        <span class="error" *ngIf="errorLogisticElement == true"
+                          >There are no logistic elements for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </nb-card-body>
+              </nb-card>
+        </div>
+        <div class="col-sm-6" *ngIf="viewInternationalConnection == true">
+          <nb-card class="container-form" >
+            <nb-card-header class="container-form-header"
+           >Logistic Element 2 Information</nb-card-header
+            >
+           
+           
+            <nb-card-body>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Country <span class="obligatory">*</span></label>
+        
+                    <nb-select
+                      formControlName="country_code2"
+                      id="country"
+                      (selectedChange)="onChangeCountry2($event)"
+                      size="small"
+                      fullWidth
+                      placeholder="-"
+                      [status]="errorCountryInternationalConnection == true ? 'danger' : 'basic'"
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorCountryInternationalConnection == true">
+                        <span class="error" *ngIf="errorCountryInternationalConnection == true"
+                          >The countries must be differents</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4" >
+                  <div class="form-group">
+                    <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+                    <nb-select
+                      size="small"
+                      formControlName="balance_zone_id2"
+                      fullWidth
+                      [status]="errorBalanceZone1 == true ? 'danger' : 'basic'"
+                      (selectedChange)="onChangeZone2($event)"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions2"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorBalanceZone2 == true">
+                        <span class="error" *ngIf="errorBalanceZone2 == true"
+                          >There are no balancing zone results for this country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div [class]="classItem" >
+                  <div class="form-group">
+                    <label class="label">Logistic Element 2 <span class="obligatory">*</span></label>
+                    <nb-select
+                      size="small"
+                      formControlName="logistic_element_id2"
+                      fullWidth
+                      [status]="errorLogisticElement == true ? 'danger' : 'basic'"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of logisticElementOptions2"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorLogisticElement == true">
+                        <span class="error" *ngIf="errorLogisticElement == true"
+                          >There are no logistic elements results for this country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </nb-card-body>
+              </nb-card>
+        </div>
+   
+      </div>
+      <div class="row">
+        
+      
+      </div>
+      <div class="row"   >
+      
+     
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right;">
+    <button class="cancel" nbButton status="basic" (click)="cancel()" size="small">
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!connectionPointForm.valid || isDuplicate || errorCountryInternationalConnection"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

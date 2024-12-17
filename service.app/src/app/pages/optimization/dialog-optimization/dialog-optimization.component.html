@@ -1,0 +1,371 @@
+<nb-card
+  class="dialog-service"
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header class="header-principle">{{ title }}</nb-card-header>
+  <nb-card-body class="body-principle">
+    <div class="row">
+      <div class="col-sm-6">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Optimization Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="optimizationForm">
+              <input
+                formControlName="id"
+                type="number"
+                id="id"
+                nbInput
+                style="display: none"
+              />
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Label <span class="obligatory">*</span></label
+                    >
+
+                    <input
+                      formControlName="label"
+                      type="text"
+                      nbInput
+                      fullWidth
+                      fieldSize="small"
+                      [status]="
+                        optimizationForm.get('label').errors &&
+                        (optimizationForm.get('label').touched ||
+                          optimizationForm.get('label').dirty)
+                          ? 'danger'
+                          : 'basic'
+                      "
+                    />
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          optimizationForm.get('label').errors &&
+                          (optimizationForm.get('label').touched ||
+                            optimizationForm.get('label').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="optimizationForm.get('label').errors.required"
+                          >Label is required</span
+                        >
+                        <span
+                          class="error"
+                          *ngIf="optimizationForm.get('label').errors.maxlength"
+                          >Maximum 3 characters</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Country <span class="obligatory">*</span></label
+                    >
+
+                    <nb-select
+                      formControlName="country_code"
+                      id="country"
+                      (selectedChange)="onChangeCountry($event)"
+                      fullWidth
+                      size="small"
+                      placeholder="-"
+                    >
+                      <nb-option
+                        *ngFor="let option of countriesOptions"
+                        [value]="option.code"
+                        >{{ option.code }}</nb-option
+                      >
+                    </nb-select>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Balancing Zone <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                      size="small"
+                      formControlName="balance_zone_id"
+                      fullWidth
+                      [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                      placeholder="-"
+                      (selectedChange)="onChangeZone($event)"
+                    >
+                      <nb-option
+                        *ngFor="let option of zoneOptions"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="errorBalanceZone == true"
+                      >
+                        <span class="error" *ngIf="errorBalanceZone == true"
+                          >There are no balancing zone results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Legal Entity <span class="obligatory">*</span></label
+                    >
+
+                    <nb-select
+                      placeholder="-"
+                      fullWidth
+                      formControlName="entity_id"
+                      [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of entitiesOptions"
+                        [value]="option.id"
+                        >{{ option.name }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div" *ngIf="action == 'Add'">
+                      <span
+                        class="error-block"
+                        *ngIf="errorLegalEntity == true"
+                      >
+                        <span class="error" *ngIf="errorLegalEntity == true"
+                          >There are no legal entity results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Start Date - End Date
+                      <span class="obligatory">*</span></label
+                    >
+                    <input
+                      nbInput
+                      placeholder="dd.mm.yyyy - dd.mm.yyyy"
+                      [nbDatepicker]="rangepicker"
+                      formControlName="date"
+                      [status]="errorDateRange == true ? 'danger' : 'basic'"
+                      [status]="
+                        optimizationForm.get('date').errors &&
+                        (optimizationForm.get('date').touched ||
+                          optimizationForm.get('date').dirty)
+                          ? optimizationForm.get('date').errors.required
+                            ? 'danger'
+                            : 'basic'
+                          : 'basic'
+                      "
+                      fullWidth
+                      fieldSize="small"
+                    />
+                    <nb-rangepicker
+                      #rangepicker
+                      format="dd.MM.yyyy"
+                      (rangeChange)="dateChange($event)"
+                    ></nb-rangepicker>
+                    <div class="error-div">
+                      <span
+                        class="error-block"
+                        *ngIf="
+                          optimizationForm.get('date').errors &&
+                          (optimizationForm.get('date').touched ||
+                            optimizationForm.get('date').dirty)
+                        "
+                      >
+                        <span
+                          class="error"
+                          *ngIf="optimizationForm.get('date').errors.required"
+                          >Date range is required or the format must be
+                          dd.MM.yyyy</span
+                        >
+                        <span class="error" *ngIf="errorDateRange == true"
+                          >start date <= end date</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label"
+                      >Simulation <span class="obligatory">*</span></label
+                    >
+                    <nb-select
+                      formControlName="simulation_id"
+                      placeholder="-"
+                      fullWidth
+                      [status]="errorSimulation == true ? 'danger' : 'basic'"
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of simulationOptions"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorSimulation == true">
+                        <span class="error" *ngIf="errorSimulation == true"
+                          >There are no simulation results for this
+                          country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="label">Curves</label>
+                    <nb-select
+                    multiple
+                      placeholder="-"
+                      formControlName="curve"
+                      fullWidth
+                      [status]="errorCurve== true ? 'danger' : 'basic'"
+      
+                      size="small"
+                    >
+                      <nb-option
+                        *ngFor="let option of curves"
+                        [value]="option.id"
+                        >{{ option.label }}</nb-option
+                      >
+                    </nb-select>
+                    <div class="error-div">
+                      <span class="error-block" *ngIf="errorCurve == true">
+                        <span class="error" *ngIf="errorCurve == true"
+                          >There are no curve results for this country</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-sm-6">
+        <nb-card
+          class="card-table"
+          [nbSpinner]="loadingBalanceRules"
+          nbSpinnerSize="small"
+          nbSpinnerStatus="primary"
+        >
+          <nb-card-header
+            class="container-form-header"
+            style="margin-bottom: 1.5rem"
+            >Balance Stock Rules</nb-card-header
+          >
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+            <div class="col-sm-12">
+              <div *ngIf="validateRevogrid == false" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; The values must be numbers (points as thousands and
+                    commas as decimals) greater than 0.
+                  </a></nb-alert
+                >
+              </div>
+            </div>
+          </div>
+
+          <revo-grid
+            id="balance_rules"
+            [columns]="columns"
+            [theme]="revogridTheme"
+            [source]="rows"
+            rowSize="30"
+            (afteredit)="onAfterEdit($event)"
+            (beforeedit)="onBeforeEdit($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+            (beforeeditstart)="onBeforeEditStart($event, $event)"
+            range="true"
+            stretch="false"
+          ></revo-grid>
+        </nb-card>
+      </div>
+      <div class="col-sm-12">
+        <nb-card
+          class="card-table1"
+          [nbSpinner]="loadingRestrictions"
+          nbSpinnerSize="small"
+          nbSpinnerStatus="primary"
+          *ngFor="let element of dataRestrictions"
+        >
+          <nb-card-header
+            class="container-form-header"
+            style="margin-bottom: 1.5rem"
+            >Operation Restrictions</nb-card-header
+          >
+          <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+            <div class="col-sm-12">
+              <div *ngIf="validateRevogrid1 == false" class="error-div">
+                <nb-alert outline="danger">
+                  <a style="color: #a3162e !important; font-size: 0.8rem"
+                    ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                    &nbsp; The values must be numbers (points as thousands and
+                    commas as decimals) greater than 0.
+                  </a></nb-alert
+                >
+              </div>
+            </div>
+          </div>
+
+          <revo-grid
+            id="operation_restrictions"
+            [columns]="element.columns"
+            [theme]="revogridTheme"
+            [source]="element.rows"
+            rowSize="30"
+            (afteredit)="onAfterEdit1($event)"
+            (beforeedit)="onBeforeEdit1($event, $event)"
+            (beforerangeedit)="onBeforeRangeEdit1($event, $event)"
+            (beforeeditstart)="onBeforeEditStart1($event, $event)"
+            range="true"
+            stretch="false"
+          ></revo-grid>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      (click)="add()"
+      [disabled]="!isFormValid()"
+      id="add"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,121 @@
+<nb-card [nbSpinner]="loading"
+nbSpinnerSize="small"
+nbSpinnerStatus="primary">
+  <!--   <nb-card-header>
+    
+        <div class="title">  countries</div>
+   
+ 
+    
+        <div class="button-download"><button nbButton status="primary">
+          <nb-icon icon="arrow-circle-down-outline" pack="eva" (click)="exportAsXLSX()"></nb-icon>
+      </button></div> 
+      </nb-card-header> -->
+  <nb-card-header>
+    <span>Services</span>
+    <nb-actions size="small">
+      <nb-action
+        icon="more-vertical-outline"
+        [matMenuTriggerFor]="actionMenu"
+      ></nb-action>
+    </nb-actions>
+    <mat-menu #actionMenu="matMenu" yPosition="below" xPosition="before">
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="exportMenu"
+        class="action-button"
+      >
+        Export
+      </button>
+    </mat-menu>
+
+    <mat-menu #exportMenu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item class="action-button" (click)="exportAsXLSX()">
+        XLSX Services
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSV()">
+        CSV Services
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsXLSXServicesNominative()">
+        XLSX Services Nominative
+      </button>
+      <button mat-menu-item class="action-button" (click)="exportAsCSVServicesNominative()">
+        CSV Services Nominative
+      </button>
+    </mat-menu>
+  </nb-card-header>
+
+  <nb-card-body>
+    <nb-tabset>
+      <nb-tab tabTitle="Services"> 
+  
+        
+    <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5rem;">
+      <button
+      type="submit"
+      nbButton
+      status="basic"
+      (click)="refreshService()"
+      size="tiny"
+  
+
+    >
+    <nb-icon icon="sync-outline"></nb-icon>
+    Refresh
+    </button>
+    &nbsp;&nbsp;&nbsp;
+      <nb-select       [(selected)]="selectedServices" [(ngModel)]="defaultRowPerPageServices" size="tiny" >
+        <nb-option *ngFor="let option of optionsPager"    [value]="option.value" (click)="setPager()">{{option.value }}</nb-option>
+      </nb-select>
+    </div> 
+        <div class="table-container col-md-12">
+          <ng2-smart-table
+            class="table-data"
+            [settings]="settingsServices"
+            [source]="sourceServices"
+            (edit)="onEditService($event)"
+            (create)="onAddService($event)"
+          >
+          </ng2-smart-table>
+        </div>
+
+      </nb-tab>
+      <nb-tab tabTitle="Services Configuration"> 
+   
+        
+    <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5rem;">
+      <button
+      type="submit"
+      nbButton
+      status="basic"
+      (click)="refreshTSO()"
+      size="tiny"
+  
+
+    >
+    <nb-icon icon="sync-outline"></nb-icon>
+    Refresh
+    </button>
+    &nbsp;&nbsp;&nbsp;
+      <nb-select       [(selected)]="selectedTSO" [(ngModel)]="defaultRowPerPageTSO" size="tiny" >
+        <nb-option *ngFor="let option of optionsPager"    [value]="option.value" (click)="setPager()">{{option.value }}</nb-option>
+      </nb-select>
+    </div> 
+
+        <div class="table-container col-md-12">
+          <ng2-smart-table
+            class="table-data"
+            [settings]="settingsServicesNominable"
+            [source]="sourceLogisticServicesNominable"
+            (edit)="onEditServiceNominable($event)"
+            (create)="onAddServiceNominable($event)"
+          >
+          </ng2-smart-table>
+        </div>
+
+      </nb-tab>
+    </nb-tabset>
+
+  
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,624 @@
+<nb-card
+  class="dialog-parameter"
+  [nbSpinner]="loading"
+  nbSpinnerSize="small"
+  nbSpinnerStatus="primary"
+>
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-7">
+        <nb-card class="container-form">
+          <nb-card-header class="container-form-header"
+            >Request Information</nb-card-header
+          >
+          <nb-card-body>
+            <form [formGroup]="operationForm">
+                <div class="row">
+                    <input
+                    formControlName="id"
+                    type="number"
+                    id="id"
+                    nbInput
+                    style="display: none"
+                  />
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label">Country <span class="obligatory">*</span></label>
+      
+                          <nb-select
+                            formControlName="country_code"
+                            id="country"
+                            (selectedChange)="onChangeCountry($event)"
+                            placeholder="-"
+                            size="small"
+                            fullWidth
+                          >
+                            <nb-option
+                              *ngFor="let option of countriesOptions"
+                              [value]="option.code"
+                              >{{ option.code }}</nb-option
+                            >
+                          </nb-select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label">Balancing Zone <span class="obligatory">*</span></label>
+                          <nb-select
+                          placeholder="-"
+                            formControlName="balancing_zone"
+                            fullWidth
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            (selectedChange)="onChangeZone($event)"
+                            [status]="errorBalanceZone == true ? 'danger' : 'basic'"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of zoneOptions"
+                              [value]="option.id"
+                              >{{ option.label }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorBalanceZone == true"
+                            >
+                              <span class="error" *ngIf="errorBalanceZone == true"
+                                >There are no balancing zone results for this
+                                country</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label">Carrier  <span class="obligatory">*</span></label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            formControlName="carrier_id"
+                            [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                          
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of entitiesOptions2"
+                              [value]="option.id"
+                              >{{ option.name }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorLegalEntity2 == true"
+                            >
+                              <span class="error" *ngIf="errorLegalEntity2 == true"
+                                >There are no legal entities results for this
+                                country</span
+                              >
+                            </span>
+                          </div>
+                       
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label">Owner  <span class="obligatory">*</span></label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            formControlName="owner_id"
+                            [status]="errorLegalEntity == true ? 'danger' : 'basic'"
+                            (selectedChange)="onChangeOwner($event)"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of entitiesOptions"
+                              [value]="option.id"
+                              >{{ option.name }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorLegalEntity == true"
+                            >
+                              <span class="error" *ngIf="errorLegalEntity == true"
+                                >There are no legal entities results for this
+                                country</span
+                              >
+                            </span>
+                          </div>
+                       
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label">Connection Point <span class="obligatory">*</span></label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            formControlName="load_connection_id"
+                            [status]="errorRegasificationPlant == true ? 'danger' : 'basic'"
+                            (selectedChange)="onChangeRegasificationPlant($event)"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of regasificationPlantOptions"
+                              [value]="option.id"
+                              >{{ option.name }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorRegasificationPlant == true"
+                            >
+                              <span class="error" *ngIf="errorRegasificationPlant == true"
+                                >There are no regaification plant results for this
+                                balancing zone</span
+                              >
+                            </span>
+                          </div>
+                       
+                        </div>
+                      </div>
+                      <div class="col-sm-4"  *ngIf="title!='View Order'">
+                        <div class="form-group">
+                          <label class="label">Logistic Contract <span class="obligatory">*</span></label>
+                          <angular2-multiselect [data]="logisticContractsOptions" 
+                          [(ngModel)]="selectedLogisticContracts" 
+                          [settings]="settings" 
+                          formControlName="logistic_contract_id"
+                          [ngClass]="errorLogisticContract == true ? 'error-select' : '' "
+                          [ngClass]="action == 'View'? 'disabled' : '' "
+                      >
+                          </angular2-multiselect>
+                      <!--     <nb-select
+                          placeholder="-"
+                            fullWidth
+                            formControlName="logistic_contract_id"
+                        
+                          
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of logisticContractsOptions"
+                              [value]="option.id"
+                              >{{ option.label }}</nb-option
+                            >
+                          </nb-select> -->
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorLogisticContract == true"
+                            >
+                              <span class="error" *ngIf="errorLogisticContract == true"
+                                >There are no logistic contracts of tanker truck type results</span
+                              >
+                            </span>
+                          </div>
+                       
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="label">Delivery Date <span class="obligatory">*</span></label>
+                          <input
+                            nbInput
+                            
+                            [nbDatepicker]="dateTimePickerRequest"
+                            formControlName="delivery_date"
+                            [status]=" operationForm.get('delivery_date').errors &&
+                                  (operationForm.get('delivery_date').touched ||
+                                    operationForm.get('delivery_date').dirty)
+                                  ? 'danger'
+                                  : 'basic'
+                            "
+                            fieldSize="small"
+                            fullWidth
+                          />
+                          <nb-datepicker
+                            #dateTimePickerRequest
+                            withSeconds
+                            format="dd.MM.yyyy"
+                          ></nb-datepicker>
+                          <div class="error-div" >
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                operationForm.get('delivery_date').errors &&
+                                (operationForm.get('delivery_date').touched ||
+                                  operationForm.get('delivery_date').dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  operationForm.get('delivery_date').errors
+                                    .required
+                                "
+                                >Request date is required or the format must be
+                                dd.MM.yyyy</span
+                              >
+                            </span>
+                          </div>
+                         
+                        </div> 
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                          <label class="label">Operation Date  <span class="obligatory">*</span></label>
+                          <input
+                            nbInput
+                            
+                            [nbDatepicker]="dateTimePickerOperation"
+                            formControlName="operation_date"
+                            [status]=" operationForm.get('operation_date').errors &&
+                                  (operationForm.get('operation_date').touched ||
+                                    operationForm.get('operation_date').dirty)
+                                  ? 'danger'
+                                  : 'basic'
+                            "
+                            fieldSize="small"
+                            fullWidth
+                          />
+                          <nb-datepicker
+                            #dateTimePickerOperation
+                            withSeconds
+                            format="dd.MM.yyyy"
+                          ></nb-datepicker>
+                          <div class="error-div" >
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                operationForm.get('operation_date').errors &&
+                                (operationForm.get('operation_date').touched ||
+                                  operationForm.get('operation_date').dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  operationForm.get('operation_date').errors
+                                    .required
+                                "
+                                >Operation date is required or the format must be
+                                dd.MM.yyyy</span
+                              >
+                            </span>
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-sm-4"  *ngIf="title!='View Order'">
+                        <div class="form-group">
+                          <label class="label">Total Size (Kwh)<span class="obligatory">*</span></label>
+              
+                          <input
+                            type="text"
+                            nbInput
+                            fullWidth
+                         
+                            
+                            formControlName="total_size"
+                            [status]="operationForm.get('total_size').errors &&
+                                  (operationForm.get('total_size').touched ||
+                                    operationForm.get('total_size').dirty)
+                                  ? 'danger'
+                                  : 'basic'  
+                            "
+                            fieldSize="small"
+                          />
+              
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="
+                                operationForm.get('total_size').errors &&
+                                (operationForm.get('total_size').touched ||
+                                  operationForm.get('total_size').dirty)
+                              "
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  operationForm.get('total_size').errors.required
+                                "
+                                >Total booked capacity is required</span
+                              >
+                              <span
+                              class="error"
+                              *ngIf="
+                                operationForm.get('total_size').errors.min
+                              "
+                              >only numbers => 0</span
+                            >
+                              <span
+                                class="error"
+                                *ngIf="
+                                  operationForm.get('total_size').errors.pattern
+                                "
+                                >only numbers (only numbers (points as thousands and commas as
+                                decimals))</span
+                              >
+                            </span>
+                          </div>
+                         
+                        </div>
+                      </div>
+                      <div class="col-sm-4" *ngIf="action!='Add' && title!='View Order'">
+                        <div class="form-group">
+                            <label class="label" >Internal Request Code</label>
+                            <input
+                              formControlName="request_code"
+                              type="text"
+                              nbInput
+                              id="request_code"
+                              fullWidth
+                              fieldSize="small"
+                              [status]="
+                                operationForm.get('request_code').errors &&
+                                (operationForm.get('request_code').touched || operationForm.get('request_code').dirty)
+                                  ? 'danger'
+                                  : 'basic'
+                              "
+                            />
+                            <div class="error-div">
+                              <span
+                                class="error-block"
+                                *ngIf="
+                                  operationForm.get('request_code').errors &&
+                                  (operationForm.get('request_code').touched || operationForm.get('request_code').dirty)
+                                "
+                              >
+                                <span class="error" *ngIf="operationForm.get('request_code').errors.required"
+                                  >Internal request code is required</span
+                                >
+                              </span>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-4"  *ngIf="action!='Add'">
+                        <div class="form-group">
+                            <label class="label" >TSO Request Code</label>
+                            <input
+                              formControlName="request_code_tso"
+                              type="text"
+                              nbInput
+                              id="request_code_tso"
+                              fullWidth
+                              fieldSize="small"
+                              [status]="
+                                operationForm.get('request_code_tso').errors &&
+                                (operationForm.get('request_code_tso').touched || operationForm.get('request_code_tso').dirty)
+                                  ? 'danger'
+                                  : 'basic'
+                              "
+                            />
+                            <div class="error-div">
+                              <span
+                                class="error-block"
+                                *ngIf="
+                                  operationForm.get('request_code_tso').errors &&
+                                  (operationForm.get('request_code_tso').touched || operationForm.get('request_code_tso').dirty)
+                                "
+                              >
+                                <span class="error" *ngIf="operationForm.get('request_code_tso').errors.required"
+                                  >TSO request code is required</span
+                                >
+                              </span>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-sm-6"     *ngIf="title=='View Order'">
+                      <div class="form-group">
+                        <label class="label">Operation Type</label>
+                        <input
+                        formControlName="client_type"
+                        type="text"
+                        nbInput
+                     
+                        fullWidth
+                        fieldSize="small"
+                       
+                      />
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label class="label">Comments</label>
+                        <textarea
+                          nbInput
+                          fullWidth
+                      
+                          formControlName="comment"
+                        ></textarea>
+                      </div>
+                    </div>
+                </div>
+              
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+
+      <div class="col-sm-5" >
+        <div *ngIf="action != 'View'">
+            <nb-card class="container-form">
+                <nb-card-header class="container-form-header"
+                  >Add Delivery</nb-card-header
+                >
+                <nb-card-body>
+                  <form [formGroup]="deliveryForm">
+                    <div class="row" *ngIf="action != 'View'">
+                  
+                    
+                  
+                      <div class="col-sm-8">
+                        <div class="form-group">
+                          <label class="label">Satellite Plant</label>
+                          <nb-select
+                          placeholder="-"
+                            fullWidth
+                            size="medium"
+                            formControlName="satelital"
+                            [status]=" errorSatelital == true ? 'danger': 'basic'
+                            "
+                            (selectedChange)="onChangeSatelital($event)"
+                            size="small"
+                          >
+                            <nb-option
+                              *ngFor="let option of satelitalOptions"
+                              [value]="option.id"
+                              >{{ option.name }}</nb-option
+                            >
+                          </nb-select>
+                          <div class="error-div">
+                            <span
+                              class="error-block"
+                              *ngIf="errorSatelital == true"
+                            >
+                              <span class="error" *ngIf="errorSatelital == true"
+                                >There are no satelitals results for this balance
+                                zone</span
+                              >
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-1">
+                        <div class="form-group addRow-container">
+                          <button
+                            nbButton
+                            status="success"
+                            size="tiny"
+                            [disabled]="!deliveryForm.valid"
+                            (click)="addRow()"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                
+                    </div>
+                  </form>
+            
+                </nb-card-body>
+              </nb-card>
+        </div>
+     
+        <nb-card class="card-table container-form">
+            <nb-card-header
+              class="container-form-header"
+              style="margin-bottom: 1.5rem"
+              >Deliveries</nb-card-header
+            >
+            <div class="row" style="margin-left: 0.1rem; margin-right: 0.1rem">
+              <div class="col-sm-12">
+                <div *ngIf="validateRevogrid == false" class="error-div">
+                  <nb-alert outline="danger">
+                    <a style="color: #a3162e !important; font-size: 0.8rem"
+                      ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp;
+                      &nbsp; The values must be numbers (points as thousands and commas as
+                      decimals) greater than 0.
+                    </a></nb-alert
+                  >
+                </div>
+                <div *ngIf="isDuplicate == true" class="error-div">
+                  <nb-alert outline="danger">
+                    <a style="color: #a3162e !important; font-size: 0.8rem"
+                      ><nb-icon icon="close-outline"></nb-icon> &nbsp; &nbsp; &nbsp;
+                      There cannot be more than one discharge for the same satellite plant</a
+                    ></nb-alert
+                  >
+                </div>
+        
+              </div>
+            </div>
+  
+            <revo-grid
+              [columns]="columns"
+              [theme]="revogridTheme"
+              [source]="rows"
+              rowSize="30"
+              (afteredit)="onAfterEdit($event)"
+              (beforeedit)="onBeforeEdit($event, $event)"
+              (beforerangeedit)="onBeforeRangeEdit($event, $event)"
+              (beforeeditstart)="onBeforeEditStart($event, $event)"
+              range="true"
+            ></revo-grid>
+          </nb-card>
+      </div>
+    </div>
+
+    <div class="row">
+    
+    </div>
+
+ </nb-card-body>
+  <nb-card-footer *ngIf="action != 'View'" style="text-align: right">
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+    <button
+      nbButton
+      status="success"
+      id="add"
+      [disabled]="!operationForm.valid || !validateRevogrid || isDuplicate"
+      (click)="add()"
+      size="small"
+    >
+      {{ action }}
+    </button>
+  </nb-card-footer>
+  <nb-card-footer *ngIf="action == 'View' && title!='View Order'" style="text-align: right" >
+  
+    <button
+    *nbIsGranted="['create', 'request-single-clients']"
+    class="cancel"
+    nbButton
+    status="success"
+    (click)="submit()"
+    size="small"
+
+  >
+    Submit to TSO
+  </button>
+ 
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+
+  </nb-card-footer>
+  <nb-card-footer *ngIf="action == 'View' && title=='View Order'" style="text-align: right" >
+  
+   
+ 
+    <button
+      class="cancel"
+      nbButton
+      status="basic"
+      (click)="cancel()"
+      size="small"
+    >
+      Close
+    </button>
+
+  </nb-card-footer>
+</nb-card>
